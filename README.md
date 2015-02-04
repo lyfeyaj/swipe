@@ -11,6 +11,8 @@ Swipe is originally created by **[Brad Birdsall](https://github.com/thebird)** w
 
 You can directly install this package via Bower: `bower install swipe-js`
 
+See [online example](http://lyfeyaj.github.io/swipe/)
+
 Swipe only needs to follow a simple pattern. Here is an example:
 
 ``` html
