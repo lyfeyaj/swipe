@@ -1,9 +1,9 @@
-<!DOCTYPE HTML> 
+<!DOCTYPE HTML>
 <html>
 <head>
 <title>Swipe 2</title>
 <meta http-equiv="X-UA-Compatible" content="IE=8">
-<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/> 
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/>
 <link href='style.css' rel='stylesheet'/>
 <style>
 
@@ -33,8 +33,6 @@
 
 <h1>Swipe 2</h1>
 
-
-
 <div id='mySwipe' style='max-width:500px;margin:0 auto' class='swipe'>
   <div class='swipe-wrap'>
     <div><b>0</b></div>
@@ -61,32 +59,52 @@
   </div>
 </div>
 
-
-
 <div style='text-align:center;padding-top:20px;'>
-  
-  <button onclick='mySwipe.prev()'>prev</button> 
+
+  <button onclick='mySwipe.prev()'>prev</button>
   <button onclick='mySwipe.next()'>next</button>
 
 </div>
 
+<div class='pure-javascript' style='max-width:500px;margin:0 auto'>
+  <header>Pure Javascript</header>
+  <pre>
+    var element = document.getElementById('mySwipe');
+    window.mySwipe = Swipe(element, {
+      startSlide: 0,
+      auto: 3000,
+      autoRestart: true,
+      continuous: true,
+      disableScroll: true,
+      stopPropagation: true,
+      callback: function(index, element) {},
+      transitionEnd: function(index, element) {}
+    });
+  </pre>
+</div>
 
-
+<div class='jquery' style='max-width:500px;margin:0 auto'>
+  <header>With jQuery or Zepto</header>
+  <pre>
+    window.mySwipe = $('#mySwipe').Swipe().data('Swipe');
+  </pre>
+</div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src='swipe.js'></script>
 <script>
 
 // pure JS
-var elem = document.getElementById('mySwipe');
-window.mySwipe = Swipe(elem, {
-  // startSlide: 4,
-  // auto: 3000,
-  // continuous: true,
-  // disableScroll: true,
-  // stopPropagation: true,
-  // callback: function(index, element) {},
-  // transitionEnd: function(index, element) {}
+var element = document.getElementById('mySwipe');
+window.mySwipe = Swipe(element, {
+  startSlide: 0,
+  auto: 3000,
+  autoRestart: true,
+  continuous: true,
+  disableScroll: true,
+  stopPropagation: true,
+  callback: function(index, element) {},
+  transitionEnd: function(index, element) {}
 });
 
 // with jQuery
