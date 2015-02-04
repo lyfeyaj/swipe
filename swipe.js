@@ -1,4 +1,4 @@
-/*
+/*!
  * Swipe 2.0
  *
  * Brad Birdsall
@@ -33,6 +33,9 @@ function Swipe(container, options) {
   var index = parseInt(options.startSlide, 10) || 0;
   var speed = options.speed || 300;
   options.continuous = options.continuous !== undefined ? options.continuous : true;
+
+  // AutoRestart option: auto restart slideshow after user's touch event
+  options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : true;
 
   function setup() {
 
@@ -227,6 +230,12 @@ function Swipe(container, options) {
     delay = 0;
     clearTimeout(interval);
 
+  }
+
+  function restart() {
+    stop();
+    delay = options.auto || 0;
+    begin();
   }
 
 
@@ -425,7 +434,7 @@ function Swipe(container, options) {
 
       if (parseInt(event.target.getAttribute('data-index'), 10) == index) {
 
-        if (delay) begin();
+        if (delay || options.autoRestart) restart();
 
         options.transitionEnd && options.transitionEnd.call(event, index, slides[index]);
 
@@ -496,6 +505,13 @@ function Swipe(container, options) {
       next();
 
     },
+    restart: function() {
+
+      // Restart slideshow
+      restart();
+
+    },
+
     stop: function() {
 
       // cancel slideshow
