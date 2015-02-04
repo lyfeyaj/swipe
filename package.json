@@ -1,10 +1,10 @@
 {
-  "name": "Swipe",
-  "version": "2.0.0",
+  "name": "swipe",
+  "version": "2.0.1",
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-uglify": "~0.2.4"
+    "grunt": "~0.4.5",
+    "grunt-contrib-uglify": "~0.7.0"
   },
   "engines": {
     "node": ">=0.8.0"

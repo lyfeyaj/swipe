@@ -1,6 +1,6 @@
 /*global module */
 module.exports = function( grunt ) {
-  
+
   'use strict';
 
   grunt.initConfig({
@@ -9,7 +9,8 @@ module.exports = function( grunt ) {
       options: {
         mangle: {
           except: ['Swipe']
-        }
+        },
+        preserveComments: 'some'
       },
       dist: {
         files: {
