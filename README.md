@@ -1,3 +1,12 @@
+Swipe
+=====
+
+Swipe is the most accurate touch slider
+
+## Note
+
+Swipe is originally created by **Brad Birdsall**, and this version is maintain by **Felix Liu** with new features and bugfix.
+
 ## Usage
 Swipe only needs to follow a simple pattern. Here is an example:
 
@@ -79,7 +88,6 @@ window.mySwipe = new Swipe(document.getElementById('slider'), {
 
 Swipe exposes a few functions that can be useful for script control of your slider.
 
-``
 `prev()` slide to prev
 
 `next()` slide to next
