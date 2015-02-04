@@ -1,11 +1,11 @@
 Swipe
 =====
 
-Swipe is the most accurate touch slider
+Swipe is the most accurate touch slider and extremely lightweight (only 5kb for minified version)
 
 ## Note
 
-Swipe is originally created by **Brad Birdsall** which didn't update for a really long time, and this version is maintain by **Felix Liu** with new features and bugfix.
+Swipe is originally created by **[Brad Birdsall](https://github.com/thebird)** which didn't update for a really long time, and this version is maintain by **[Felix Liu](https://github.com/lyfeyaj)** with new features and bugfix.
 
 ## Usage
 
