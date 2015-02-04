@@ -1,5 +1,5 @@
 {
-  "name": "Swipe",
+  "name": "swipe",
   "version": "2.0.1",
   "main": [
     "./swipe.js"
@@ -17,7 +17,7 @@
     "tests",
     "icons"
   ],
-  "homepage": "https://github.com/lyfeyaj/Swipe",
+  "homepage": "https://github.com/lyfeyaj/swipe",
   "authors": [
     "lyfeyaj <lyfeyaj@gmail.com>"
   ],
