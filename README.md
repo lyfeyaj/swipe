@@ -104,7 +104,7 @@ Swipe is now compatible with all browsers, including IE7+. Swipe works best on d
 <img src='icons/cnn.png' width='170'>
 <img src='icons/airbnb.png' width='170'>
 <img src='icons/nhl.png' width='170'>
-<img src='icons/htc.svg' width='170'>
+<img src='icons/htc.png' width='170'>
 <img src='icons/thinkgeek.png' width='170'>
 <img src='icons/snapguide.png' width='170'>
 
