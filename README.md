@@ -8,6 +8,9 @@ Swipe is the most accurate touch slider
 Swipe is originally created by **Brad Birdsall**, and this version is maintain by **Felix Liu** with new features and bugfix.
 
 ## Usage
+
+You can directly install this package via Bower: `bower install swipe-js`
+
 Swipe only needs to follow a simple pattern. Here is an example:
 
 ``` html
