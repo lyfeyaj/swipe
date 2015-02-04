@@ -14,7 +14,8 @@
     "node_modules",
     "bower_components",
     "test",
-    "tests"
+    "tests",
+    "icons"
   ],
   "homepage": "https://github.com/lyfeyaj/Swipe",
   "authors": [
