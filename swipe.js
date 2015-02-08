@@ -165,7 +165,9 @@ function Swipe(container, options) {
       move(index, width * direction, slideSpeed || speed);
       move(to, 0, slideSpeed || speed);
 
-      if (options.continuous) move(circle(to - direction), -(width * direction), 0); // we need to get the next in place
+      if (options.continuous) { // we need to get the next in place
+        move(circle(to - direction), -(width * direction), 0);
+      }
 
     } else {
 
@@ -217,7 +219,7 @@ function Swipe(container, options) {
 
     }
 
-    var start = +new Date;
+    var start = +new Date();
 
     var timer = setInterval(function() {
 
@@ -391,14 +393,14 @@ function Swipe(container, options) {
 
       // determine if slide attempt triggers next/prev slide
       var isValidSlide =
-            Number(duration) < 250               // if slide duration is less than 250ms
-            && Math.abs(delta.x) > 20            // and if slide amt is greater than 20px
-            || Math.abs(delta.x) > width/2;      // or if slide amt is greater than half the width
+            Number(duration) < 250 &&         // if slide duration is less than 250ms
+            Math.abs(delta.x) > 20 ||         // and if slide amt is greater than 20px
+            Math.abs(delta.x) > width/2;      // or if slide amt is greater than half the width
 
       // determine if slide attempt is past start and end
       var isPastBounds =
-            !index && delta.x > 0                            // if first slide and slide amt is greater than 0
-            || index == slides.length - 1 && delta.x < 0;    // or if last slide and slide amt is less than 0
+            !index && delta.x > 0 ||                      // if first slide and slide amt is greater than 0
+            index === slides.length - 1 && delta.x < 0;   // or if last slide and slide amt is less than 0
 
       if (options.continuous) {
         isPastBounds = false;
@@ -467,8 +469,8 @@ function Swipe(container, options) {
       }
 
       // kill touchmove and touchend event listeners until touchstart called again
-      element.removeEventListener('touchmove', events, false)
-      element.removeEventListener('touchend', events, false)
+      element.removeEventListener('touchmove', events, false);
+      element.removeEventListener('touchend', events, false);
 
     },
     transitionEnd: function(event) {
