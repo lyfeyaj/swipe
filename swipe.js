@@ -12,7 +12,7 @@ function Swipe(container, options) {
 
   // utilities
   var noop = function() {}; // simple no operation function
-  var offloadFn = function(fn) { setTimeout(fn || noop, 0) }; // offload a functions execution
+  var offloadFn = function(fn) { setTimeout(fn || noop, 0); }; // offload a functions execution
 
   // check browser capabilities
   var browser = {
@@ -20,13 +20,18 @@ function Swipe(container, options) {
     touch: ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch,
     transitions: (function(temp) {
       var props = ['transitionProperty', 'WebkitTransition', 'MozTransition', 'OTransition', 'msTransition'];
-      for ( var i in props ) if (temp.style[ props[i] ] !== undefined) return true;
+      for ( var i in props ) {
+        if (temp.style[ props[i] ] !== undefined){
+          return true
+        }
+      };
       return false;
     })(document.createElement('swipe'))
   };
 
   // quit if no root element
   if (!container) return;
+
   var element = container.children[0];
   var slides, slidePos, width, length;
   options = options || {};
@@ -44,7 +49,9 @@ function Swipe(container, options) {
     length = slides.length;
 
     // set continuous to false if only one slide
-    if (slides.length < 2) options.continuous = false;
+    if (slides.length < 2) {
+      options.continuous = false;
+    }
 
     //special case if two slides
     if (browser.transitions && options.continuous && slides.length < 3) {
@@ -83,7 +90,9 @@ function Swipe(container, options) {
       move(circle(index+1), width, 0);
     }
 
-    if (!browser.transitions) element.style.left = (index * -width) + 'px';
+    if (!browser.transitions) {
+      element.style.left = (index * -width) + 'px';
+    }
 
     container.style.visibility = 'visible';
 
@@ -91,15 +100,23 @@ function Swipe(container, options) {
 
   function prev() {
 
-    if (options.continuous) slide(index-1);
-    else if (index) slide(index-1);
+    if (options.continuous) {
+      slide(index-1);
+    }
+    else if (index) {
+      slide(index-1);
+    }
 
   }
 
   function next() {
 
-    if (options.continuous) slide(index+1);
-    else if (index < slides.length - 1) slide(index+1);
+    if (options.continuous) {
+      slide(index+1);
+    }
+    else if (index < slides.length - 1) {
+      slide(index+1);
+    }
 
   }
 
@@ -126,7 +143,9 @@ function Swipe(container, options) {
 
         // if going forward but to < index, use to = slides.length + to
         // if going backward but to > index, use to = -slides.length + to
-        if (direction !== natural_direction) to =  -direction * slides.length + to;
+        if (direction !== natural_direction) {
+          to =  -direction * slides.length + to;
+        }
 
       }
 
