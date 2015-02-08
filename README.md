@@ -1,4 +1,4 @@
-Swipe
+Swipe [![Code Climate](https://codeclimate.com/github/lyfeyaj/swipe/badges/gpa.svg)](https://codeclimate.com/github/lyfeyaj/swipe)
 =====
 
 Swipe is the most accurate touch slider and extremely lightweight (only 5kb for minified version)
