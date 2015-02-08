@@ -343,7 +343,7 @@ function Swipe(container, options) {
       delta = {
         x: touches.pageX - start.x,
         y: touches.pageY - start.y
-      }
+      };
 
       // determine if scrolling test has run - one time test
       if ( typeof isScrolling === 'undefined') {
@@ -370,9 +370,9 @@ function Swipe(container, options) {
 
           delta.x =
             delta.x /
-              ( (!index && delta.x > 0               // if first slide and sliding left
-                || index === slides.length - 1        // or if last slide and sliding right
-                && delta.x < 0                       // and if sliding at all
+              ( (!index && delta.x > 0 ||             // if first slide and sliding left
+                index === slides.length - 1 &&        // or if last slide and sliding right
+                delta.x < 0                           // and if sliding at all
               ) ?
               ( Math.abs(delta.x) / width + 1 )      // determine resistance level
               : 1 );                                 // no resistance if false
@@ -489,7 +489,7 @@ function Swipe(container, options) {
 
     }
 
-  }
+  };
 
   // trigger setup
   setup();
@@ -504,7 +504,9 @@ function Swipe(container, options) {
   if (browser.addEventListener) {
 
     // set touchstart event on element
-    if (browser.touch) element.addEventListener('touchstart', events, false);
+    if (browser.touch) {
+      element.addEventListener('touchstart', events, false);
+    }
 
     if (browser.transitions) {
       element.addEventListener('webkitTransitionEnd', events, false);
@@ -621,7 +623,7 @@ function Swipe(container, options) {
       }
 
     }
-  }
+  };
 
 }
 
@@ -632,6 +634,6 @@ if ( window.jQuery || window.Zepto ) {
       return this.each(function() {
         $(this).data('Swipe', new Swipe($(this)[0], params));
       });
-    }
-  })( window.jQuery || window.Zepto )
+    };
+  })( window.jQuery || window.Zepto );
 }
