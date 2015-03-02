@@ -114,12 +114,12 @@ Swipe is now compatible with all browsers, including IE7+. Swipe works best on d
 
 ## Who's using Swipe
 
-<img src='icons/cnn.png' style="width'170'; height:'170'">
-<img src='icons/airbnb.png' style="width'170'; height:'170'">
-<img src='icons/nhl.png' style="width'170'; height:'170'">
-<img src='icons/htc.png' style="width'170'; height:'170'">
-<img src='icons/thinkgeek.png' style="width'170'; height:'170'">
-<img src='icons/snapguide.png' style="width'170'; height:'170'">
+<img src='icons/cnn.png' width='170' height='170'>
+<img src='icons/airbnb.png' width='170' height='170'>
+<img src='icons/nhl.png' width='170' height='170'>
+<img src='icons/htc.png' width='170' height='170'>
+<img src='icons/thinkgeek.png' width='170' height='170'>
+<img src='icons/snapguide.png' width='170' height='170'>
 
 Shoot me a [note](mailto:lyfeyaj@gmail.com) if you want your logo here
 
