@@ -64,6 +64,8 @@ Swipe can take an optional second parameter– an object of key/value settings:
 
 - **continuous** Boolean *(default:true)* - create an infinite feel with no endpoints
 
+- **autoRestart** Boolean *(default:true)* - auto restart slideshow after user's touch event or next/prev calls
+
 - **disableScroll** Boolean *(default:false)* - stop any touches on this container from scrolling the page
 
 - **stopPropagation** Boolean *(default:false)* - stop event propagation
