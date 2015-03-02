@@ -70,7 +70,7 @@
   <header>Pure Javascript</header>
   <pre>
     var element = document.getElementById('mySwipe');
-    window.mySwipe = Swipe(element, {
+    window.mySwipe = new Swipe(element, {
       startSlide: 0,
       auto: 3000,
       autoRestart: true,
@@ -96,7 +96,7 @@
 
 // pure JS
 var element = document.getElementById('mySwipe');
-window.mySwipe = Swipe(element, {
+window.mySwipe = new Swipe(element, {
   startSlide: 0,
   auto: 3000,
   autoRestart: true,

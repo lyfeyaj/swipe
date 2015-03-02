@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.0.1
+ * Swipe 2.0.2
  *
  * Brad Birdsall & Felix Liu
  * Copyright 2015, MIT License
@@ -129,6 +129,17 @@ function Swipe(container, options) {
 
   }
 
+  function getPos() {
+    // Fix for the clone issue in the event of 2 slides
+    var currentIndex = index;
+
+    if (currentIndex >= length) {
+      currentIndex = currentIndex - length;
+    }
+
+    return currentIndex;
+  }
+
   function slide(to, slideSpeed) {
 
     // do nothing if already on requested slide
@@ -177,7 +188,7 @@ function Swipe(container, options) {
     }
 
     index = to;
-    offloadFn(options.callback && options.callback(index, slides[index]));
+    offloadFn(options.callback && options.callback(getPos(), slides[index]));
   }
 
   function move(index, dist, speed) {
@@ -234,7 +245,7 @@ function Swipe(container, options) {
         }
 
         if (options.transitionEnd) {
-          options.transitionEnd.call(event, index, slides[index]);
+          options.transitionEnd.call(event, getPos(), slides[index]);
         }
 
         clearInterval(timer);
@@ -446,7 +457,7 @@ function Swipe(container, options) {
           }
 
           if (options.callback) {
-            options.callback(index, slides[index]);
+            options.callback(getPos(), slides[index]);
           }
 
         } else {
@@ -482,7 +493,7 @@ function Swipe(container, options) {
         }
 
         if (options.transitionEnd) {
-          options.transitionEnd.call(event, index, slides[index]);
+          options.transitionEnd.call(event, getPos(), slides[index]);
         }
 
       }
@@ -572,7 +583,7 @@ function Swipe(container, options) {
     getPos: function() {
 
       // return current index position
-      return index;
+      return getPos();
 
     },
     getNumSlides: function() {
