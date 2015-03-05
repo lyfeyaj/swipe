@@ -26,8 +26,10 @@
 
 /* END required styles */
 
+em {
+  background: tomato;
+}
 </style>
-
 </head>
 <body>
 
@@ -72,8 +74,8 @@
     var element = document.getElementById('mySwipe');
     window.mySwipe = new Swipe(element, {
       startSlide: 0,
-      auto: 3000,
-      autoRestart: true,
+      autoRestart: false,
+      <em>partial: true,</em>
       continuous: true,
       disableScroll: true,
       stopPropagation: true,
@@ -99,6 +101,7 @@ var element = document.getElementById('mySwipe');
 window.mySwipe = new Swipe(element, {
   startSlide: 0,
   autoRestart: false,
+  partial: true,
   continuous: true,
   disableScroll: true,
   stopPropagation: true,

@@ -45,7 +45,7 @@ function Swipe(container, options) {
   options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : true;
 
   // Partial option: show partially prev and next slides
-  options.partial = options.partial !== undefined ? options.partial : true;
+  options.partial = options.partial !== undefined ? options.partial : false;
 
   function setup() {
 
@@ -68,11 +68,16 @@ function Swipe(container, options) {
     // create an array to store current positions of each slide
     slidePos = new Array(slides.length);
 
+    if (length < 3)
+      options.partial = false;
+
     // determine width of each slide
     containerWidth = container.getBoundingClientRect().width || container.offsetWidth;
     width = options.partial ? containerWidth*0.9 : containerWidth;
 
     element.style.width = (slides.length * width) + 'px';
+
+
 
     partialPos = {
       hidden: containerWidth,
