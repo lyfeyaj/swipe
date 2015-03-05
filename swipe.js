@@ -161,12 +161,11 @@ function Swipe(container, options) {
   }
 
   function slide(to, slideSpeed) {
-
+    console.assert(to>0);
     // do nothing if already on requested slide
     if (index === to) {
       return;
     }
-
     if (browser.transitions) {
 
       var direction = Math.abs(index-to) / (index-to); // 1: backward, -1: forward
@@ -178,25 +177,41 @@ function Swipe(container, options) {
 
         // if going forward but to < index, use to = slides.length + to
         // if going backward but to > index, use to = -slides.length + to
-        if (direction !== natural_direction) {
+        if (direction !== natural_direction && !options.partial) {
           to =  -direction * slides.length + to;
         }
 
       }
 
-      var diff = Math.abs(index-to) - 1;
-
-      // move all the slides between index and to in the right direction
-      while (diff--) {
-        move( circle((to > index ? to : index) - diff - 1), width * direction, 0);
+      if(!options.partial) {
+        var diff = Math.abs(index-to) - 1;
+        // move all the slides between index and to in the right direction
+        while (diff--) {
+          move( circle((to > index ? to : index) - diff - 1), width * direction, 0);
+        }
       }
 
       to = circle(to);
 
-      move(index, width * direction, slideSpeed || speed);
-      move(to, 0, slideSpeed || speed);
-
-      if (options.continuous) { // we need to get the next in place
+      if (options.partial) {
+        if (direction === -1) {
+          move(circle(index-2), partialPos.hidden, 0);
+          move(circle(index-1), -partialPos.hidden, 0);
+          move(index, partialPos.prev, slideSpeed || speed);
+          move(circle(to), partialPos.middle, slideSpeed || speed);
+          move(circle(to+1), partialPos.next, slideSpeed || speed);
+        } else {
+          move(circle(to-2), -partialPos.hidden, 0);
+          move(circle(index+1), partialPos.hidden, 0);
+          move(index, partialPos.next, slideSpeed || speed);
+          move(circle(to), partialPos.middle, slideSpeed || speed);
+          move(circle(to-1), partialPos.prev, slideSpeed || speed);
+        }
+      } else {
+        move(index, width * direction, slideSpeed || speed);
+        move(to, 0, slideSpeed || speed);
+      }
+      if (options.continuous && !options.partial) { // we need to get the next in place
         move(circle(to - direction), -(width * direction), 0);
       }
 
@@ -209,6 +224,7 @@ function Swipe(container, options) {
 
     index = to;
     offloadFn(options.callback && options.callback(getPos(), slides[index]));
+    console.info(slidePos);
   }
 
   function move(index, dist, speed) {
@@ -504,17 +520,14 @@ function Swipe(container, options) {
         } else {
 
           if (options.continuous && !options.partial) {
-
             move(circle(index-1), -width, speed);
             move(index, 0, speed);
             move(circle(index+1), width, speed);
-
           } else if (options.partial) {
             move(circle(index-1), partialPos.prev, speed);
             move(index, partialPos.middle, speed);
             move(circle(index+1), partialPos.next, speed);
           } else {
-
             move(index-1, -width, speed);
             move(index, 0, speed);
             move(index+1, width, speed);
