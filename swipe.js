@@ -455,9 +455,20 @@ function Swipe(container, options) {
             } else {
               move(index-1, -width, 0);
             }
+            if (options.partial) {
+              move(circle(index-1), slides.length > 4 ? -partialPos.hidden : partialPos.hidden, 0);
+              move(circle(index-2), partialPos.hidden, 0);
+              move(circle(index+2), slides.length > 3 ? partialPos.hidden : -partialPos.hidden, 0);
+            }
 
-            move(index, slidePos[index]-width, speed);
-            move(circle(index+1), slidePos[circle(index+1)]-width, speed);
+            if (!options.partial) {
+              move(index, slidePos[index]-width, speed);
+              move(circle(index+1), slidePos[circle(index+1)]-width, speed);
+            } else {
+              move(index, partialPos.prev, speed);
+              move(circle(index+1), partialPos.middle, speed);
+              move(circle(index+2), partialPos.next, slides.length > 3 ? speed : 0);
+            }
             index = circle(index+1);
 
           } else {
@@ -469,9 +480,19 @@ function Swipe(container, options) {
             } else {
               move(index+1, width, 0);
             }
-
-            move(index, slidePos[index]+width, speed);
-            move(circle(index-1), slidePos[circle(index-1)]+width, speed);
+            if (options.partial) {
+              move(circle(index+1), slides.length > 4 ? partialPos.hidden : -partialPos.hidden, 0);
+              move(circle(index-2), slides.length > 3 ? -partialPos.hidden : partialPos.hidden, 0);
+              move(circle(index-3), -partialPos.hidden, 0);
+            }
+            if(!options.partial) {
+              move(index, slidePos[index]+width, speed);
+              move(circle(index-1), slidePos[circle(index-1)]+width, speed);
+            } else {
+              move(index, partialPos.next, speed);
+              move(circle(index-2),  partialPos.prev, slides.length > 3 ? speed : 0 );
+              move(circle(index-1), partialPos.middle, speed);
+            }
             index = circle(index-1);
 
           }
@@ -482,12 +503,16 @@ function Swipe(container, options) {
 
         } else {
 
-          if (options.continuous) {
+          if (options.continuous && !options.partial) {
 
             move(circle(index-1), -width, speed);
             move(index, 0, speed);
             move(circle(index+1), width, speed);
 
+          } else if (options.partial) {
+            move(circle(index-1), partialPos.prev, speed);
+            move(index, partialPos.middle, speed);
+            move(circle(index+1), partialPos.next, speed);
           } else {
 
             move(index-1, -width, speed);
