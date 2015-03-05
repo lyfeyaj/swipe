@@ -35,7 +35,7 @@ function Swipe(container, options) {
   }
 
   var element = container.children[0];
-  var slides, slidePos, width, length;
+  var slides, slidePos, width, length, partialPos, containerWidth;
   options = options || {};
   var index = parseInt(options.startSlide, 10) || 0;
   var speed = options.speed || 300;
@@ -43,6 +43,9 @@ function Swipe(container, options) {
 
   // AutoRestart option: auto restart slideshow after user's touch event
   options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : true;
+
+  // Partial option: show partially prev and next slides
+  options.partial = options.partial !== undefined ? options.partial : true;
 
   function setup() {
 
@@ -66,10 +69,17 @@ function Swipe(container, options) {
     slidePos = new Array(slides.length);
 
     // determine width of each slide
-    width = container.getBoundingClientRect().width || container.offsetWidth;
+    containerWidth = container.getBoundingClientRect().width || container.offsetWidth;
+    width = options.partial ? containerWidth*0.9 : containerWidth;
 
     element.style.width = (slides.length * width) + 'px';
 
+    partialPos = {
+      hidden: containerWidth,
+      prev: -width*0.9,
+      middle: width*0.05,
+      next: width
+    };
     // stack elements
     var pos = slides.length;
     while(pos--) {
@@ -81,7 +91,11 @@ function Swipe(container, options) {
 
       if (browser.transitions) {
         slide.style.left = (pos * -width) + 'px';
-        move(pos, index > pos ? -width : (index < pos ? width : 0), 0);
+        if (options.partial) {
+          move(pos, partialPos.hidden, 0);
+        } else {
+          move(pos, index > pos ? -width : (index < pos ? width : 0), 0);
+        }
       }
 
     }
@@ -92,12 +106,18 @@ function Swipe(container, options) {
       move(circle(index+1), width, 0);
     }
 
+    if (options.partial) {
+      move(circle(index-2), -partialPos.hidden, 0);
+      move(circle(index-1), partialPos.prev, 0);
+      move(index, partialPos.middle, 0);
+      move(circle(index+1), partialPos.next, 0);
+    }
     if (!browser.transitions) {
       element.style.left = (index * -width) + 'px';
     }
 
     container.style.visibility = 'visible';
-
+    console.info(slidePos);
   }
 
   function prev() {
@@ -476,7 +496,7 @@ function Swipe(container, options) {
           }
 
         }
-
+        console.info(slidePos);
       }
 
       // kill touchmove and touchend event listeners until touchstart called again
