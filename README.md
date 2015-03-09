@@ -5,11 +5,11 @@ Swipe is the most accurate touch slider and extremely lightweight (only 5kb for 
 
 ## Note
 
-Swipe is originally created by **[Brad Birdsall](https://github.com/thebird)** which didn't update for a really long time, and this version is maintain by **[Felix Liu](https://github.com/lyfeyaj)** with new features and bugfix.
+Swipe is originally created by **[Brad Birdsall](https://github.com/thebird)** which didn't update for a really long time, and this version is maintained by **[Felix Liu](https://github.com/lyfeyaj)** with new features and bugfixes.
 
 ## Usage
 
-You can directly install this package via Bower: `bower install swipe-js`
+You can directly install this package via Bower: `bower install swipe-js` or you can install this package via NPM: `npm install swipejs`
 
 See [online example](http://lyfeyaj.github.io/swipe/)
 
@@ -123,7 +123,11 @@ Swipe is now compatible with all browsers, including IE7+. Swipe works best on d
 <img src='icons/thinkgeek.png' width='170' height='80'>
 <img src='icons/snapguide.png' width='170' height='80'>
 
-Shoot me a [note](mailto:lyfeyaj@gmail.com) if you want your logo here
+Send me a [note](mailto:lyfeyaj@gmail.com) if you want your logo here
+
+## TODOs
+
++ Add AngularJS support
 
 ## License
 Copyright (c) 2015 Brad Birdsall and Felix Liu Licensed under the [The MIT License (MIT)](http://opensource.org/licenses/MIT).
