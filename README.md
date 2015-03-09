@@ -128,6 +128,7 @@ Send me a [note](mailto:lyfeyaj@gmail.com) if you want your logo here
 ## TODOs
 
 + Add AngularJS support
++ Better UI for demo page
 
 ## License
 Copyright (c) 2015 Brad Birdsall and Felix Liu Licensed under the [The MIT License (MIT)](http://opensource.org/licenses/MIT).
