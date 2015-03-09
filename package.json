@@ -1,6 +1,7 @@
 {
   "name": "swipe-js",
   "version": "2.0.2",
+  "main": "swipe.js",
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.5",
