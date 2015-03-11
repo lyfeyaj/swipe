@@ -9,16 +9,18 @@
 // if the module has no dependencies, the above pattern can be simplified to
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
-      // AMD. Register as an anonymous module.
-      define([], factory);
+    // AMD. Register as an anonymous module.
+    define([], function(){
+      return (root.returnExportsGlobal = factory());
+    });
   } else if (typeof exports === 'object') {
-      // Node. Does not work with strict CommonJS, but
-      // only CommonJS-like environments that support module.exports,
-      // like Node.
-      module.exports = factory();
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
   } else {
-      // Browser globals (root is window)
-      root.returnExports = factory();
+    // Browser globals
+    root.returnExportsGlobal = factory();
   }
 }(this, function () {
 
