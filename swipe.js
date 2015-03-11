@@ -11,7 +11,7 @@
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define([], function(){
-      return (root.returnExportsGlobal = factory());
+      return (root.Swipe = factory());
     });
   } else if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but
@@ -20,7 +20,7 @@
     module.exports = factory();
   } else {
     // Browser globals
-    root.returnExportsGlobal = factory();
+    root.Swipe = factory();
   }
 }(this, function () {
 
