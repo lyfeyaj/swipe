@@ -130,7 +130,7 @@
       }
 
       if (options.partial) {
-        move(circle(index-2), -partialPos.hidden, 0);
+        move(circle(index-2), length > 4 ? -partialPos.hidden : partialPos.hidden, 0);
         move(circle(index-1), partialPos.prev, 0);
         move(index, partialPos.middle, 0);
         move(circle(index+1), partialPos.next, 0);
@@ -221,17 +221,23 @@
 
         if (options.partial) {
           if (direction === -1) {
-            move(circle(index-2), partialPos.hidden, 0);
-            move(circle(index-1), -partialPos.hidden, 0);
+            move(circle(index-1), slides.length > 4 ? -partialPos.hidden : partialPos.hidden, 0);
+            if(length>3) {
+              move(circle(index-2), partialPos.hidden, 0);
+              move(circle(index+2), partialPos.hidden, 0);
+            }
             move(index, partialPos.prev, slideSpeed || speed);
-            move(circle(to), partialPos.middle, slideSpeed || speed);
-            move(circle(to+1), partialPos.next, slideSpeed || speed);
+            move(to, partialPos.middle, slideSpeed || speed);
+            move(circle(index+2), partialPos.next, length > 4 ? slideSpeed || speed : 0);
           } else {
-            move(circle(to-2), -partialPos.hidden, 0);
-            move(circle(index+1), partialPos.hidden, 0);
+            move(circle(index+1), slides.length > 4 ? partialPos.hidden : -partialPos.hidden, 0);
+            if(length>3) {
+              move(circle(index-2), -partialPos.hidden, 0);
+              move(circle(index-3), -partialPos.hidden, 0);
+            }
             move(index, partialPos.next, slideSpeed || speed);
-            move(circle(to), partialPos.middle, slideSpeed || speed);
-            move(circle(to-1), partialPos.prev, slideSpeed || speed);
+            move(to, partialPos.middle, slideSpeed || speed);
+            move(circle(to-1), partialPos.prev, length > 4 ? slideSpeed || speed : 0);
           }
         } else {
           move(index, width * direction, slideSpeed || speed);
