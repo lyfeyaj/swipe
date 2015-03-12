@@ -1,4 +1,4 @@
-/*!
+/*
  * Swipe 2.0.3
  *
  * Brad Birdsall & Felix Liu
@@ -7,7 +7,7 @@
 */
 
 // if the module has no dependencies, the above pattern can be simplified to
-(function (root, factory) {
+!(function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define([], function(){
