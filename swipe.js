@@ -219,8 +219,6 @@
 
         to = circle(to);
 
-        move(index, width * direction, slideSpeed || speed);
-        move(to, 0, slideSpeed || speed);
         if (options.partial) {
           if (direction === -1) {
             move(circle(index-2), partialPos.hidden, 0);
@@ -236,6 +234,8 @@
             move(circle(to-1), partialPos.prev, slideSpeed || speed);
           }
         } else {
+          move(index, width * direction, slideSpeed || speed);
+          move(to, 0, slideSpeed || speed);
           if (options.continuous) { // we need to get the next in place
             move(circle(to - direction), -(width * direction), 0);
           }
