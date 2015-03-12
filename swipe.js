@@ -24,6 +24,9 @@
   }
 }(this, function () {
 
+  var root = this;
+  var _document = root.document;
+
   function Swipe(container, options) {
 
     "use strict";
@@ -34,8 +37,8 @@
 
     // check browser capabilities
     var browser = {
-      addEventListener: !!window.addEventListener,
-      touch: ('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch,
+      addEventListener: !!root.addEventListener,
+      touch: ('ontouchstart' in root) || root.DocumentTouch && _document instanceof DocumentTouch,
       transitions: (function(temp) {
         var props = ['transitionProperty', 'WebkitTransition', 'MozTransition', 'OTransition', 'msTransition'];
         for ( var i in props ) {
@@ -44,7 +47,7 @@
           }
         }
         return false;
-      })(document.createElement('swipe'))
+      })(_document.createElement('swipe'))
     };
 
     // quit if no root element
@@ -546,11 +549,11 @@
       }
 
       // set resize event on window
-      window.addEventListener('resize', events, false);
+      root.addEventListener('resize', events, false);
 
     } else {
 
-      window.onresize = function () { setup(); }; // to play nice with old IE
+      root.onresize = function () { setup(); }; // to play nice with old IE
 
     }
 
@@ -642,12 +645,12 @@
           element.removeEventListener('oTransitionEnd', events, false);
           element.removeEventListener('otransitionend', events, false);
           element.removeEventListener('transitionend', events, false);
-          window.removeEventListener('resize', events, false);
+          root.removeEventListener('resize', events, false);
 
         }
         else {
 
-          window.onresize = null;
+          root.onresize = null;
 
         }
 
@@ -657,14 +660,14 @@
   }
 
 
-  if ( window.jQuery || window.Zepto ) {
+  if ( root.jQuery || root.Zepto ) {
     (function($) {
       $.fn.Swipe = function(params) {
         return this.each(function() {
           $(this).data('Swipe', new Swipe($(this)[0], params));
         });
       };
-    })( window.jQuery || window.Zepto );
+    })( root.jQuery || root.Zepto );
   }
 
   return Swipe;
