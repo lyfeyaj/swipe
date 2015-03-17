@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.0.4
+ * Swipe 2.0.5
  *
  * Brad Birdsall & Felix Liu
  * Copyright 2015, MIT License
