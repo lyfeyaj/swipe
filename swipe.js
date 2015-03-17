@@ -7,7 +7,7 @@
 */
 
 // if the module has no dependencies, the above pattern can be simplified to
-(function (root, factory) {
+;(function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define([], function(){
@@ -303,6 +303,9 @@
       begin();
     }
 
+    function isMouseEvent(e) {
+      return /^mouse/.test(e.type);
+    }
 
     // setup initial vars
     var start = {};
@@ -313,10 +316,12 @@
     var events = {
 
       handleEvent: function(event) {
-
         switch (event.type) {
+          case 'mousedown':
           case 'touchstart': this.start(event); break;
+          case 'mousemove':
           case 'touchmove': this.move(event); break;
+          case 'mouseup':
           case 'touchend': offloadFn(this.end(event)); break;
           case 'webkitTransitionEnd':
           case 'msTransitionEnd':
@@ -332,8 +337,7 @@
 
       },
       start: function(event) {
-
-        var touches = event.touches[0];
+        var touches = isMouseEvent(event) ? event : event.touches[0];
 
         // measure start values
         start = {
@@ -354,22 +358,32 @@
         delta = {};
 
         // attach touchmove and touchend listeners
-        element.addEventListener('touchmove', this, false);
-        element.addEventListener('touchend', this, false);
+        if (isMouseEvent(event)) {
+          element.addEventListener('mousemove', this, false);
+          element.addEventListener('mouseup', this, false);
+        } else {
+          element.addEventListener('touchmove', this, false);
+          element.addEventListener('touchend', this, false);
+        }
 
       },
       move: function(event) {
+        var touches;
 
-        // ensure swiping with one touch and not pinching
-        if ( event.touches.length > 1 || event.scale && event.scale !== 1) {
-          return;
+        if (isMouseEvent(event)) {
+          touches = event;
+        } else {
+          // ensure swiping with one touch and not pinching
+          if ( event.touches.length > 1 || event.scale && event.scale !== 1) {
+            return;
+          }
+
+          if (options.disableScroll) {
+            event.preventDefault();
+          }
+
+          touches = event.touches[0];
         }
-
-        if (options.disableScroll) {
-          event.preventDefault();
-        }
-
-        var touches = event.touches[0];
 
         // measure change in x and y
         delta = {
@@ -501,12 +515,16 @@
         }
 
         // kill touchmove and touchend event listeners until touchstart called again
-        element.removeEventListener('touchmove', events, false);
-        element.removeEventListener('touchend', events, false);
+        if (isMouseEvent(event)) {
+          element.removeEventListener('mousemove', events, false);
+          element.removeEventListener('mouseup', events, false);
+        } else {
+          element.removeEventListener('touchmove', events, false);
+          element.removeEventListener('touchend', events, false);
+        }
 
       },
       transitionEnd: function(event) {
-
         if (parseInt(event.target.getAttribute('data-index'), 10) === index) {
 
           if (delay || options.autoRestart) {
@@ -538,6 +556,10 @@
       // set touchstart event on element
       if (browser.touch) {
         element.addEventListener('touchstart', events, false);
+      }
+
+      if (options.draggable) {
+        element.addEventListener('mousedown', events, false);
       }
 
       if (browser.transitions) {
@@ -658,7 +680,6 @@
     };
 
   }
-
 
   if ( root.jQuery || root.Zepto ) {
     (function($) {
