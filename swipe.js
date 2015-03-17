@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.0.5
+ * Swipe 2.0.6
  *
  * Brad Birdsall & Felix Liu
  * Copyright 2015, MIT License
@@ -665,6 +665,7 @@
 
           // remove current event listeners
           element.removeEventListener('touchstart', events, false);
+          element.removeEventListener('mousedown', events, false);
           element.removeEventListener('webkitTransitionEnd', events, false);
           element.removeEventListener('msTransitionEnd', events, false);
           element.removeEventListener('oTransitionEnd', events, false);
