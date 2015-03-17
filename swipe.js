@@ -322,6 +322,7 @@
           case 'mousemove':
           case 'touchmove': this.move(event); break;
           case 'mouseup':
+          case 'mouseleave':
           case 'touchend': offloadFn(this.end(event)); break;
           case 'webkitTransitionEnd':
           case 'msTransitionEnd':
@@ -361,6 +362,7 @@
         if (isMouseEvent(event)) {
           element.addEventListener('mousemove', this, false);
           element.addEventListener('mouseup', this, false);
+          element.addEventListener('mouseleave', this, false);
         } else {
           element.addEventListener('touchmove', this, false);
           element.addEventListener('touchend', this, false);
@@ -518,6 +520,7 @@
         if (isMouseEvent(event)) {
           element.removeEventListener('mousemove', events, false);
           element.removeEventListener('mouseup', events, false);
+          element.removeEventListener('mouseleave', events, false);
         } else {
           element.removeEventListener('touchmove', events, false);
           element.removeEventListener('touchend', events, false);

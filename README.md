@@ -62,6 +62,8 @@ Swipe can take an optional second parameter– an object of key/value settings:
 
 - **auto** Integer - begin with auto slideshow (time in milliseconds between slides)
 
+- **draggable** Boolean *(default:false)* - Enable draggable support in desktop browsers)
+
 - **continuous** Boolean *(default:true)* - create an infinite feel with no endpoints
 
 - **autoRestart** Boolean *(default:true)* - auto restart slideshow after user's touch event or next/prev calls
@@ -82,6 +84,7 @@ window.mySwipe = new Swipe(document.getElementById('slider'), {
   startSlide: 0,
   speed: 400,
   auto: 3000,
+  draggable: false;
   continuous: true,
   disableScroll: false,
   stopPropagation: false,
