@@ -49,6 +49,7 @@ Also Swipe needs just a few styles added to your stylesheet:
   float:left;
   width:100%;
   position: relative;
+  overflow: hidden;
 }
 ```
 
