@@ -1,6 +1,6 @@
 {
   "name": "swipejs",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "main": "swipe.js",
   "description": "Swipe is the most accurate touch slider",
   "author": "Brad Birdsall",
