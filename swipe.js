@@ -63,7 +63,7 @@
     options.continuous = options.continuous !== undefined ? options.continuous : true;
 
     // AutoRestart option: auto restart slideshow after user's touch event
-    options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : true;
+    options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : false;
 
     function setup() {
 
