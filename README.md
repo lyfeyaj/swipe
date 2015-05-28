@@ -126,6 +126,7 @@ Swipe is now compatible with all browsers, including IE7+. Swipe works best on d
 <img src='icons/htc.png' width='170' height='80'>
 <img src='icons/thinkgeek.png' width='170' height='80'>
 <img src='icons/snapguide.png' width='170' height='80'>
+<img src='icons/everlane.png' width='170' height='80'>
 
 Send me a [note](mailto:lyfeyaj@gmail.com) if you want your logo here
 
