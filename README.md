@@ -1,5 +1,7 @@
-Swipe [![Code Climate](https://codeclimate.com/github/lyfeyaj/swipe/badges/gpa.svg)](https://codeclimate.com/github/lyfeyaj/swipe)
+Swipe
 =====
+
+[![Code Climate](https://codeclimate.com/github/lyfeyaj/swipe/badges/gpa.svg)](https://codeclimate.com/github/lyfeyaj/swipe)
 
 Swipe is the most accurate touch slider and extremely lightweight (only 5kb for minified version)
 
@@ -72,7 +74,7 @@ Swipe can take an optional second parameter– an object of key/value settings:
 - **disableScroll** Boolean *(default:false)* - stop any touches on this container from scrolling the page
 
 - **stopPropagation** Boolean *(default:false)* - stop event propagation
- 
+
 -	**callback** Function - runs at slide change.
 
 - **transitionEnd** Function - runs at the end slide transition.
@@ -85,7 +87,7 @@ window.mySwipe = new Swipe(document.getElementById('slider'), {
   startSlide: 0,
   speed: 400,
   auto: 3000,
-  draggable: false;
+  draggable: false,
   continuous: true,
   disableScroll: false,
   stopPropagation: false,
