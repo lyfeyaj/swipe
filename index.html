@@ -1,102 +1,122 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-<title>Swipe 2</title>
-<meta http-equiv="X-UA-Compatible" content="IE=8">
-<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/>
-<link href='style.css' rel='stylesheet'/>
-<style>
+  <head>
+    <title>Swipe 2</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <link href="style.css" rel="stylesheet"/>
 
-/* Swipe 2 required styles */
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css" />
 
-.swipe {
-  overflow: hidden;
-  visibility: hidden;
-  position: relative;
-}
-.swipe-wrap {
-  overflow: hidden;
-  position: relative;
-}
-.swipe-wrap > div {
-  float:left;
-  width:100%;
-  position: relative;
-}
+    <link rel="stylesheet" href="vendor/highlightjs/hybrid.css">
+    <script src="vendor/highlightjs/highlight.pack.js"></script>
 
-/* END required styles */
+    <style>
 
-</style>
+      /* Swipe 2 required styles */
 
-</head>
-<body>
+      .swipe {
+        overflow: hidden;
+        visibility: hidden;
+        position: relative;
+      }
+      .swipe-wrap {
+        overflow: hidden;
+        position: relative;
+      }
+      .swipe-wrap > div {
+        float:left;
+        width:100%;
+        position: relative;
+      }
 
-<h1>Swipe 2</h1>
+      /* END required styles */
 
-<div id='mySwipe' style='max-width:500px;margin:0 auto' class='swipe'>
-  <div class='swipe-wrap'>
-    <div><b>0</b></div>
-    <div><b>1</b></div>
-    <div><b>2</b></div>
-    <div><b>3</b></div>
-    <div><b>4</b></div>
-    <div><b>5</b></div>
-    <div><b>6</b></div>
-    <div><b>7</b></div>
-    <div><b>8</b></div>
-    <div><b>9</b></div>
-    <div><b>10</b></div>
-    <div><b>11</b></div>
-    <div><b>12</b></div>
-    <div><b>13</b></div>
-    <div><b>14</b></div>
-    <div><b>15</b></div>
-    <div><b>16</b></div>
-    <div><b>17</b></div>
-    <div><b>18</b></div>
-    <div><b>19</b></div>
-    <div><b>20</b></div>
-  </div>
-</div>
+    </style>
 
-<div style='text-align:center;padding-top:20px;'>
+  </head>
+  <body>
+    <main class="container">
 
-  <button onclick='mySwipe.prev()'>prev</button>
-  <button onclick='mySwipe.next()'>next</button>
+      <h1>Swipe 2</h1>
 
-</div>
+      <p>Swipe is the most accurate touch slider and is extremely lightweight (only 5kb for the minified version).</p>
 
-<div class='pure-javascript' style='max-width:500px;margin:0 auto'>
-  <header>Pure Javascript</header>
-  <pre>
-    var element = document.getElementById('mySwipe');
-    window.mySwipe = new Swipe(element, {
-      startSlide: 0,
-      auto: 3000,
-      draggable: false,
-      autoRestart: false,
-      continuous: true,
-      disableScroll: true,
-      stopPropagation: true,
-      callback: function(index, element) {},
-      transitionEnd: function(index, element) {}
-    });
-  </pre>
-</div>
+      <h2>Demo</h2>
 
-<div class='jquery' style='max-width:500px;margin:0 auto'>
-  <header>With jQuery or Zepto</header>
-  <pre>
-    window.mySwipe = $('#mySwipe').Swipe().data('Swipe');
-  </pre>
-</div>
+      <div id="mySwipe" class="swipe">
+        <div class="swipe-wrap">
+          <div><b>0</b></div>
+          <div><b>1</b></div>
+          <div><b>2</b></div>
+          <div><b>3</b></div>
+          <div><b>4</b></div>
+          <div><b>5</b></div>
+          <div><b>6</b></div>
+          <div><b>7</b></div>
+          <div><b>8</b></div>
+          <div><b>9</b></div>
+          <div><b>10</b></div>
+          <div><b>11</b></div>
+          <div><b>12</b></div>
+          <div><b>13</b></div>
+          <div><b>14</b></div>
+          <div><b>15</b></div>
+          <div><b>16</b></div>
+          <div><b>17</b></div>
+          <div><b>18</b></div>
+          <div><b>19</b></div>
+          <div><b>20</b></div>
+        </div>
+      </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src='build/swipe.min.js'></script>
-<script>
+      <div class="demo-controls">
+        <a class="btn btn-primary" id="prev">Prev</a>
+        <a class="btn btn-primary" id="next">Next</a>
+      </div>
+
+      <h2>Usage</h2>
+
+      <h3>Pure Javascript</h3>
+      <pre>
+        <code class="javascript">var element = document.getElementById('mySwipe');
+window.mySwipe = new Swipe(element, {
+  startSlide: 0,
+  auto: 3000,
+  draggable: false,
+  autoRestart: false,
+  continuous: true,
+  disableScroll: true,
+  stopPropagation: true,
+  callback: function(index, element) {},
+  transitionEnd: function(index, element) {}
+});</code>
+      </pre>
+
+      <h3>With jQuery or Zepto</h3>
+      <pre>
+        <code class="javascript">window.mySwipe = $('#mySwipe').Swipe().data('Swipe');</code>
+      </pre>
+    </main>
+
+    <footer>
+      <div class="container">
+        <ul class="list-unstyled">
+          <li><a href="https://github.com/lyfeyaj/swipe">Github</a></li>
+          <li><a href="https://github.com/lyfeyaj/swipe/issues">Issues</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="build/swipe.min.js"></script>
+    <script>
 
 // pure JS
-var element = document.getElementById('mySwipe');
+var element = document.getElementById('mySwipe'),
+    prevBtn = document.getElementById('prev'),
+    nextBtn = document.getElementById('next');
+
 window.mySwipe = new Swipe(element, {
   startSlide: 0,
   auto: 3000,
@@ -112,4 +132,11 @@ window.mySwipe = new Swipe(element, {
 // with jQuery
 // window.mySwipe = $('#mySwipe').Swipe().data('Swipe');
 
-</script>
+prevBtn.onclick = mySwipe.prev;
+nextBtn.onclick = mySwipe.next;
+
+    </script>
+    <script async defer id="github-bjs" src="https://buttons.github.io/buttons.js"></script>
+    <script>//hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
