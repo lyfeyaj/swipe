@@ -4,7 +4,7 @@
 @import 'mixins';
 
 // Reset
-html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, del, dfn, em, img, ins, kbd, q, samp, small, strong, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, table, tbody, tfoot, thead, tr, th, td, article, aside, footer, header, nav, section {
+* {
   margin: 0;
   padding: 0;
   border: 0;
@@ -13,9 +13,12 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, del, dfn, em, 
   vertical-align: baseline;
   background-color: transparent;
 }
-// Helpers
-.left { float: left; }
-.right { float: right; }
+// Lobotomized owl selector
+// See the article from A List Apart on this interesting technique
+// http://alistapart.com/article/axiomatic-css-and-lobotomized-owls
+* + * {
+  margin-top: 1.5em;
+}
 // Typography
 body {
   font-family: 'Source Code Pro', Courier, monospace;
@@ -23,40 +26,43 @@ body {
   line-height: 1.5;
 }
 h1, h2, h3, h4, h5, h6 {
-  font-weight: normal;
-  margin: 0.5em 0;
+  font-weight: 200;
   &:after {
     content: '';
     display: block;
-    width: 60px;
-    height: 0.1em;
-    margin: 0.3em 0;
+    width: 1.5em;
+    height: 2px;
+    margin: 0.2em 0;
     background-color: currentColor;
   }
 }
 h1 {
   font-size: 3em;
-  margin: 0.5em 0;
+  //margin: 0.5em 0;
 }
 h2 {
   font-size: 2em;
 }
 h3 {
-  font-size: 1.5em;
+  font-size: 1.4em;
+}
+h4 {
+  font-size: 1.15em;
 }
 p {
-  margin: 3em 0;
+  //margin: 3em 0;
 }
 code {
   display: block;
-  font-family: 'Source Code Pro', Courier, monospace;
   padding: 1em;
+  font-family: 'Source Code Pro', Courier, monospace;
   border-radius: 3px;
 }
 // Layout
 .container {
   max-width: 45em;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0 1em;
 }
 header, footer {
@@ -76,13 +82,15 @@ header, footer {
   }
 }
 .demo-controls {
-  margin: 1.5em 0;
+  //margin: 1.5em 0;
   text-align: center;
 }
 // Swipe
+.swipe {
+  //margin: 2em 0;
+}
 .swipe div b {
   display: block;
-  //max-width: 500px;
   margin: 0 1.5em;
   padding: 4em 1em;
   font-size: 2em;

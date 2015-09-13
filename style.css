@@ -1,5 +1,5 @@
 @charset "UTF-8";
-html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, del, dfn, em, img, ins, kbd, q, samp, small, strong, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, table, tbody, tfoot, thead, tr, th, td, article, aside, footer, header, nav, section {
+* {
   margin: 0;
   padding: 0;
   border: 0;
@@ -8,11 +8,8 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, del, dfn, em, 
   vertical-align: baseline;
   background-color: transparent; }
 
-.left {
-  float: left; }
-
-.right {
-  float: right; }
+* + * {
+  margin-top: 1.5em; }
 
 body {
   font-family: 'Source Code Pro', Courier, monospace;
@@ -20,38 +17,37 @@ body {
   line-height: 1.5; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: normal;
-  margin: 0.5em 0; }
+  font-weight: 200; }
   h1:after, h2:after, h3:after, h4:after, h5:after, h6:after {
     content: '';
     display: block;
-    width: 60px;
-    height: 0.1em;
-    margin: 0.3em 0;
+    width: 1.5em;
+    height: 2px;
+    margin: 0.2em 0;
     background-color: currentColor; }
 
 h1 {
-  font-size: 3em;
-  margin: 0.5em 0; }
+  font-size: 3em; }
 
 h2 {
   font-size: 2em; }
 
 h3 {
-  font-size: 1.5em; }
+  font-size: 1.4em; }
 
-p {
-  margin: 3em 0; }
+h4 {
+  font-size: 1.15em; }
 
 code {
   display: block;
-  font-family: 'Source Code Pro', Courier, monospace;
   padding: 1em;
+  font-family: 'Source Code Pro', Courier, monospace;
   border-radius: 3px; }
 
 .container {
   max-width: 45em;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0 1em; }
 
 header, footer {
@@ -65,7 +61,6 @@ header, footer {
     content: ' • '; }
 
 .demo-controls {
-  margin: 1.5em 0;
   text-align: center; }
 
 .swipe div b {
@@ -89,9 +84,13 @@ header, footer {
   background-color: #27AAE1;
   color: #eee; }
 
+::-moz-selection {
+  background-color: #27AAE1;
+  color: #eee; }
+
 body {
   background-color: #ffffff;
-  color: #5A5A5A; }
+  color: #111; }
 
 a {
   color: #EE3769; }

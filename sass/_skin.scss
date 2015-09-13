@@ -15,6 +15,10 @@ $color-secondary:     #14E282 !default;
   background-color: $color-primary;
   color: check-bg($color-primary);
 }
+::-moz-selection {
+  background-color: $color-primary;
+  color: check-bg($color-primary);
+}
 
 body {
   background-color: $color-bg;
@@ -29,13 +33,12 @@ a {
 // Buttons
 .btn-primary { @include btn-style($color-primary); }
 .btn-secondary { @include btn-style($color-secondary);}
-code{
+code {
   $color-code: darken($color-bg, 5%);
   background-color: $color-code;
   color: check-bg($color-code);
   border: 1px solid darken($color-code, 5%);
 }
-
 .swipe div b {
   @include bg($color-secondary);
 }
