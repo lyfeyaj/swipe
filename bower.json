@@ -15,7 +15,9 @@
     "bower_components",
     "test",
     "tests",
-    "icons"
+    "icons",
+    "sass",
+    "vendor"
   ],
   "homepage": "https://github.com/lyfeyaj/swipe",
   "authors": [
