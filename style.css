@@ -1,5 +1,20 @@
 @charset "UTF-8";
-* {
+.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative; }
+
+.swipe-wrap {
+  overflow: hidden;
+  position: relative; }
+
+.swipe-wrap > div {
+  float: left;
+  width: 100%;
+  position: relative;
+  overflow: hidden; }
+
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, del, dfn, em, img, ins, kbd, q, samp, small, strong, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, table, tbody, tfoot, thead, tr, th, td, article, aside, footer, header, nav, section {
   margin: 0;
   padding: 0;
   border: 0;
@@ -8,7 +23,7 @@
   vertical-align: baseline;
   background-color: transparent; }
 
-* + * {
+article > * + * {
   margin-top: 1.5em; }
 
 body {
@@ -61,14 +76,17 @@ header, footer {
     content: ' • '; }
 
 .demo-controls {
-  text-align: center; }
+  text-align: center;
+  padding: 1.5em; }
 
-.swipe div b {
-  display: block;
-  margin: 0 1.5em;
-  padding: 4em 1em;
-  font-size: 2em;
-  text-align: center; }
+.swipe-wrap > div {
+  margin: 0; }
+  .swipe-wrap > div b {
+    display: block;
+    margin: 0 1.5em;
+    padding: 4em 1em;
+    font-size: 2em;
+    text-align: center; }
 
 .btn {
   display: inline-block;
