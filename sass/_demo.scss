@@ -19,8 +19,8 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, del, dfn, em, 
 //  margin-top: 1.5em;
 //}
 
-article > * + * {
-  margin-top: 1.5em;
+article > section > * + * {
+  margin: 1.5em 0;
 }
 // Typography
 body {
@@ -55,9 +55,12 @@ h4 {
 p {
   //margin: 3em 0;
 }
-code {
+pre code {
   display: block;
   padding: 1em;
+}
+code {
+  padding: 0.2em;
   font-family: 'Source Code Pro', Courier, monospace;
   border-radius: 3px;
 }
