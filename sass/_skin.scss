@@ -1,0 +1,56 @@
+// ========================================================
+// Skinning
+// ========================================================
+
+// Default colors
+$color-bg:            #f3f3f3 !default;
+$color-text:          #212121 !default;
+$color-primary:       #14ADE5 !default;
+$color-secondary:     #14E282 !default;
+
+// Insert skin to import here
+@import 'skins/skin.ice';
+
+::selection {
+  background-color: $color-primary;
+  color: check-bg($color-primary);
+}
+::-moz-selection {
+  background-color: $color-primary;
+  color: check-bg($color-primary);
+}
+
+body {
+  background-color: $color-bg;
+  color: $color-text;
+}
+a {
+  color: $color-secondary;
+  &:visited {
+    color: desaturate($color-primary, 33%);
+  }
+}
+// Buttons
+.btn-primary { @include btn-style($color-primary); }
+.btn-secondary { @include btn-style($color-secondary);}
+code {
+  $color-code: darken($color-bg, 5%);
+  background-color: $color-code;
+  color: check-bg($color-code);
+  border: 1px solid darken($color-code, 5%);
+}
+.swipe div b {
+  @include bg($color-secondary);
+  border-radius: 3px;
+  box-shadow:
+    inset 0 -3px 0 0 rgba(0,0,0, 0.1),
+    ;
+}
+h1, h2, h3, h4, h5, h6 {
+  &:after {
+    background-color: $color-primary;
+  }
+}
+footer {
+  border-top: 1px solid darken($color-bg, 5%);
+}

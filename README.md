@@ -3,23 +3,27 @@ Swipe
 
 [![Code Climate](https://codeclimate.com/github/lyfeyaj/swipe/badges/gpa.svg)](https://codeclimate.com/github/lyfeyaj/swipe)
 
-Swipe is the most accurate touch slider and extremely lightweight (only 5kb for minified version)
+Swipe is the most accurate touch slider. It is extremely lightweight (only 5kb minified) and works across all browsers, including IE7+.
 
 ## Note
 
-Swipe is originally created by **[Brad Birdsall](https://github.com/thebird)** which didn't update for a really long time, and this version is maintained by **[Felix Liu](https://github.com/lyfeyaj)** with new features and bugfixes.
+Swipe was originally created by **[Brad Birdsall](https://github.com/thebird)**, who stopped updating his repository. This version is maintained by **[Felix Liu](https://github.com/lyfeyaj)**, with new features and bugfixes.
 
 ## Usage
 
-You can directly install this package via Bower: `bower install swipe-js` or you can install this package via NPM: `npm install swipejs`
+### Installation
 
-See [online example](http://lyfeyaj.github.io/swipe/)
+You can install this package directly via Bower `bower install swipe-js` or NPM `npm install swipejs`.
 
-Swipe only needs to follow a simple pattern. Here is an example:
+See the [online example](http://lyfeyaj.github.io/swipe/) for a simple demo.
+
+### Markup
+
+Swipe requires just a few lines of markup. Here is an example:
 
 ``` html
-<div id='slider' class='swipe'>
-  <div class='swipe-wrap'>
+<div id="slider" class="swipe">
+  <div class="swipe-wrap">
     <div></div>
     <div></div>
     <div></div>
@@ -27,15 +31,11 @@ Swipe only needs to follow a simple pattern. Here is an example:
 </div>
 ```
 
-Above is the initial required structure– a series of elements wrapped in two containers. Place any content you want within the items. The containing div will need to be passed to the Swipe function like so:
+Above is the initial required structure– a series of elements wrapped in two containers. Place any content you want within the items. The containing `div` will need to be passed to the Swipe function like so:
 
-``` js
-window.mySwipe = new Swipe(document.getElementById('slider'));
-```
+### Style
 
-I always place this at the bottom of the page, externally, to verify the page is ready.
-
-Also Swipe needs just a few styles added to your stylesheet:
+Swipe requires the following styles to be added to your stylesheet:
 
 ``` css
 .swipe {
@@ -55,34 +55,34 @@ Also Swipe needs just a few styles added to your stylesheet:
 }
 ```
 
+### Javascript
+
+You may initialize a Swipe slider with only one line of javascript code:
+
+``` js
+window.mySwipe = new Swipe(document.getElementById('slider'));
+```
+
+I always place this at the bottom of the page, externally, to verify the page is ready.
+
 ## Config Options
 
 Swipe can take an optional second parameter– an object of key/value settings:
 
-- **startSlide** Integer *(default:0)* - index position Swipe should start at
-
--	**speed** Integer *(default:300)* - speed of prev and next transitions in milliseconds.
-
-- **auto** Integer - begin with auto slideshow (time in milliseconds between slides)
-
-- **draggable** Boolean *(default:false)* - Enable draggable support in desktop browsers)
-
-- **continuous** Boolean *(default:true)* - create an infinite feel with no endpoints
-
-- **autoRestart** Boolean *(default:true)* - auto restart slideshow after user's touch event or next/prev calls
-
-- **disableScroll** Boolean *(default:false)* - stop any touches on this container from scrolling the page
-
-- **stopPropagation** Boolean *(default:false)* - stop event propagation
-
--	**callback** Function - runs at slide change.
-
-- **transitionEnd** Function - runs at the end slide transition.
+- **startSlide** Integer *(default: `0`)*: index position at which Swipe should start.
+- **speed** Integer *(default: `300`)*: speed of prev and next transitions in milliseconds.
+- **auto** Integer: when specified, start an auto-playing slideshow (time in milliseconds between slide change).
+- **draggable** Boolean *(default: `false`)*: enable mouse drag support in desktop browsers.
+- **continuous** Boolean *(default: `true`)*: create an infinite feel with no endpoints.
+- **autoRestart** Boolean *(default: `true`)*: auto restart slideshow after user's touch event or next/prev calls.
+- **disableScroll** Boolean *(default: `false`)*: prevent any touch events on this container from scrolling the page.
+- **stopPropagation** Boolean *(default: `false`)*: stop event propagation.
+- **callback** Function *(default: `function() {}`)*: runs at slide change.
+- **transitionEnd** Function *(default: `function() {}`)*: runs at the end of a slide transition.
 
 ### Example
 
 ``` js
-
 window.mySwipe = new Swipe(document.getElementById('slider'), {
   startSlide: 0,
   speed: 400,
@@ -94,42 +94,34 @@ window.mySwipe = new Swipe(document.getElementById('slider'), {
   callback: function(index, elem) {},
   transitionEnd: function(index, elem) {}
 });
-
 ```
 
-## Swipe API
+## API
 
-Swipe exposes a few functions that can be useful for script control of your slider.
+A Swipe instance exposes the following public methods:
 
-`prev()` slide to prev
-
-`next()` slide to next
-
-`getPos()` returns current slide index position
-
-`getNumSlides()` returns the total amount of slides
-
-`slide(index, duration)` slide to set index position (duration: speed of transition in milliseconds)
-
-`restart() restart the auto slide`
-
-`stop() stop the auto slide`
-
-`kill() remove swipe totally`
+- `prev()` slide to the previous slide.
+- `next()` slide to the next slide.
+- `getPos()`: return the current slide index position.
+- `getNumSlides()`: return the number of slides.
+- `slide(index, duration)`: slide to the position matching the `index` (integer) (`duration`: speed of transition in milliseconds).
+- `restart()`: restart the slideshow with autoplay.
+- `stop()`: stop the slideshow and disable autoplay.
+- `kill()`: completely remove the Swipe instance.
 
 ## Browser Support
-Swipe is now compatible with all browsers, including IE7+. Swipe works best on devices that support CSS transforms and touch, but can be used without these as well. A few helper methods determine touch and CSS transition support and choose the proper animation methods accordingly.
+Swipe is now compatible with all browsers, including IE7+. Swipe works best on devices that support CSS transforms and touch events, but can be used without these as well. A few helper methods determine touch and CSS transition support and choose the proper animation methods accordingly.
 
 ## Who's using Swipe
 
-<img src='icons/cnn.png' width='170' height='80'>
-<img src='icons/airbnb.png' width='170' height='80'>
-<img src='icons/nhl.png' width='170' height='80'>
-<img src='icons/htc.png' width='170' height='80'>
-<img src='icons/thinkgeek.png' width='170' height='80'>
-<img src='icons/snapguide.png' width='170' height='80'>
-<img src='icons/everlane.png' width='170' height='80'>
-<img src='icons/boqii.png' width='170' height='80'>
+<img src="icons/cnn.png" width="170" height="80">
+<img src="icons/airbnb.png" width="170" height="80">
+<img src="icons/nhl.png" width="170" height="80">
+<img src="icons/htc.png" width="170" height="80">
+<img src="icons/thinkgeek.png" width="170" height="80">
+<img src="icons/snapguide.png" width="170" height="80">
+<img src="icons/everlane.png" width="170" height="80">
+<img src="icons/boqii.png" width="170" height="80">
 
 Send me a [note](mailto:lyfeyaj@gmail.com) if you want your logo here
 

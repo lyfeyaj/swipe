@@ -1,0 +1,26 @@
+// ========================================================
+// Mixins & Functions
+// ========================================================
+@function check-bg($color) {
+  @if (lightness($color) > 66) {
+    @return #111; // Lighter background, return dark color
+  } @else {
+    @return #eee; // Darker background, return light color
+  }
+}
+@mixin btn-style($color) {
+  background-color: $color;
+  color: check-bg($color);
+  
+  &:hover {
+    background-color: lighten($color, 3%);
+  }
+  &:active {
+    background-color: darken($color, 3%);
+  }
+}
+@mixin bg($bg-color, $text-color: false) {
+  background-color: $bg-color;
+  @if $text-color != false { color: $text-color; }
+  @else { color: check-bg($bg-color); }
+}

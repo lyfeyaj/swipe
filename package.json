@@ -7,7 +7,9 @@
   "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.5",
-    "grunt-contrib-uglify": "~0.7.0"
+    "grunt-contrib-uglify": "~0.7.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-sass": "^1.0.0"
   },
   "repository": "lyfeyaj/swipe",
   "keywords": [
@@ -17,7 +19,7 @@
   ],
   "homepage": "http://lyfeyaj.github.io/swipe/",
   "bugs": {
-    "url" : "http://github.com/lyfeyaj/swipe/issues",
+    "url": "http://github.com/lyfeyaj/swipe/issues",
     "email": "lyfeyaj@gmail.com"
   },
   "engines": {
