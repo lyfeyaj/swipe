@@ -53,9 +53,12 @@ h3 {
 h4 {
   font-size: 1.15em; }
 
-code {
+pre code {
   display: block;
-  padding: 1em;
+  padding: 1em; }
+
+code {
+  padding: 0.2em;
   font-family: 'Source Code Pro', Courier, monospace;
   border-radius: 3px; }
 
