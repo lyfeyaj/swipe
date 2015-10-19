@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Swipe for AngularJS</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <link href="../style.css" rel="stylesheet"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:400,200" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="../vendor/highlightjs/github-gist.css">
+    <script src="../vendor/highlightjs/highlight.pack.js"></script>
+
+  </head>
+  <body>
+
+    <header>
+      <div class="container">
+
+        <h1>Swipe for AngularJS</h1>
+
+        <p>Demo featuring Swipe support for AngularJS.</p>
+
+      </div>
+    </header>
+
+    <main>
+      <article class="container">
+
+        <section id="demo" data-ng-controller="DemoController1 as Demo1">
+
+          <h2>Demo</h2>
+
+          <p>Straightforward Swipe implementation in Angular.js. Note the addition of a slide counter, which is just a simple directive nested inside the <code>swipe-wrap</code> directive.</p>
+
+          <swipe-wrap>
+            <swipe-slider data-options="Demo1.sliderConfig">
+              <swipe-item><b>0</b></swipe-item>
+              <swipe-item><b>1</b></swipe-item>
+              <swipe-item><b>2</b></swipe-item>
+              <swipe-item><b>3</b></swipe-item>
+              <swipe-item><b>4</b></swipe-item>
+              <swipe-item><b>5</b></swipe-item>
+            </swipe-slider>
+
+            <div class="demo-controls">
+              <a class="btn btn-primary" data-ng-click="SwipeCtrl.prev()">Prev</a>
+              <a class="btn btn-primary" data-ng-click="SwipeCtrl.next()">Next</a>
+              <p>Current slide: <u swipe-counter></u></p>
+              <p>This slider has <span>{{ SwipeCtrl.getNumSlides() }}</span> slides</p>
+            </div>
+          </swipe-wrap>
+
+          <h3>Markup:</h3>
+          <pre><code class="html">&lt;swipe-wrap&gt;
+  &lt;swipe-slider data-options="Demo1.sliderConfig"&gt;
+    &lt;swipe-item&gt;...&lt;/swipe-item&gt;
+    &lt;swipe-item&gt;...&lt;/swipe-item&gt;
+    &lt;swipe-item&gt;...&lt;/swipe-item&gt;
+  &lt;/swipe-slider&gt;
+  &lt;!-- Other slide-related directives go here --&gt;
+&lt;/swipe-wrap&gt;</code></pre>
+          
+          <h3>Javascript</h3>
+          
+          <pre><code>angular
+  .module('myApp', ['swipe', 'swipe.counter'])
+  .controller('DemoController', DemoController);
+  
+// Attach the app onto the document body
+// Alternatively, use the directive form of the bootstrap function
+angular.bootstrap(document.getElementsByTagName('body')[0], ['myApp']);
+
+function DemoController() {
+  var Demo = this;
+  // Add an options object to your application controller
+  Demo.sliderConfig = {
+    startSlide: 0,
+    speed: 400,
+    auto: 3000,
+    draggable: false,
+    continuous: true,
+    disableScroll: false,
+    stopPropagation: false,
+    callback: function(index, elem) {},
+    transitionEnd: function(index, elem) {}
+  };
+}</code></pre>
+
+        </section>
+
+      </article>
+    </main>
+
+    <footer>
+      <div class="container">
+        <ul class="list-unstyled">
+          <li><a href="https://github.com/lyfeyaj/swipe">Github</a></li>
+          <li><a href="https://github.com/lyfeyaj/swipe/issues">Issues</a></li>
+        </ul>
+      </div>
+    </footer>
+
+    <script src="../vendor/angular/angular.min.js"></script>
+    <script src="../build/swipe.min.js"></script>
+    <script src="plugins/swipe.counter.js"></script>
+    <script src="angular.swipe.js"></script>
+
+    <script>
+(function() {
+  'use strict';
+
+  angular
+    .module('myApp', ['swipe', 'swipe.counter'])
+    .controller('DemoController1', DemoController1)
+    .controller('DemoController2', DemoController2);
+
+  // Attach the app onto the document body
+  angular.bootstrap(document.getElementsByTagName('body')[0], ['myApp']);
+
+  function DemoController1() {
+    var Demo = this;
+
+    Demo.sliderConfig = {
+      startSlide: 0,
+      speed: 400,
+      auto: 3000,
+      draggable: false,
+      continuous: true,
+      disableScroll: false,
+      stopPropagation: false,
+      callback: function(index, elem) {},
+      transitionEnd: function(index, elem) {}
+    };
+  }
+  function DemoController2() {
+    var Demo = this;
+
+    Demo.sliderConfig = {
+      startSlide: 0,
+      speed: 1200,
+      auto: 3000,
+      draggable: true,
+      continuous: true,
+      disableScroll: false,
+      stopPropagation: false,
+      callback: function(index, elem) {},
+      transitionEnd: function(index, elem) {}
+    };
+  }
+})();
+    </script>
+    <script>hljs.initHighlightingOnLoad();</script>
+  </body>
+</html>
