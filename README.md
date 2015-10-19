@@ -127,8 +127,7 @@ Send me a [note](mailto:lyfeyaj@gmail.com) if you want your logo here
 
 ## TODOs
 
-+ Add AngularJS support
-+ Better UI for demo page
++ Refactor `swipe.js` for better code structure
 
 ## License
 Copyright (c) 2015 Brad Birdsall and Felix Liu Licensed under the [The MIT License (MIT)](http://opensource.org/licenses/MIT).
