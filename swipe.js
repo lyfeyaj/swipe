@@ -89,7 +89,7 @@
       // determine width of each slide
       width = container.getBoundingClientRect().width || container.offsetWidth;
 
-      element.style.width = (slides.length * width) + 'px';
+      element.style.width = (slides.length * width * 2) + 'px';
 
       // stack elements
       var pos = slides.length;
@@ -338,7 +338,14 @@
 
       },
       start: function(event) {
-        var touches = isMouseEvent(event) ? event : event.touches[0];
+        var touches;
+
+        if (isMouseEvent(event)) {
+          touches = event;
+          event.preventDefault(); // For desktop Safari drag
+        } else {
+          touches = event.touches[0];
+        }
 
         // measure start values
         start = {
