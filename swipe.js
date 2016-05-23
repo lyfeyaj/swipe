@@ -163,6 +163,9 @@
 
     function slide(to, slideSpeed) {
 
+      // ensure to is of type 'number'
+      to = typeof to !== 'number' ? parseInt(to, 10) : to;
+      
       // do nothing if already on requested slide
       if (index === to) {
         return;
