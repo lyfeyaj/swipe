@@ -180,7 +180,7 @@
           // if going forward but to < index, use to = slides.length + to
           // if going backward but to > index, use to = -slides.length + to
           if (direction !== natural_direction) {
-            to =  -direction * slides.length + to;
+            to = (-direction * slides.length) + parseInt(to, 10);
           }
 
         }
