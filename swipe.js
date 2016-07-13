@@ -63,7 +63,7 @@
     options.continuous = options.continuous !== undefined ? options.continuous : true;
 
     // AutoRestart option: auto restart slideshow after user's touch event
-    options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : false;
+    options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : true;
 
     function setup() {
 
@@ -165,7 +165,7 @@
 
       // ensure to is of type 'number'
       to = typeof to !== 'number' ? parseInt(to, 10) : to;
-      
+
       // do nothing if already on requested slide
       if (index === to) {
         return;
