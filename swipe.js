@@ -29,7 +29,7 @@
 
   function Swipe(container, options) {
 
-    "use strict";
+    'use strict';
 
     // utilities
     var noop = function() {}; // simple no operation function
@@ -165,7 +165,7 @@
 
       // ensure to is of type 'number'
       to = typeof to !== 'number' ? parseInt(to, 10) : to;
-      
+
       // do nothing if already on requested slide
       if (index === to) {
         return;
@@ -212,7 +212,9 @@
       }
 
       index = to;
-      offloadFn(options.callback && options.callback(getPos(), slides[index]));
+      offloadFn(function() {
+        options.callback && options.callback(getPos(), slides[index]);
+      });
     }
 
     function move(index, dist, speed) {
@@ -326,12 +328,12 @@
           case 'touchmove': this.move(event); break;
           case 'mouseup':
           case 'mouseleave':
-          case 'touchend': offloadFn(this.end(event)); break;
+          case 'touchend': this.end(event); break;
           case 'webkitTransitionEnd':
           case 'msTransitionEnd':
           case 'oTransitionEnd':
           case 'otransitionend':
-          case 'transitionend': offloadFn(this.transitionEnd(event)); break;
+          case 'transitionend': this.transitionEnd(event); break;
           case 'resize': offloadFn(setup); break;
         }
 
