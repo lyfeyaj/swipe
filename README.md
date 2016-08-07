@@ -74,7 +74,7 @@ Swipe can take an optional second parameter– an object of key/value settings:
 - **auto** Integer: when specified, start an auto-playing slideshow (time in milliseconds between slide change).
 - **draggable** Boolean *(default: `false`)*: enable mouse drag support in desktop browsers.
 - **continuous** Boolean *(default: `true`)*: create an infinite feel with no endpoints.
-- **autoRestart** Boolean *(default: `true`)*: auto restart slideshow after user's touch event or next/prev calls.
+- **autoRestart** Boolean *(default: `false`)*: auto restart slideshow after user's touch event or next/prev calls.
 - **disableScroll** Boolean *(default: `false`)*: prevent any touch events on this container from scrolling the page.
 - **stopPropagation** Boolean *(default: `false`)*: stop event propagation.
 - **callback** Function *(default: `function() {}`)*: runs at slide change.
