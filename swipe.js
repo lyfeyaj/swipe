@@ -65,6 +65,239 @@
     // AutoRestart option: auto restart slideshow after user's touch event
     options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : false;
 
+    // setup event capturing
+    var events = {
+
+      handleEvent: function(event) {
+        switch (event.type) {
+          case 'mousedown':
+          case 'touchstart': this.start(event); break;
+          case 'mousemove':
+          case 'touchmove': this.move(event); break;
+          case 'mouseup':
+          case 'mouseleave':
+          case 'touchend': this.end(event); break;
+          case 'webkitTransitionEnd':
+          case 'msTransitionEnd':
+          case 'oTransitionEnd':
+          case 'otransitionend':
+          case 'transitionend': this.transitionEnd(event); break;
+          case 'resize': offloadFn(setup); break;
+        }
+
+        if (options.stopPropagation) {
+          event.stopPropagation();
+        }
+      },
+      
+      start: function(event) {
+        var touches;
+
+        if (isMouseEvent(event)) {
+          touches = event;
+          event.preventDefault(); // For desktop Safari drag
+        } else {
+          touches = event.touches[0];
+        }
+
+        // measure start values
+        start = {
+
+          // get initial touch coords
+          x: touches.pageX,
+          y: touches.pageY,
+
+          // store time to determine touch duration
+          time: +new Date()
+
+        };
+
+        // used for testing first move event
+        isScrolling = undefined;
+
+        // reset delta and end measurements
+        delta = {};
+
+        // attach touchmove and touchend listeners
+        if (isMouseEvent(event)) {
+          element.addEventListener('mousemove', this, false);
+          element.addEventListener('mouseup', this, false);
+          element.addEventListener('mouseleave', this, false);
+        } else {
+          element.addEventListener('touchmove', this, false);
+          element.addEventListener('touchend', this, false);
+        }
+
+      },
+      move: function(event) {
+        var touches;
+
+        if (isMouseEvent(event)) {
+          touches = event;
+        } else {
+          // ensure swiping with one touch and not pinching
+          if ( event.touches.length > 1 || event.scale && event.scale !== 1) {
+            return;
+          }
+
+          if (options.disableScroll) {
+            event.preventDefault();
+          }
+
+          touches = event.touches[0];
+        }
+
+        // measure change in x and y
+        delta = {
+          x: touches.pageX - start.x,
+          y: touches.pageY - start.y
+        };
+
+        // determine if scrolling test has run - one time test
+        if ( typeof isScrolling === 'undefined') {
+          isScrolling = !!( isScrolling || Math.abs(delta.x) < Math.abs(delta.y) );
+        }
+
+        // if user is not trying to scroll vertically
+        if (!isScrolling) {
+
+          // prevent native scrolling
+          event.preventDefault();
+
+          // stop slideshow
+          stop();
+
+          // increase resistance if first or last slide
+          if (options.continuous) { // we don't add resistance at the end
+
+            translate(circle(index-1), delta.x + slidePos[circle(index-1)], 0);
+            translate(index, delta.x + slidePos[index], 0);
+            translate(circle(index+1), delta.x + slidePos[circle(index+1)], 0);
+
+          } else {
+
+            delta.x =
+              delta.x /
+              ( (!index && delta.x > 0 ||             // if first slide and sliding left
+                 index === slides.length - 1 &&        // or if last slide and sliding right
+                 delta.x < 0                           // and if sliding at all
+                ) ?
+               ( Math.abs(delta.x) / width + 1 )      // determine resistance level
+               : 1 );                                 // no resistance if false
+
+            // translate 1:1
+            translate(index-1, delta.x + slidePos[index-1], 0);
+            translate(index, delta.x + slidePos[index], 0);
+            translate(index+1, delta.x + slidePos[index+1], 0);
+          }
+
+        }
+
+      },
+      end: function(event) {
+
+        // measure duration
+        var duration = +new Date() - start.time;
+
+        // determine if slide attempt triggers next/prev slide
+        var isValidSlide =
+            Number(duration) < 250 &&         // if slide duration is less than 250ms
+            Math.abs(delta.x) > 20 ||         // and if slide amt is greater than 20px
+            Math.abs(delta.x) > width/2;      // or if slide amt is greater than half the width
+
+        // determine if slide attempt is past start and end
+        var isPastBounds =
+            !index && delta.x > 0 ||                      // if first slide and slide amt is greater than 0
+            index === slides.length - 1 && delta.x < 0;   // or if last slide and slide amt is less than 0
+
+        if (options.continuous) {
+          isPastBounds = false;
+        }
+
+        // determine direction of swipe (true:right, false:left)
+        var direction = delta.x < 0;
+
+        // if not scrolling vertically
+        if (!isScrolling) {
+
+          if (isValidSlide && !isPastBounds) {
+
+            if (direction) {
+
+              if (options.continuous) { // we need to get the next in this direction in place
+
+                move(circle(index-1), -width, 0);
+                move(circle(index+2), width, 0);
+
+              } else {
+                move(index-1, -width, 0);
+              }
+
+              move(index, slidePos[index]-width, speed);
+              move(circle(index+1), slidePos[circle(index+1)]-width, speed);
+              index = circle(index+1);
+
+            } else {
+              if (options.continuous) { // we need to get the next in this direction in place
+
+                move(circle(index+1), width, 0);
+                move(circle(index-2), -width, 0);
+
+              } else {
+                move(index+1, width, 0);
+              }
+
+              move(index, slidePos[index]+width, speed);
+              move(circle(index-1), slidePos[circle(index-1)]+width, speed);
+              index = circle(index-1);
+
+            }
+
+            if (options.callback) {
+              options.callback(getPos(), slides[index]);
+            }
+
+          } else {
+
+            if (options.continuous) {
+
+              move(circle(index-1), -width, speed);
+              move(index, 0, speed);
+              move(circle(index+1), width, speed);
+
+            } else {
+
+              move(index-1, -width, speed);
+              move(index, 0, speed);
+              move(index+1, width, speed);
+            }
+          }
+        }
+
+        // kill touchmove and touchend event listeners until touchstart called again
+        if (isMouseEvent(event)) {
+          element.removeEventListener('mousemove', events, false);
+          element.removeEventListener('mouseup', events, false);
+          element.removeEventListener('mouseleave', events, false);
+        } else {
+          element.removeEventListener('touchmove', events, false);
+          element.removeEventListener('touchend', events, false);
+        }
+
+      },
+      transitionEnd: function(event) {
+        if (parseInt(event.target.getAttribute('data-index'), 10) === index) {
+          if (delay || options.autoRestart) {
+            restart();
+          }
+
+          if (options.transitionEnd) {
+            options.transitionEnd.call(event, getPos(), slides[index]);
+          }
+        }
+      }
+    };
+
     function setup() {
 
       // cache slides
@@ -78,8 +311,15 @@
 
       //special case if two slides
       if (browser.transitions && options.continuous && slides.length < 3) {
-        element.appendChild(slides[0].cloneNode(true));
-        element.appendChild(element.children[1].cloneNode(true));
+        var clone0 = slides[0].cloneNode(true),
+            clone1 = element.children[1].cloneNode(true);
+        element.appendChild(clone0);
+        element.appendChild(clone1);
+
+        // tag these slides as clones (to remove them on kill)
+        clone0.setAttribute('data-cloned', true);
+        clone1.setAttribute('data-cloned', true);
+
         slides = element.children;
       }
 
@@ -119,17 +359,43 @@
 
       container.style.visibility = 'visible';
 
+      // moved event listeners here
+      // add event listeners
+      if (browser.addEventListener) {
+
+        // set touchstart event on element
+        if (browser.touch) {
+          element.addEventListener('touchstart', events, false);
+        }
+
+        if (options.draggable) {
+          element.addEventListener('mousedown', events, false);
+        }
+
+        if (browser.transitions) {
+          element.addEventListener('webkitTransitionEnd', events, false);
+          element.addEventListener('msTransitionEnd', events, false);
+          element.addEventListener('oTransitionEnd', events, false);
+          element.addEventListener('otransitionend', events, false);
+          element.addEventListener('transitionend', events, false);
+        }
+
+        // set resize event on window
+        root.addEventListener('resize', events, false);
+
+      } else {
+        root.onresize = function () { setup(); }; // to play nice with old IE
+      }
+
     }
 
     function prev() {
-
       if (options.continuous) {
         slide(index-1);
       }
       else if (index) {
         slide(index-1);
       }
-
     }
 
     function next() {
@@ -234,15 +500,15 @@
       }
 
       style.webkitTransitionDuration =
-      style.MozTransitionDuration =
-      style.msTransitionDuration =
-      style.OTransitionDuration =
-      style.transitionDuration = speed + 'ms';
+        style.MozTransitionDuration =
+        style.msTransitionDuration =
+        style.OTransitionDuration =
+        style.transitionDuration = speed + 'ms';
 
       style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
       style.msTransform =
-      style.MozTransform =
-      style.OTransform = 'translateX(' + dist + 'px)';
+        style.MozTransform =
+        style.OTransform = 'translateX(' + dist + 'px)';
 
     }
 
@@ -317,244 +583,6 @@
     var delta = {};
     var isScrolling;
 
-    // setup event capturing
-    var events = {
-
-      handleEvent: function(event) {
-        switch (event.type) {
-          case 'mousedown':
-          case 'touchstart': this.start(event); break;
-          case 'mousemove':
-          case 'touchmove': this.move(event); break;
-          case 'mouseup':
-          case 'mouseleave':
-          case 'touchend': this.end(event); break;
-          case 'webkitTransitionEnd':
-          case 'msTransitionEnd':
-          case 'oTransitionEnd':
-          case 'otransitionend':
-          case 'transitionend': this.transitionEnd(event); break;
-          case 'resize': offloadFn(setup); break;
-        }
-
-        if (options.stopPropagation) {
-          event.stopPropagation();
-        }
-
-      },
-      start: function(event) {
-        var touches;
-
-        if (isMouseEvent(event)) {
-          touches = event;
-          event.preventDefault(); // For desktop Safari drag
-        } else {
-          touches = event.touches[0];
-        }
-
-        // measure start values
-        start = {
-
-          // get initial touch coords
-          x: touches.pageX,
-          y: touches.pageY,
-
-          // store time to determine touch duration
-          time: +new Date()
-
-        };
-
-        // used for testing first move event
-        isScrolling = undefined;
-
-        // reset delta and end measurements
-        delta = {};
-
-        // attach touchmove and touchend listeners
-        if (isMouseEvent(event)) {
-          element.addEventListener('mousemove', this, false);
-          element.addEventListener('mouseup', this, false);
-          element.addEventListener('mouseleave', this, false);
-        } else {
-          element.addEventListener('touchmove', this, false);
-          element.addEventListener('touchend', this, false);
-        }
-
-      },
-      move: function(event) {
-        var touches;
-
-        if (isMouseEvent(event)) {
-          touches = event;
-        } else {
-          // ensure swiping with one touch and not pinching
-          if ( event.touches.length > 1 || event.scale && event.scale !== 1) {
-            return;
-          }
-
-          if (options.disableScroll) {
-            event.preventDefault();
-          }
-
-          touches = event.touches[0];
-        }
-
-        // measure change in x and y
-        delta = {
-          x: touches.pageX - start.x,
-          y: touches.pageY - start.y
-        };
-
-        // determine if scrolling test has run - one time test
-        if ( typeof isScrolling === 'undefined') {
-          isScrolling = !!( isScrolling || Math.abs(delta.x) < Math.abs(delta.y) );
-        }
-
-        // if user is not trying to scroll vertically
-        if (!isScrolling) {
-
-          // prevent native scrolling
-          event.preventDefault();
-
-          // stop slideshow
-          stop();
-
-          // increase resistance if first or last slide
-          if (options.continuous) { // we don't add resistance at the end
-
-            translate(circle(index-1), delta.x + slidePos[circle(index-1)], 0);
-            translate(index, delta.x + slidePos[index], 0);
-            translate(circle(index+1), delta.x + slidePos[circle(index+1)], 0);
-
-          } else {
-
-            delta.x =
-              delta.x /
-                ( (!index && delta.x > 0 ||             // if first slide and sliding left
-                  index === slides.length - 1 &&        // or if last slide and sliding right
-                  delta.x < 0                           // and if sliding at all
-                ) ?
-                ( Math.abs(delta.x) / width + 1 )      // determine resistance level
-                : 1 );                                 // no resistance if false
-
-            // translate 1:1
-            translate(index-1, delta.x + slidePos[index-1], 0);
-            translate(index, delta.x + slidePos[index], 0);
-            translate(index+1, delta.x + slidePos[index+1], 0);
-          }
-
-        }
-
-      },
-      end: function(event) {
-
-        // measure duration
-        var duration = +new Date() - start.time;
-
-        // determine if slide attempt triggers next/prev slide
-        var isValidSlide =
-              Number(duration) < 250 &&         // if slide duration is less than 250ms
-              Math.abs(delta.x) > 20 ||         // and if slide amt is greater than 20px
-              Math.abs(delta.x) > width/2;      // or if slide amt is greater than half the width
-
-        // determine if slide attempt is past start and end
-        var isPastBounds =
-              !index && delta.x > 0 ||                      // if first slide and slide amt is greater than 0
-              index === slides.length - 1 && delta.x < 0;   // or if last slide and slide amt is less than 0
-
-        if (options.continuous) {
-          isPastBounds = false;
-        }
-
-        // determine direction of swipe (true:right, false:left)
-        var direction = delta.x < 0;
-
-        // if not scrolling vertically
-        if (!isScrolling) {
-
-          if (isValidSlide && !isPastBounds) {
-
-            if (direction) {
-
-              if (options.continuous) { // we need to get the next in this direction in place
-
-                move(circle(index-1), -width, 0);
-                move(circle(index+2), width, 0);
-
-              } else {
-                move(index-1, -width, 0);
-              }
-
-              move(index, slidePos[index]-width, speed);
-              move(circle(index+1), slidePos[circle(index+1)]-width, speed);
-              index = circle(index+1);
-
-            } else {
-              if (options.continuous) { // we need to get the next in this direction in place
-
-                move(circle(index+1), width, 0);
-                move(circle(index-2), -width, 0);
-
-              } else {
-                move(index+1, width, 0);
-              }
-
-              move(index, slidePos[index]+width, speed);
-              move(circle(index-1), slidePos[circle(index-1)]+width, speed);
-              index = circle(index-1);
-
-            }
-
-            if (options.callback) {
-              options.callback(getPos(), slides[index]);
-            }
-
-          } else {
-
-            if (options.continuous) {
-
-              move(circle(index-1), -width, speed);
-              move(index, 0, speed);
-              move(circle(index+1), width, speed);
-
-            } else {
-
-              move(index-1, -width, speed);
-              move(index, 0, speed);
-              move(index+1, width, speed);
-            }
-
-          }
-
-        }
-
-        // kill touchmove and touchend event listeners until touchstart called again
-        if (isMouseEvent(event)) {
-          element.removeEventListener('mousemove', events, false);
-          element.removeEventListener('mouseup', events, false);
-          element.removeEventListener('mouseleave', events, false);
-        } else {
-          element.removeEventListener('touchmove', events, false);
-          element.removeEventListener('touchend', events, false);
-        }
-
-      },
-      transitionEnd: function(event) {
-        if (parseInt(event.target.getAttribute('data-index'), 10) === index) {
-
-          if (delay || options.autoRestart) {
-            restart();
-          }
-
-          if (options.transitionEnd) {
-            options.transitionEnd.call(event, getPos(), slides[index]);
-          }
-
-        }
-
-      }
-
-    };
 
     // trigger setup
     setup();
@@ -564,35 +592,7 @@
       begin();
     }
 
-
-    // add event listeners
-    if (browser.addEventListener) {
-
-      // set touchstart event on element
-      if (browser.touch) {
-        element.addEventListener('touchstart', events, false);
-      }
-
-      if (options.draggable) {
-        element.addEventListener('mousedown', events, false);
-      }
-
-      if (browser.transitions) {
-        element.addEventListener('webkitTransitionEnd', events, false);
-        element.addEventListener('msTransitionEnd', events, false);
-        element.addEventListener('oTransitionEnd', events, false);
-        element.addEventListener('otransitionend', events, false);
-        element.addEventListener('transitionend', events, false);
-      }
-
-      // set resize event on window
-      root.addEventListener('resize', events, false);
-
-    } else {
-
-      root.onresize = function () { setup(); }; // to play nice with old IE
-
-    }
+    // where event listeners used to be attached
 
     // expose the Swipe API
     return {
@@ -654,6 +654,9 @@
         // cancel slideshow
         stop();
 
+        // remove inline styles
+        container.style.visibility = '';
+
         // reset element
         element.style.width = '';
         element.style.left = '';
@@ -662,19 +665,38 @@
         var pos = slides.length;
         while (pos--) {
 
-          var slide = slides[pos];
-          slide.style.width = '';
-          slide.style.left = '';
-
           if (browser.transitions) {
             translate(pos, 0, 0);
           }
 
+          var slide = slides[pos];
+
+          // if the slide is tagged as clone, remove it
+          if (slide.getAttribute('data-cloned')) {
+            var _parent = slide.parentElement;
+            _parent.removeChild(slide);
+          }
+
+          slide.style.width = '';
+          slide.style.left = '';
+
+          slide.style.webkitTransitionDuration =
+            slide.style.MozTransitionDuration =
+            slide.style.msTransitionDuration =
+            slide.style.OTransitionDuration =
+            slide.style.transitionDuration = '';
+
+          slide.style.webkitTransform =
+            slide.style.msTransform =
+            slide.style.MozTransform =
+            slide.style.OTransform = '';
+
+          // remove custom attributes (?)
+          // slide.removeAttribute('data-index');
         }
 
-        // removed event listeners
+        // remove event listeners
         if (browser.addEventListener) {
-
           // remove current event listeners
           element.removeEventListener('touchstart', events, false);
           element.removeEventListener('mousedown', events, false);
@@ -684,7 +706,6 @@
           element.removeEventListener('otransitionend', events, false);
           element.removeEventListener('transitionend', events, false);
           root.removeEventListener('resize', events, false);
-
         }
         else {
 
