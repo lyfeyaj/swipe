@@ -1,8 +1,8 @@
 /*!
  * Swipe 2.0.12
  *
- * Brad Birdsall & Felix Liu
- * Copyright 2015, MIT License
+ * Brad Birdsall
+ * Copyright 2013, MIT License
  *
 */
 
@@ -89,7 +89,7 @@
           event.stopPropagation();
         }
       },
-      
+
       start: function(event) {
         var touches;
 

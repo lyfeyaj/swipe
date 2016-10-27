@@ -7,7 +7,7 @@ Swipe is the most accurate touch slider. It is extremely lightweight (only 5kb m
 
 ## Note
 
-Swipe was originally created by **[Brad Birdsall](https://github.com/thebird)**, who stopped updating his repository. This version is maintained by **[Felix Liu](https://github.com/lyfeyaj)**, with new features and bugfixes.
+This repo is a continuation of the dead [Swipe](https://github.com/thebird/Swipe) project. Our mission is to keep Swipe alive and moving forward, with maintenance fixes and new features. Pull Requests are welcome!
 
 ## Usage
 
@@ -131,4 +131,5 @@ Send me a [note](mailto:lyfeyaj@gmail.com) if you want your logo here
 + Refactor `swipe.js` for better code structure
 
 ## License
-Copyright (c) 2015 Brad Birdsall and Felix Liu Licensed under the [The MIT License (MIT)](http://opensource.org/licenses/MIT).
+
+[The MIT License (MIT)](http://opensource.org/licenses/MIT).
