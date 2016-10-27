@@ -11,6 +11,12 @@ This repo is a continuation of the dead [Swipe](https://github.com/thebird/Swipe
 
 ## Usage
 
+### Preview
+
+[![Preview Image](images/preview.png)](http://lyfeyaj.github.io/swipe/)
+
+Thanks to [@loup-brun](https://github.com/loup-brun)
+
 ### Installation
 
 You can install this package directly via Bower `bower install swipe-js` or NPM `npm install swipejs`.
