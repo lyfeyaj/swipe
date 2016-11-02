@@ -1,7 +1,11 @@
 'use strict';
 
+// Module dependencies
 import React from 'react';
 import SwipeJS from 'swipejs';
+
+// Constants
+const noop = function noop() {};
 
 class Swipe extends React.Component {
   static get propTypes() {
@@ -33,8 +37,8 @@ class Swipe extends React.Component {
       autoRestart: false,
       disableScroll: false,
       stopPropagation: false,
-      callback: function() {},
-      transitionEnd: function() {}
+      callback: noop,
+      transitionEnd: noop
     };
   }
 
@@ -67,19 +71,33 @@ class Swipe extends React.Component {
 class SwipeItem extends React.Component {
   static get propTypes() {
     return {
-      className: React.PropTypes.string
+      className: React.PropTypes.string,
+      onClick: React.PropTypes.func,
+      style: React.PropTypes.object
+    };
+  }
+
+  static get defaultProps() {
+    return {
+      className: '',
+      onClick: noop,
+      style: {}
     };
   }
 
   constructor(...args) {
     super(...args);
+
+    this.state = {};
   }
 
   render() {
-    const { className } = this.props;
+    const { className, onClick, style } = this.props;
 
     return (
-      <div className={`swipe-item ${className || ''}`}>
+      <div className={`swipe-item ${className || ''}`}
+           onClick={ onClick }
+           style={style}>
         { this.props.children }
       </div>
     );
