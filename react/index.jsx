@@ -1,0 +1,92 @@
+'use strict';
+
+import React from 'react';
+import SwipeJS from 'swipejs';
+
+class Swipe extends React.Component {
+  static get propTypes() {
+    return {
+      className: React.PropTypes.string,
+      style: React.PropTypes.object,
+      startSlide: React.PropTypes.number,
+      speed: React.PropTypes.number,
+      auto: React.PropTypes.number,
+      draggable: React.PropTypes.bool,
+      continuous: React.PropTypes.bool,
+      autoRestart: React.PropTypes.bool,
+      disableScroll: React.PropTypes.bool,
+      stopPropagation: React.PropTypes.bool,
+      callback: React.PropTypes.func,
+      transitionEnd: React.PropTypes.func
+    };
+  }
+
+  static get defaultProps() {
+    return {
+      className: '',
+      style: {},
+      startSlide: 0,
+      speed: 300,
+      auto: 3000,
+      draggable: false,
+      continuous: true,
+      autoRestart: false,
+      disableScroll: false,
+      stopPropagation: false,
+      callback: function() {},
+      transitionEnd: function() {}
+    };
+  }
+
+  constructor(...args) {
+    super(...args);
+  }
+
+  componentDidMount() {
+    this.swipe = new SwipeJS(this.refs.swipe, this.props);
+  }
+
+  componentWillUmount() {
+    try {
+      this.swipe.stop();
+    } catch (e) { /* do nothing */ }
+  }
+
+  render() {
+    const { className, style } = this.props;
+    return (
+      <div ref='swipe' className={ `swipe ${className || ''}` } style={style}>
+        <div className="swipe-wrap">
+          { this.props.children }
+        </div>
+      </div>
+    );
+  }
+}
+
+class SwipeItem extends React.Component {
+  static get propTypes() {
+    return {
+      className: React.PropTypes.string
+    };
+  }
+
+  constructor(...args) {
+    super(...args);
+  }
+
+  render() {
+    const { className } = this.props;
+
+    return (
+      <div className={`swipe-item ${className || ''}`}>
+        { this.props.children }
+      </div>
+    );
+  }
+}
+
+export {
+  Swipe,
+  SwipeItem
+};
