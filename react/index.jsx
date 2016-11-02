@@ -52,7 +52,7 @@ class Swipe extends React.Component {
 
   componentWillUmount() {
     try {
-      this.swipe.stop();
+      this.swipe.kill();
     } catch (e) { /* do nothing */ }
   }
 
