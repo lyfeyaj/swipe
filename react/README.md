@@ -22,7 +22,7 @@ class HomePage extends React.Component {
 
   componentDidMount() {
     let mySwipe = this.refs.swipe.instance;
-    // You can call swipe methods on swipeInstance
+    // You can call swipe methods on `mySwipe`
     // mySwipe.prev()
     // mySwipe.next()
     // mySwipe.getPos()
