@@ -25,7 +25,7 @@ module.exports = function( grunt ) {
       },
       demo: {
         files: {
-          './vendor/style.css': './sass/style.scss'
+          './dist/style.css': './sass/style.scss'
         }
       }
     },
