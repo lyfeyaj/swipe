@@ -58,8 +58,8 @@ Swipe requires the following styles to be added to your stylesheet:
   position: relative;
 }
 .swipe-wrap > div {
-  float:left;
-  width:100%;
+  float: left;
+  width: 100%;
   position: relative;
   overflow: hidden;
 }

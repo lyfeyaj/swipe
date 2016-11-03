@@ -6,10 +6,14 @@
   "author": "Brad Birdsall",
   "dependencies": {},
   "devDependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
     "grunt": "~0.4.5",
+    "grunt-babel": "^6.0.0",
     "grunt-contrib-uglify": "~0.7.0",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-sass": "^1.0.0"
+    "grunt-sass": "^1.0.0",
+    "load-grunt-tasks": "^3.5.2"
   },
   "repository": "lyfeyaj/swipe",
   "keywords": [

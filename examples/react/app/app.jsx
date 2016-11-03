@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { Swipe, SwipeItem } from 'components/Swipe';
+import { Swipe, SwipeItem } from 'swipejs/react';
 
-import 'components/Swipe/style.css';
+import 'swipejs/style.css';
 import './style.css';
 
 class ReactSwipeExampleApp extends React.Component {
