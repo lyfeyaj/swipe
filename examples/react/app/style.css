@@ -1,0 +1,45 @@
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, del, dfn, em, img, ins, kbd, q, samp, small, strong, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, table, tbody, tfoot, thead, tr, th, td, article, aside, footer, header, nav, section {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background-color: transparent;
+}
+
+body {
+  font-family: 'Source Code Pro', Courier, monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.react-swipe-example {
+  text-align: center;
+}
+
+h2 {
+  display: block;
+  margin: auto;
+  margin-top: 80px;
+  font-size: 45px;
+}
+
+.custom-swipe-container-class {
+  margin: auto;
+  margin-top: 120px;
+  display: block;
+  background: #EE3769;
+  width: 500px;
+  height: 300px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 10px;
+}
+
+.swipe-item {
+  position: relative;
+  margin-top: 140px;
+  color: white;
+  font-weight: bold;
+}

@@ -9,6 +9,10 @@ Swipe is the most accurate touch slider. It is extremely lightweight (only 5kb m
 
 This repo is a continuation of the dead [Swipe](https://github.com/thebird/Swipe) project. Our mission is to keep Swipe alive and moving forward, with maintenance fixes and new features. Pull Requests are welcome!
 
+## React Support
+
+Please go to [react swipe plugin](react), or check the [example](examples/react)
+
 ## Usage
 
 ### Preview
