@@ -1,3 +1,11 @@
+/*!
+ * React Swipe 2.1.0
+ *
+ * Felix Liu
+ * Copyright 2016, MIT License
+ *
+*/
+
 'use strict';
 
 // Module dependencies
