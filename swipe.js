@@ -24,7 +24,6 @@
   }
 }(this, function (root) {
 
-  var root = this;
   var _document = root.document;
 
   function Swipe(container, options) {
