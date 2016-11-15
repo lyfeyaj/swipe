@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.0.12
+ * Swipe 2.1.1
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
@@ -7,9 +7,12 @@
 */
 
 // if the module has no dependencies, the above pattern can be simplified to
+// eslint-disable-next-line no-extra-semi
 ;(function (root, factory) {
+  // eslint-disable-next-line no-undef
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
+    // eslint-disable-next-line no-undef
     define([], function(){
       return (root.Swipe = factory(root));
     });
@@ -37,6 +40,7 @@
     // check browser capabilities
     var browser = {
       addEventListener: !!root.addEventListener,
+      // eslint-disable-next-line no-undef
       touch: ('ontouchstart' in root) || root.DocumentTouch && _document instanceof DocumentTouch,
       transitions: (function(temp) {
         var props = ['transitionProperty', 'WebkitTransition', 'MozTransition', 'OTransition', 'msTransition'];
@@ -310,8 +314,8 @@
 
       //special case if two slides
       if (browser.transitions && options.continuous && slides.length < 3) {
-        var clone0 = slides[0].cloneNode(true),
-            clone1 = element.children[1].cloneNode(true);
+        var clone0 = slides[0].cloneNode(true);
+        var clone1 = element.children[1].cloneNode(true);
         element.appendChild(clone0);
         element.appendChild(clone1);
 
