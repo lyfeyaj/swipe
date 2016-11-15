@@ -11,20 +11,19 @@
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define([], function(){
-      return (root.Swipe = factory());
+      return (root.Swipe = factory(root));
     });
   } else if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like environments that support module.exports,
     // like Node.
-    module.exports = factory();
+    module.exports = factory(root);
   } else {
     // Browser globals
-    root.Swipe = factory();
+    root.Swipe = factory(root);
   }
-}(this, function () {
+}(this, function (root) {
 
-  var root = this;
   var _document = root.document;
 
   function Swipe(container, options) {
