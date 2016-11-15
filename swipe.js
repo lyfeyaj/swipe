@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.1.1
+ * Swipe 2.1.2
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
@@ -16,7 +16,7 @@
     define([], function(){
       return (root.Swipe = factory(root));
     });
-  } else if (typeof exports === 'object') {
+  } else if (typeof module === 'object' && module.exports) {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like environments that support module.exports,
     // like Node.
@@ -26,8 +26,7 @@
     root.Swipe = factory(root);
   }
 }(this, function (root) {
-
-  var _document = root.document;
+  var _document = root.document || this.document;
 
   function Swipe(container, options) {
 
