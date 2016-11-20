@@ -32,6 +32,15 @@
 
     'use strict';
 
+    // setup initial vars
+    var start = {};
+    var delta = {};
+    var isScrolling;
+
+    // setup auto slideshow
+    var delay = options.auto || 0;
+    var interval;
+
     // utilities
     // simple no operation function
     var noop = function() {};
@@ -234,15 +243,17 @@
           isPastBounds = false;
         }
 
-        // determine direction of swipe (true:right, false:left)
-        var direction = delta.x < 0;
+        // OLD determine direction of swipe (true:right, false:left)        
+        // determine direction of swipe (1: backward, -1: forward)
+        var direction = Math.abs(delta.x) / delta.x;
 
         // if not scrolling vertically
         if (!isScrolling) {
 
           if (isValidSlide && !isPastBounds) {
 
-            if (direction) {
+            // if we're moving right
+            if (direction < 0) {
 
               if (options.continuous) { // we need to get the next in this direction in place
 
@@ -270,12 +281,9 @@
               move(index, slidePos[index]+width, speed);
               move(circle(index-1), slidePos[circle(index-1)]+width, speed);
               index = circle(index-1);
-
             }
 
-            if (options.callback) {
-              options.callback(getPos(), slides[index]);
-            }
+            runCallback(getPos(), slides[index], direction);
 
           } else {
 
@@ -311,11 +319,54 @@
         if (currentIndex === index) {
           if (delay || options.autoRestart) restart();
 
-          if (options.transitionEnd) {
-            options.transitionEnd.call(event, getPos(), slides[index]);
-          }
+          runTransitionEnd(getPos(), slides[index]);
         }
       }
+    };
+
+    // trigger setup
+    setup();
+
+    // start auto slideshow if applicable
+    if (delay) begin();
+
+    // Expose the Swipe API
+    return {
+      // initialize
+      setup: setup,
+
+      // go to slide
+      slide: function(to, speed) {
+        stop();
+        slide(to, speed);
+      },
+
+      // move to previous
+      prev: function() {
+        stop();
+        prev();
+      },
+
+      // move to next
+      next: function() {
+        stop();
+        next();
+      },
+
+      // Restart slideshow
+      restart: function() { restart(); },
+
+      // cancel slideshow
+      stop: stop,
+
+      // return current index position
+      getPos: getPos,
+
+      // return total number of slides
+      getNumSlides: function() { return length; },
+
+      // completely remove swipe
+      kill: kill
     };
 
     // remove all event listeners
@@ -444,14 +495,24 @@
       else if (index < slides.length - 1) {
         slide(index+1);
       }
+    }
 
+    function runCallback(pos, index, dir) {
+      if (options.callback) {
+        options.callback(pos, index, dir);
+      }
+    }
+
+    function runTransitionEnd(pos, index) {
+      if (options.transitionEnd) {
+        options.callback(pos, index);
+      }
     }
 
     function circle(index) {
 
       // a simple positive modulo using slides.length
       return (slides.length + (index % slides.length)) % slides.length;
-
     }
 
     function getPos() {
@@ -517,7 +578,7 @@
 
       index = to;
       offloadFn(function() {
-        options.callback && options.callback(getPos(), slides[index]);
+        runCallback(getPos(), slides[index], direction);
       });
     }
 
@@ -578,10 +639,6 @@
 
     }
 
-    // setup auto slideshow
-    var delay = options.auto || 0;
-    var interval;
-
     function begin() {
       interval = setTimeout(next, delay);
     }
@@ -601,103 +658,55 @@
       return /^mouse/.test(e.type);
     }
 
-    // setup initial vars
-    var start = {};
-    var delta = {};
-    var isScrolling;
-
-    // trigger setup
-    setup();
-
-    // start auto slideshow if applicable
-    if (delay) begin();
-
-    // Expose the Swipe API
-    return {
-      // initialize
-      setup: function() { setup(); },
-
-      // go to slide
-      slide: function(to, speed) {
-        stop();
-        slide(to, speed);
-      },
-
-      // move to previous
-      prev: function() {
-        stop();
-        prev();
-      },
-
-      // move to next
-      next: function() {
-        stop();
-        next();
-      },
-
-      // Restart slideshow
-      restart: function() { restart(); },
-
+    function kill() {
       // cancel slideshow
-      stop: function() { stop(); },
+      stop();
 
-      // return current index position
-      getPos: function() { return getPos(); },
+      // remove inline styles
+      container.style.visibility = '';
 
-      // return total number of slides
-      getNumSlides: function() { return length; },
+      // reset element
+      element.style.width = '';
+      element.style.left = '';
 
-      // completely remove swipe
-      kill: function() {
-        // cancel slideshow
-        stop();
+      // reset slides
+      var pos = slides.length;
+      while (pos--) {
 
-        // remove inline styles
-        container.style.visibility = '';
-
-        // reset element
-        element.style.width = '';
-        element.style.left = '';
-
-        // reset slides
-        var pos = slides.length;
-        while (pos--) {
-
-          if (browser.transitions) {
-            translate(pos, 0, 0);
-          }
-
-          var slide = slides[pos];
-
-          // if the slide is tagged as clone, remove it
-          if (slide.getAttribute('data-cloned')) {
-            var _parent = slide.parentElement;
-            _parent.removeChild(slide);
-          }
-
-          // remove styles
-          slide.style.width = '';
-          slide.style.left = '';
-
-          slide.style.webkitTransitionDuration =
-            slide.style.MozTransitionDuration =
-            slide.style.msTransitionDuration =
-            slide.style.OTransitionDuration =
-            slide.style.transitionDuration = '';
-
-          slide.style.webkitTransform =
-            slide.style.msTransform =
-            slide.style.MozTransform =
-            slide.style.OTransform = '';
-
-          // remove custom attributes (?)
-          // slide.removeAttribute('data-index');
+        if (browser.transitions) {
+          translate(pos, 0, 0);
         }
 
-        // remove all events
-        detachEvents();
+        var slide = slides[pos];
+
+        // if the slide is tagged as clone, remove it
+        if (slide.getAttribute('data-cloned')) {
+          var _parent = slide.parentElement;
+          _parent.removeChild(slide);
+        }
+
+        // remove styles
+        slide.style.width = '';
+        slide.style.left = '';
+
+        slide.style.webkitTransitionDuration =
+          slide.style.MozTransitionDuration =
+          slide.style.msTransitionDuration =
+          slide.style.OTransitionDuration =
+          slide.style.transitionDuration = '';
+
+        slide.style.webkitTransform =
+          slide.style.msTransform =
+          slide.style.MozTransform =
+          slide.style.OTransform = '';
+
+        // remove custom attributes (?)
+        // slide.removeAttribute('data-index');
       }
-    };
+
+      // remove all events
+      detachEvents();
+    }
   }
 
   if ( root.jQuery || root.Zepto ) {
