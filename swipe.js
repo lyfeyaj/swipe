@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.1.2
+ * Swipe 2.1.3
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
@@ -33,8 +33,10 @@
     'use strict';
 
     // utilities
-    var noop = function() {}; // simple no operation function
-    var offloadFn = function(fn) { setTimeout(fn || noop, 0); }; // offload a functions execution
+    // simple no operation function
+    var noop = function() {};
+    // offload a functions execution
+    var offloadFn = function(fn) { setTimeout(fn || noop, 0); };
 
     // check browser capabilities
     var browser = {
@@ -53,9 +55,7 @@
     };
 
     // quit if no root element
-    if (!container) {
-      return;
-    }
+    if (!container) return;
 
     var element = container.children[0];
     var slides, slidePos, width, length;
@@ -288,10 +288,9 @@
 
       },
       transitionEnd: function(event) {
-        if (parseInt(event.target.getAttribute('data-index'), 10) === index) {
-          if (delay || options.autoRestart) {
-            restart();
-          }
+        var currentIndex = parseInt(event.target.getAttribute('data-index'), 10);
+        if (currentIndex === index) {
+          if (delay || options.autoRestart) restart();
 
           if (options.transitionEnd) {
             options.transitionEnd.call(event, getPos(), slides[index]);
@@ -300,69 +299,25 @@
       }
     };
 
-    function setup() {
-
-      // cache slides
-      slides = element.children;
-      length = slides.length;
-
-      // set continuous to false if only one slide
-      if (slides.length < 2) {
-        options.continuous = false;
+    // remove all event listeners
+    function detachEvents() {
+      if (browser.addEventListener) {
+        // remove current event listeners
+        element.removeEventListener('touchstart', events, false);
+        element.removeEventListener('mousedown', events, false);
+        element.removeEventListener('webkitTransitionEnd', events, false);
+        element.removeEventListener('msTransitionEnd', events, false);
+        element.removeEventListener('oTransitionEnd', events, false);
+        element.removeEventListener('otransitionend', events, false);
+        element.removeEventListener('transitionend', events, false);
+        root.removeEventListener('resize', events, false);
+      } else {
+        root.onresize = null;
       }
+    }
 
-      //special case if two slides
-      if (browser.transitions && options.continuous && slides.length < 3) {
-        var clone0 = slides[0].cloneNode(true);
-        var clone1 = element.children[1].cloneNode(true);
-        element.appendChild(clone0);
-        element.appendChild(clone1);
-
-        // tag these slides as clones (to remove them on kill)
-        clone0.setAttribute('data-cloned', true);
-        clone1.setAttribute('data-cloned', true);
-
-        slides = element.children;
-      }
-
-      // create an array to store current positions of each slide
-      slidePos = new Array(slides.length);
-
-      // determine width of each slide
-      width = container.getBoundingClientRect().width || container.offsetWidth;
-
-      element.style.width = (slides.length * width * 2) + 'px';
-
-      // stack elements
-      var pos = slides.length;
-      while(pos--) {
-
-        var slide = slides[pos];
-
-        slide.style.width = width + 'px';
-        slide.setAttribute('data-index', pos);
-
-        if (browser.transitions) {
-          slide.style.left = (pos * -width) + 'px';
-          move(pos, index > pos ? -width : (index < pos ? width : 0), 0);
-        }
-
-      }
-
-      // reposition elements before and after index
-      if (options.continuous && browser.transitions) {
-        move(circle(index-1), -width, 0);
-        move(circle(index+1), width, 0);
-      }
-
-      if (!browser.transitions) {
-        element.style.left = (index * -width) + 'px';
-      }
-
-      container.style.visibility = 'visible';
-
-      // moved event listeners here
-      // add event listeners
+    // add event listeners
+    function attachEvents() {
       if (browser.addEventListener) {
 
         // set touchstart event on element
@@ -388,7 +343,70 @@
       } else {
         root.onresize = function () { setup(); }; // to play nice with old IE
       }
+    }
 
+    function setup() {
+
+      // cache slides
+      slides = element.children;
+      length = slides.length;
+
+      // set continuous to false if only one slide
+      if (slides.length < 2) {
+        options.continuous = false;
+      }
+
+      // special case if two slides
+      if (browser.transitions && options.continuous && slides.length < 3) {
+        var clone0 = slides[0].cloneNode(true);
+        var clone1 = element.children[1].cloneNode(true);
+        element.appendChild(clone0);
+        element.appendChild(clone1);
+
+        // tag these slides as clones (to remove them on kill)
+        clone0.setAttribute('data-cloned', true);
+        clone1.setAttribute('data-cloned', true);
+
+        slides = element.children;
+      }
+
+      // create an array to store current positions of each slide
+      slidePos = new Array(slides.length);
+
+      // determine width of each slide
+      width = container.getBoundingClientRect().width || container.offsetWidth;
+
+      element.style.width = (slides.length * width * 2) + 'px';
+
+      // stack elements
+      var pos = slides.length;
+      while(pos--) {
+        var slide = slides[pos];
+
+        slide.style.width = width + 'px';
+        slide.setAttribute('data-index', pos);
+
+        if (browser.transitions) {
+          slide.style.left = (pos * -width) + 'px';
+          move(pos, index > pos ? -width : (index < pos ? width : 0), 0);
+        }
+      }
+
+      // reposition elements before and after index
+      if (options.continuous && browser.transitions) {
+        move(circle(index-1), -width, 0);
+        move(circle(index+1), width, 0);
+      }
+
+      if (!browser.transitions) {
+        element.style.left = (index * -width) + 'px';
+      }
+
+      container.style.visibility = 'visible';
+
+      // reinitialize events
+      detachEvents();
+      attachEvents();
     }
 
     function prev() {
@@ -476,7 +494,7 @@
 
         to = circle(to);
         animate(index * -width, to * -width, slideSpeed || speed);
-        //no fallback for a circular continuous if the browser does not accept transitions
+        // no fallback for a circular continuous if the browser does not accept transitions
       }
 
       index = to;
@@ -486,10 +504,8 @@
     }
 
     function move(index, dist, speed) {
-
       translate(index, dist, speed);
       slidePos[index] = dist;
-
     }
 
     function translate(index, dist, speed) {
@@ -497,9 +513,7 @@
       var slide = slides[index];
       var style = slide && slide.style;
 
-      if (!style) {
-        return;
-      }
+      if (!style) return;
 
       style.webkitTransitionDuration =
         style.MozTransitionDuration =
@@ -518,25 +532,20 @@
 
       // if not an animation, just reposition
       if (!speed) {
-
         element.style.left = to + 'px';
         return;
-
       }
 
       var start = +new Date();
 
       var timer = setInterval(function() {
-
         var timeElap = +new Date() - start;
 
         if (timeElap > speed) {
 
           element.style.left = to + 'px';
 
-          if (delay) {
-            begin();
-          }
+          if (delay) begin();
 
           if (options.transitionEnd) {
             options.transitionEnd.call(event, getPos(), slides[index]);
@@ -544,11 +553,9 @@
 
           clearInterval(timer);
           return;
-
         }
 
         element.style.left = (( (to - from) * (Math.floor((timeElap / speed) * 100) / 100) ) + from) + 'px';
-
       }, 4);
 
     }
@@ -558,16 +565,12 @@
     var interval;
 
     function begin() {
-
       interval = setTimeout(next, delay);
-
     }
 
     function stop() {
-
       delay = 0;
       clearTimeout(interval);
-
     }
 
     function restart() {
@@ -585,74 +588,49 @@
     var delta = {};
     var isScrolling;
 
-
     // trigger setup
     setup();
 
     // start auto slideshow if applicable
-    if (delay) {
-      begin();
-    }
+    if (delay) begin();
 
-    // where event listeners used to be attached
-
-    // expose the Swipe API
+    // Expose the Swipe API
     return {
-      setup: function() {
+      // initialize
+      setup: function() { setup(); },
 
-        setup();
-
-      },
+      // go to slide
       slide: function(to, speed) {
-
-        // cancel slideshow
         stop();
-
         slide(to, speed);
-
       },
+
+      // move to previous
       prev: function() {
-
-        // cancel slideshow
         stop();
-
         prev();
-
       },
+
+      // move to next
       next: function() {
-
-        // cancel slideshow
         stop();
-
         next();
-
-      },
-      restart: function() {
-
-        // Restart slideshow
-        restart();
-
       },
 
-      stop: function() {
+      // Restart slideshow
+      restart: function() { restart(); },
 
-        // cancel slideshow
-        stop();
+      // cancel slideshow
+      stop: function() { stop(); },
 
-      },
-      getPos: function() {
+      // return current index position
+      getPos: function() { return getPos(); },
 
-        // return current index position
-        return getPos();
+      // return total number of slides
+      getNumSlides: function() { return length; },
 
-      },
-      getNumSlides: function() {
-
-        // return total number of slides
-        return length;
-      },
+      // completely remove swipe
       kill: function() {
-
         // cancel slideshow
         stop();
 
@@ -679,6 +657,7 @@
             _parent.removeChild(slide);
           }
 
+          // remove styles
           slide.style.width = '';
           slide.style.left = '';
 
@@ -697,27 +676,10 @@
           // slide.removeAttribute('data-index');
         }
 
-        // remove event listeners
-        if (browser.addEventListener) {
-          // remove current event listeners
-          element.removeEventListener('touchstart', events, false);
-          element.removeEventListener('mousedown', events, false);
-          element.removeEventListener('webkitTransitionEnd', events, false);
-          element.removeEventListener('msTransitionEnd', events, false);
-          element.removeEventListener('oTransitionEnd', events, false);
-          element.removeEventListener('otransitionend', events, false);
-          element.removeEventListener('transitionend', events, false);
-          root.removeEventListener('resize', events, false);
-        }
-        else {
-
-          root.onresize = null;
-
-        }
-
+        // remove all events
+        detachEvents();
       }
     };
-
   }
 
   if ( root.jQuery || root.Zepto ) {
@@ -731,5 +693,4 @@
   }
 
   return Swipe;
-
 }));
