@@ -37,6 +37,21 @@
     var noop = function() {};
     // offload a functions execution
     var offloadFn = function(fn) { setTimeout(fn || noop, 0); };
+    // Returns a function, that, as long as it continues to be invoked, will not
+    // be triggered.
+    var throttle = function (fn, threshhold) {
+      threshhold = threshhold || 100;
+      var timeout = null;
+      return function() {
+        var context = this;
+        var args = arguments;
+        if (timeout) clearTimeout(timeout);
+        timeout = setTimeout(function() {
+          timeout = null;
+          fn.apply(context, args);
+        }, threshhold);
+      };
+    };
 
     // check browser capabilities
     var browser = {
@@ -67,6 +82,9 @@
     // AutoRestart option: auto restart slideshow after user's touch event
     options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : false;
 
+    // throttled setup
+    var throttledSetup = throttle(setup);
+
     // setup event capturing
     var events = {
 
@@ -84,7 +102,7 @@
           case 'oTransitionEnd':
           case 'otransitionend':
           case 'transitionend': this.transitionEnd(event); break;
-          case 'resize': offloadFn(setup); break;
+          case 'resize': throttledSetup(); break;
         }
 
         if (options.stopPropagation) {
@@ -131,6 +149,7 @@
         }
 
       },
+
       move: function(event) {
         var touches;
 
@@ -192,10 +211,9 @@
             translate(index, delta.x + slidePos[index], 0);
             translate(index+1, delta.x + slidePos[index+1], 0);
           }
-
         }
-
       },
+
       end: function(event) {
 
         // measure duration
@@ -287,6 +305,7 @@
         }
 
       },
+
       transitionEnd: function(event) {
         var currentIndex = parseInt(event.target.getAttribute('data-index'), 10);
         if (currentIndex === index) {
@@ -341,12 +360,11 @@
         root.addEventListener('resize', events, false);
 
       } else {
-        root.onresize = function () { setup(); }; // to play nice with old IE
+        root.onresize = throttledSetup; // to play nice with old IE
       }
     }
 
     function setup() {
-
       // cache slides
       slides = element.children;
       length = slides.length;
