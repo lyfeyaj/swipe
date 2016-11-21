@@ -26,6 +26,7 @@
     root.Swipe = factory(root);
   }
 }(this, function (root) {
+  root = root.self || this;
   var _document = root.document || this.document;
 
   function Swipe(container, options) {
