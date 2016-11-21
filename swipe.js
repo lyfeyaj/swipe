@@ -354,7 +354,7 @@
       },
 
       // Restart slideshow
-      restart: function() { restart(); },
+      restart: restart,
 
       // cancel slideshow
       stop: stop,
@@ -505,7 +505,7 @@
 
     function runTransitionEnd(pos, index) {
       if (options.transitionEnd) {
-        options.callback(pos, index);
+        options.transitionEnd(pos, index);
       }
     }
 
