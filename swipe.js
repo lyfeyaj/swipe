@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.1.4
+ * Swipe 2.1.5
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
@@ -14,18 +14,26 @@
     // AMD. Register as an anonymous module.
     // eslint-disable-next-line no-undef
     define([], function(){
-      return (root.Swipe = factory(root));
+      root.Swipe = factory();
+      return root.Swipe;
     });
   } else if (typeof module === 'object' && module.exports) {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like environments that support module.exports,
     // like Node.
-    module.exports = factory(root);
+    module.exports = factory();
   } else {
     // Browser globals
-    root.Swipe = factory(root);
+    root.Swipe = factory();
   }
-}(this, function (root) {
+}(this, function () {
+  // Establish the root object, `window` (`self`) in the browser, `global`
+  // on the server, or `this` in some virtual machines. We use `self`
+  // instead of `window` for `WebWorker` support.
+  var root = typeof self == 'object' && self.self === self && self ||
+             typeof global == 'object' && global.global === global && global ||
+             this;
+
   var _document = root.document || this.document;
 
   function Swipe(container, options) {
