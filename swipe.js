@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.2.1
+ * Swipe 2.2.2
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
@@ -39,6 +39,8 @@
   function Swipe(container, options) {
 
     'use strict';
+
+    options = options || {};
 
     // setup initial vars
     var start = {};
@@ -101,7 +103,6 @@
 
     var element = container.children[0];
     var slides, slidePos, width, length;
-    options = options || {};
     var index = parseInt(options.startSlide, 10) || 0;
     var speed = options.speed || 300;
     options.continuous = options.continuous !== undefined ? options.continuous : true;
