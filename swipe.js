@@ -59,15 +59,25 @@
     var throttle = function (fn, threshhold) {
       threshhold = threshhold || 100;
       var timeout = null;
-      return function() {
+
+      function cancel() {
+        if (timeout) clearTimeout(timeout);
+      }
+
+      function throttledFn() {
         var context = this;
         var args = arguments;
-        if (timeout) clearTimeout(timeout);
+        cancel();
         timeout = setTimeout(function() {
           timeout = null;
           fn.apply(context, args);
         }, threshhold);
-      };
+      }
+
+      // allow remove throttled timeout
+      throttledFn.cancel = cancel;
+
+      return throttledFn;
     };
 
     // check browser capabilities
@@ -251,7 +261,7 @@
           isPastBounds = false;
         }
 
-        // OLD determine direction of swipe (true:right, false:left)        
+        // OLD determine direction of swipe (true:right, false:left)
         // determine direction of swipe (1: backward, -1: forward)
         var direction = Math.abs(delta.x) / delta.x;
 
@@ -714,6 +724,9 @@
 
       // remove all events
       detachEvents();
+
+      // remove throttled function timeout
+      throttledSetup.cancel();
     }
   }
 
