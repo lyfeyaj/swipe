@@ -40,6 +40,8 @@
 
     'use strict';
 
+    options = options || {};
+
     // setup initial vars
     var start = {};
     var delta = {};
@@ -101,7 +103,6 @@
 
     var element = container.children[0];
     var slides, slidePos, width, length;
-    options = options || {};
     var index = parseInt(options.startSlide, 10) || 0;
     var speed = options.speed || 300;
     options.continuous = options.continuous !== undefined ? options.continuous : true;
