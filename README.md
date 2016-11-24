@@ -3,7 +3,7 @@ Swipe
 
 [![Code Climate](https://codeclimate.com/github/lyfeyaj/swipe/badges/gpa.svg)](https://codeclimate.com/github/lyfeyaj/swipe)
 
-Swipe is the most accurate touch slider. It is extremely lightweight (only 5kb minified) and works across all browsers, including IE7+.
+Swipe is the most accurate touch slider. It is extremely lightweight (only 6kb minified) and works across all browsers, including IE7+.
 
 ## Note
 
