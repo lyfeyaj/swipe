@@ -510,8 +510,7 @@
 
       if (options.continuous) {
         slide(index+1);
-      }
-      else if (index < slides.length - 1) {
+      } else if (index < slides.length - 1) {
         slide(index+1);
       }
     }
@@ -551,9 +550,7 @@
       to = typeof to !== 'number' ? parseInt(to, 10) : to;
 
       // do nothing if already on requested slide
-      if (index === to) {
-        return;
-      }
+      if (index === to) return;
 
       if (browser.transitions) {
 
@@ -567,7 +564,7 @@
           // if going forward but to < index, use to = slides.length + to
           // if going backward but to > index, use to = -slides.length + to
           if (direction !== natural_direction) {
-            to =  -direction * slides.length + to;
+            to = -direction * slides.length + to;
           }
 
         }
@@ -643,13 +640,12 @@
 
           element.style.left = to + 'px';
 
-          if (delay) begin();
+          if (delay || options.autoRestart) restart();
 
-          if (options.transitionEnd) {
-            options.transitionEnd.call(event, getPos(), slides[index]);
-          }
+          runTransitionEnd(getPos(), slides[index]);
 
           clearInterval(timer);
+
           return;
         }
 
