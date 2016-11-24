@@ -34,7 +34,7 @@
              typeof global == 'object' && global.global === global && global ||
              this;
 
-  var _document = root.document || this.document;
+  var _document = root.document;
 
   function Swipe(container, options) {
 
