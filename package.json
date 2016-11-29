@@ -6,9 +6,14 @@
   "description": "Swipe is the most accurate touch slider",
   "author": "Brad Birdsall",
   "dependencies": {},
+  "scripts": {
+    "lint": "eslint ./swipe.js"
+  },
   "devDependencies": {
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-react": "^6.16.0",
+    "eslint": "^3.11.1",
+    "eslint-plugin-react": "^6.7.1",
     "grunt": "~0.4.5",
     "grunt-babel": "^6.0.0",
     "grunt-contrib-uglify": "~0.7.0",
