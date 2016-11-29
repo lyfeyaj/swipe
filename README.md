@@ -15,10 +15,6 @@ Swipe
 
 This repo is a continuation of the dead [Swipe](https://github.com/thebird/Swipe) project. Our mission is to keep Swipe alive and moving forward, with maintenance fixes and new features. Pull Requests are welcome!
 
-## React Support
-
-Please go to [react swipe plugin](react), or check the [example](examples/react)
-
 ## Usage
 
 ### Preview
@@ -127,7 +123,16 @@ A Swipe instance exposes the following public methods:
 - `kill()`: completely remove the Swipe instance.
 
 ## Browser Support
+
 Swipe is now compatible with all browsers, including IE7+. Swipe works best on devices that support CSS transforms and touch events, but can be used without these as well. A few helper methods determine touch and CSS transition support and choose the proper animation methods accordingly.
+
+## React Support
+
+Please go to [react swipe plugin](react), or check the [example](examples/react)
+
+## Angular Support
+
+Please go to [angular swipe plugin](angular-swipe) for source code and usage example.
 
 ## Who's using Swipe
 
@@ -142,10 +147,6 @@ Swipe is now compatible with all browsers, including IE7+. Swipe works best on d
 <img src="icons/allbeauty.png" width="170" height="80">
 
 Send me a [note](mailto:lyfeyaj@gmail.com) if you want your logo here
-
-## TODOs
-
-+ Refactor `swipe.js` for better code structure
 
 ## License
 
