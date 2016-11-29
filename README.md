@@ -8,6 +8,7 @@ Swipe
 
 
 > Swipe is the most accurate touch slider. It is extremely lightweight (only 6kb minified) and works across all browsers, including IE7+.
+> Support Angular.js and React.js
 
 ## Note
 
