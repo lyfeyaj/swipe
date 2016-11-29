@@ -6,7 +6,8 @@ Swipe
 [![npm](https://img.shields.io/npm/dt/swipejs.svg)]()
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/lyfeyaj/swipe/master/LICENSE.md)
 
-Swipe is the most accurate touch slider. It is extremely lightweight (only 6kb minified) and works across all browsers, including IE7+.
+
+> Swipe is the most accurate touch slider. It is extremely lightweight (only 6kb minified) and works across all browsers, including IE7+.
 
 ## Note
 
