@@ -1,7 +1,10 @@
 Swipe
 =====
 
-[![Code Climate](https://codeclimate.com/github/lyfeyaj/swipe/badges/gpa.svg)](https://codeclimate.com/github/lyfeyaj/swipe)
+[![Build Status](https://travis-ci.org/lyfeyaj/swipe.svg?branch=master)](https://travis-ci.org/lyfeyaj/swipe)
+[![npm version](https://badge.fury.io/js/swipejs.svg)](https://badge.fury.io/js/swipejs)
+[![npm](https://img.shields.io/npm/dt/swipejs.svg)]()
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/lyfeyaj/swipe/master/LICENSE.md)
 
 Swipe is the most accurate touch slider. It is extremely lightweight (only 6kb minified) and works across all browsers, including IE7+.
 
