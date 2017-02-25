@@ -20,6 +20,7 @@
       }
     };
   }
+  swipeWrap.$inject = ['$timeout'];
   function SwipeController($scope) {
     var SwipeCtrl = this;
 
@@ -48,6 +49,7 @@
       }
     }
   }
+  SwipeController.$inject = ['$scope'];
   function swipeSlider() {
     return {
       restrict: 'EA',
