@@ -434,7 +434,13 @@
       }
     }
 
-    function setup() {
+    function setup(opts) {
+      if (opts) {
+        if (opts.startSlide) {
+          index = parseInt(opts.startSlide, 10) || 0;
+        }
+      }
+
       // cache slides
       slides = element.children;
       length = slides.length;
