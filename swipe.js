@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.2.4
+ * Swipe 2.2.5
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
@@ -439,6 +439,11 @@
       slides = element.children;
       length = slides.length;
 
+      // slides length correction, minus cloned slides
+      for (var i = 0; i < slides.length; i++) {
+        if (slides[i].getAttribute('data-cloned')) length--;
+      }
+
       // set continuous to false if only one slide
       if (slides.length < 2) {
         options.continuous = false;
@@ -447,7 +452,7 @@
       // special case if two slides
       if (browser.transitions && options.continuous && slides.length < 3) {
         var clone0 = slides[0].cloneNode(true);
-        var clone1 = element.children[1].cloneNode(true);
+        var clone1 = slides[1].cloneNode(true);
         element.appendChild(clone0);
         element.appendChild(clone1);
 
