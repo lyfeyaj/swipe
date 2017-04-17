@@ -1,5 +1,5 @@
 /*!
- * React Swipe 2.2.4
+ * React Swipe 2.2.5
  *
  * Felix Liu
  * Copyright 2016, MIT License
@@ -10,6 +10,7 @@
 
 // Module dependencies
 import React from 'react';
+import ReactDOM from 'react-dom';
 import SwipeJS from 'swipejs';
 
 // Constants
@@ -87,12 +88,33 @@ class Swipe extends React.Component {
     } catch (e) { /* do nothing */ }
   }
 
+  cloneSwipeItem(element) {
+    let props = {
+      ref: function(node) {
+        let dom = ReactDOM.findDOMNode(node);
+        dom && dom.setAttribute('data-cloned', true);
+      },
+
+      key: String(Math.random()).valueOf()
+    };
+
+    return <SwipeItem {...element.props} {...props}>{element.props.children}</SwipeItem>;
+  }
+
   render() {
     const { className, style } = this.props;
+
+    // Fix for #65
+    let children = [].concat(this.props.children);
+    if (children.length === 2) {
+      children.push(this.cloneSwipeItem(children[0]));
+      children.push(this.cloneSwipeItem(children[1]));
+    }
+
     return (
       <div ref='swipe' className={ `swipe ${className || ''}` } style={style}>
         <div className="swipe-wrap">
-          { this.props.children }
+          { children }
         </div>
       </div>
     );
@@ -123,13 +145,13 @@ class SwipeItem extends React.Component {
   }
 
   render() {
-    const { className, onClick, style } = this.props;
+    const { className, onClick, style, children } = this.props;
 
     return (
       <div className={`swipe-item ${className || ''}`}
            onClick={ onClick }
-           style={style}>
-        { this.props.children }
+           style={ style }>
+        { children }
       </div>
     );
   }
