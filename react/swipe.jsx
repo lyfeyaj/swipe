@@ -11,6 +11,7 @@
 // Module dependencies
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import SwipeJS from 'swipejs';
 
 // Constants
@@ -19,18 +20,18 @@ const noop = function noop() {};
 class Swipe extends React.Component {
   static get propTypes() {
     return {
-      className: React.PropTypes.string,
-      style: React.PropTypes.object,
-      startSlide: React.PropTypes.number,
-      speed: React.PropTypes.number,
-      auto: React.PropTypes.number,
-      draggable: React.PropTypes.bool,
-      continuous: React.PropTypes.bool,
-      autoRestart: React.PropTypes.bool,
-      disableScroll: React.PropTypes.bool,
-      stopPropagation: React.PropTypes.bool,
-      callback: React.PropTypes.func,
-      transitionEnd: React.PropTypes.func
+      className: PropTypes.string,
+      style: PropTypes.object,
+      startSlide: PropTypes.number,
+      speed: PropTypes.number,
+      auto: PropTypes.number,
+      draggable: PropTypes.bool,
+      continuous: PropTypes.bool,
+      autoRestart: PropTypes.bool,
+      disableScroll: PropTypes.bool,
+      stopPropagation: PropTypes.bool,
+      callback: PropTypes.func,
+      transitionEnd: PropTypes.func
     };
   }
 
@@ -124,9 +125,9 @@ class Swipe extends React.Component {
 class SwipeItem extends React.Component {
   static get propTypes() {
     return {
-      className: React.PropTypes.string,
-      onClick: React.PropTypes.func,
-      style: React.PropTypes.object
+      className: PropTypes.string,
+      onClick: PropTypes.func,
+      style: PropTypes.object
     };
   }
 
