@@ -302,7 +302,7 @@
               index = circle(index-1);
             }
 
-            runCallback(getPos(), slides[index], direction);
+            runCallback(getPos(), slides[index], direction, true);
 
           } else {
 
@@ -520,9 +520,10 @@
       }
     }
 
-    function runCallback(pos, index, dir) {
+    function runCallback(pos, index, dir, isInteraction) {
+        isInteraction = isInteraction ? true : false;
       if (options.callback) {
-        options.callback(pos, index, dir);
+        options.callback(pos, index, dir, isInteraction);
       }
     }
 

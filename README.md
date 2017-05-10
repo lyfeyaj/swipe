@@ -89,7 +89,7 @@ Swipe can take an optional second parameter– an object of key/value settings:
 - **autoRestart** Boolean *(default: `false`)*: auto restart slideshow after user's touch event or next/prev calls.
 - **disableScroll** Boolean *(default: `false`)*: prevent any touch events on this container from scrolling the page.
 - **stopPropagation** Boolean *(default: `false`)*: stop event propagation.
-- **callback** Function *(default: `function() {}`)*: runs at slide change. Three parameters are passed to the function: `index` (the current slide index), `elem` (the current slide element) and `dir` (direction: `1` for left or backward, `-1` for right or forward).
+- **callback** Function *(default: `function() {}`)*: runs at slide change. Four parameters are passed to the function: `index` (the current slide index), `elem` (the current slide element), `dir` (direction: `1` for left or backward, `-1` for right or forward) and `isInteraction` (is the swipe from a user interaction).
 - **transitionEnd** Function *(default: `function() {}`)*: runs at the end of a slide transition. Two parameters are passed to the function: `index` (the current slide index) and `elem` (the current slide element).
 
 ### Example
@@ -103,7 +103,7 @@ window.mySwipe = new Swipe(document.getElementById('slider'), {
   continuous: true,
   disableScroll: false,
   stopPropagation: false,
-  callback: function(index, elem, dir) {},
+  callback: function(index, elem, dir, isInteraction) {},
   transitionEnd: function(index, elem) {}
 });
 ```
