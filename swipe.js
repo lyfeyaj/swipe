@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.2.7
+ * Swipe 2.2.8
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
@@ -50,6 +50,8 @@
     // setup auto slideshow
     var delay = options.auto || 0;
     var interval;
+
+    var disabled = false;
 
     // utilities
     // simple no operation function
@@ -117,6 +119,8 @@
     var events = {
 
       handleEvent: function(event) {
+        if (disabled) return;
+
         switch (event.type) {
           case 'mousedown':
           case 'touchstart': this.start(event); break;
@@ -381,6 +385,12 @@
       // return current index position
       getPos: getPos,
 
+      // disable slideshow
+      disable: disable,
+
+      // enable slideshow
+      enable: enable,
+
       // return total number of slides
       getNumSlides: function() { return length; },
 
@@ -509,15 +519,17 @@
     }
 
     function prev() {
+      if (disabled) return;
+
       if (options.continuous) {
         slide(index-1);
-      }
-      else if (index) {
+      } else if (index) {
         slide(index-1);
       }
     }
 
     function next() {
+      if (disabled) return;
 
       if (options.continuous) {
         slide(index+1);
@@ -678,6 +690,16 @@
       stop();
       delay = options.auto || 0;
       begin();
+    }
+
+    function disable() {
+      stop();
+      disabled = true;
+    }
+
+    function enable() {
+      disabled = false;
+      restart();
     }
 
     function isMouseEvent(e) {

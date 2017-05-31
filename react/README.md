@@ -31,6 +31,8 @@ class HomePage extends React.Component {
     // mySwipe.restart()
     // mySwipe.stop()
     // mySwipe.kill()
+    // mySwipe.disable()
+    // mySwipe.enable()
   }
 
   onTransactionEnd(index, elem) {

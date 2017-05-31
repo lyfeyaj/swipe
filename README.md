@@ -120,6 +120,8 @@ A Swipe instance exposes the following public methods:
 - `restart()`: restart the slideshow with autoplay.
 - `stop()`: stop the slideshow and disable autoplay.
 - `setup()`: reinitialize swipe.
+- `disable()`: disable slideshow.
+- `enable()`: enable slideshow.
 - `kill()`: completely remove the Swipe instance.
 
 ## Browser Support
