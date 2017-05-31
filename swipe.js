@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.2.6
+ * Swipe 2.2.7
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
@@ -434,6 +434,18 @@
       }
     }
 
+    // clone nodes when there is only two slides
+    function cloneNode(el) {
+      var clone = el.cloneNode(true);
+      element.appendChild(clone);
+
+      // tag these slides as clones (to remove them on kill)
+      clone.setAttribute('data-cloned', true);
+
+      // Remove id from element
+      clone.removeAttribute('id');
+    }
+
     function setup() {
       // cache slides
       slides = element.children;
@@ -451,14 +463,8 @@
 
       // special case if two slides
       if (browser.transitions && options.continuous && slides.length < 3) {
-        var clone0 = slides[0].cloneNode(true);
-        var clone1 = slides[1].cloneNode(true);
-        element.appendChild(clone0);
-        element.appendChild(clone1);
-
-        // tag these slides as clones (to remove them on kill)
-        clone0.setAttribute('data-cloned', true);
-        clone1.setAttribute('data-cloned', true);
+        cloneNode(slides[0]);
+        cloneNode(slides[1]);
 
         slides = element.children;
       }

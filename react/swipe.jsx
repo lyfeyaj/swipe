@@ -1,5 +1,5 @@
 /*!
- * React Swipe 2.2.5
+ * React Swipe 2.2.7
  *
  * Felix Liu
  * Copyright 2016, MIT License
@@ -90,16 +90,21 @@ class Swipe extends React.Component {
   }
 
   cloneSwipeItem(element) {
-    let props = {
+    let props = Object.assign({}, element.props);
+
+    props = Object.assign(props, {
       ref: function(node) {
         let dom = ReactDOM.findDOMNode(node);
         dom && dom.setAttribute('data-cloned', true);
       },
 
       key: String(Math.random()).valueOf()
-    };
+    });
 
-    return <SwipeItem {...element.props} {...props}>{element.props.children}</SwipeItem>;
+    // remove id
+    delete props.id;
+
+    return <SwipeItem {...props}>{element.props.children}</SwipeItem>;
   }
 
   render() {
