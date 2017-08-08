@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.2.8
+ * Swipe 2.2.9
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
@@ -351,7 +351,7 @@
     setup();
 
     // start auto slideshow if applicable
-    if (delay) begin();
+    begin();
 
     // Expose the Swipe API
     return {
@@ -678,7 +678,8 @@
     }
 
     function begin() {
-      interval = setTimeout(next, delay);
+      delay = options.auto || 0;
+      if (delay) interval = setTimeout(next, delay);
     }
 
     function stop() {
@@ -688,7 +689,6 @@
 
     function restart() {
       stop();
-      delay = options.auto || 0;
       begin();
     }
 
