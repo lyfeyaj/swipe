@@ -351,7 +351,7 @@
     setup();
 
     // start auto slideshow if applicable
-    if (delay) begin();
+    begin();
 
     // Expose the Swipe API
     return {
@@ -678,7 +678,7 @@
     }
 
     function begin() {
-      interval = setTimeout(next, delay);
+      if (delay) interval = setTimeout(next, delay);
     }
 
     function stop() {
