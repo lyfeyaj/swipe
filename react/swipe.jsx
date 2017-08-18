@@ -83,7 +83,7 @@ class Swipe extends React.Component {
     });
   }
 
-  componentWillUmount() {
+  componentWillUnmount() {
     try {
       this.instance.kill();
     } catch (e) { /* do nothing */ }
