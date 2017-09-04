@@ -13,7 +13,7 @@ module.exports = function( grunt ) {
       },
       dist: {
         files: {
-          'build/swipe.min.js': 'swipe.js',
+          'build/swipe.min.js': 'build/swipe.js',
           'react/index.js': 'react/index.js'
         }
       }
@@ -40,11 +40,12 @@ module.exports = function( grunt ) {
     babel: {
       options: {
         sourceMap: false,
-        presets: ['babel-preset-es2015', 'babel-preset-react']
+        presets: ['env', 'react']
       },
       dist: {
         files: {
-          'react/index.js': 'react/swipe.jsx'
+          'react/index.js': 'react/swipe.jsx',
+          'build/swipe.js': 'swipe.js'
         }
       }
     }
