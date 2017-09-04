@@ -212,16 +212,11 @@
         // stop slideshow
         stop();
 
-        // add resistance if at end of the slide list
-        if (!options.continuous) {
-          delta.x =
-            delta.x /
-            ( (!index && delta.x > 0 ||             // if first slide and sliding left
-              index === slides.length - 1 &&        // or if last slide and sliding right
-              delta.x < 0                           // and if sliding at all
-            ) ?
-              ( Math.abs(delta.x) / width + 1 )      // determine resistance level
-              : 1 );                                 // no resistance if false
+        const isPastBounds = !options.continuous &&
+          index === (delta.x > 0 ? 0 : slides.length - 1);
+        if (isPastBounds) {
+          // increase resistance if first or last slide
+          delta.x /= (Math.abs(delta.x)/width) + 1;
         }
 
         moveFrame(index, delta.x, 0);
