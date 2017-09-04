@@ -202,8 +202,8 @@
         };
 
         // determine if scrolling test has run - one time test
-        if ( typeof isScrolling === 'undefined') {
-          isScrolling = !!( isScrolling || Math.abs(delta.x) < Math.abs(delta.y) );
+        if (isScrolling === undefined) {
+          isScrolling = Math.abs(delta.x) < Math.abs(delta.y);
         }
 
         // if user is not trying to scroll vertically
