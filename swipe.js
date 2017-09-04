@@ -56,31 +56,6 @@
     // utilities
     // simple no operation function
     var noop = function() {};
-    // Returns a function, that, as long as it continues to be invoked, will not
-    // be triggered.
-    var throttle = function (fn, threshhold) {
-      threshhold = threshhold || 100;
-      var timeout = null;
-
-      function cancel() {
-        if (timeout) clearTimeout(timeout);
-      }
-
-      function throttledFn() {
-        var context = this;
-        var args = arguments;
-        cancel();
-        timeout = setTimeout(function() {
-          timeout = null;
-          fn.apply(context, args);
-        }, threshhold);
-      }
-
-      // allow remove throttled timeout
-      throttledFn.cancel = cancel;
-
-      return throttledFn;
-    };
 
     // check browser capabilities
     var browser = {
@@ -110,8 +85,27 @@
     // AutoRestart option: auto restart slideshow after user's touch event
     options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : false;
 
-    // throttled setup
-    var throttledSetup = throttle(setup);
+    // Returns a function, that, as long as it continues to be invoked, 
+    // will not be triggered.
+    const debounce = (fn, threshhold = 100) => {
+
+      let timeout = 0;
+      const cancel = () => {
+        timeout && clearTimeout(timeout);
+        timeout = 0;
+      }
+
+      const debounced = function(...args) {
+        cancel();
+        timeout = setTimeout(() => fn.apply(this, ...args), threshhold);
+      }
+
+      // allow remove debounced timeout
+      debounced.cancel = cancel;
+      return debounced;
+    };
+
+    const debouncedSetup = debounce(setup);
 
     // setup event capturing
     var events = {
@@ -132,7 +126,7 @@
           case 'oTransitionEnd':
           case 'otransitionend':
           case 'transitionend': this.transitionEnd(event); break;
-          case 'resize': throttledSetup(); break;
+          case 'resize': debouncedSetup(); break;
         }
 
         if (options.stopPropagation) {
@@ -438,7 +432,7 @@
         root.addEventListener('resize', events, false);
 
       } else {
-        root.onresize = throttledSetup; // to play nice with old IE
+        root.onresize = debouncedSetup; // to play nice with old IE
       }
     }
 
@@ -754,7 +748,7 @@
       detachEvents();
 
       // remove throttled function timeout
-      throttledSetup.cancel();
+      debouncedSetup.cancel();
     }
   }
 
