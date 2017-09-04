@@ -287,13 +287,18 @@
         const direction = delta.x < 0 ? 1 : -1;
 
         if (isValidSlideGesture && !isPastBounds) {
-          // The new current slide must be between the 2 slides before and after itself
 
           const nextIndex = slideIndexAt(index + direction);
-          move(index, -width * direction, speed);
-          move(nextIndex, 0, speed);
 
-          move(slideIndexAt(index + 2*direction), width * direction, 0);
+          if (browser.transitions) {
+            // The new current slide must be between the 2 slides before and after itself
+            move(index, -width * direction, speed);
+            move(nextIndex, 0, speed);
+
+            move(slideIndexAt(index + 2*direction), width * direction, 0);
+          } else {
+            moveFrame(nextIndex, 0, speed);
+          }
 
           index = nextIndex;
 
@@ -370,7 +375,8 @@
 
     function moveFrame(index, dist, speed) {
       if (!browser.transitions) {
-        element.style.left = (dist + index * -width) + 'px';
+        const from = parseInt(element.style.left, 10), to = dist - width * index;
+        animate(from, to, speed);
       } else {
         [-1, 0, 1]
           .forEach((offset) => move(slideIndexAt(index+offset), offset*width + dist, speed));
