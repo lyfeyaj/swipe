@@ -337,8 +337,12 @@
     };
 
     function moveFrame(index, dist, speed) {
-      [-1, 0, 1]
-        .forEach((offset) => move(slideIndexAt(index+offset), offset*width + dist, speed));
+      if (!browser.transitions) {
+        element.style.left = (dist + index * -width) + 'px';
+      } else {
+        [-1, 0, 1]
+          .forEach((offset) => move(slideIndexAt(index+offset), offset*width + dist, speed));
+      }
     }
 
     // remove all event listeners
@@ -444,14 +448,7 @@
         }
       }
 
-      // reposition elements before and after index
-      if (options.continuous && browser.transitions) {
-        moveFrame(index, 0, 0);
-      }
-
-      if (!browser.transitions) {
-        element.style.left = (index * -width) + 'px';
-      }
+      moveFrame(index, 0, 0);
 
       container.style.visibility = 'visible';
 
