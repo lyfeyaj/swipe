@@ -70,8 +70,6 @@
     var disabled = false;
 
     // utilities
-    // simple no operation function
-    var noop = function() {};
 
     // check browser capabilities
     var browser = {
