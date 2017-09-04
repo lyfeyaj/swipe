@@ -446,8 +446,7 @@
 
       // reposition elements before and after index
       if (options.continuous && browser.transitions) {
-        move(slideIndexAt(index-1), -width, 0);
-        move(slideIndexAt(index+1), width, 0);
+        moveFrame(index, 0, 0);
       }
 
       if (!browser.transitions) {
