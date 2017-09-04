@@ -52,6 +52,40 @@
     speed: 300,
   };
 
+  const {requestAnimationFrame, cancelAnimationFrame} = root.requestAnimationFrame ? root : ((() => {
+    let lastId = 0;
+    let callbacks = undefined;
+
+    return {
+      requestAnimationFrame(cb) {
+        const id = lastId++;
+
+        if (!callbacks) {
+          callbacks = new Map();
+
+          setTimeout(() => {
+            const timestamp = Date.now();
+
+            // neded so requestAnimationFrame from callbacks
+            // are not added to the current callbacks map
+            const cbs = callbacks;
+            callbacks = undefined;
+
+            cbs.forEach((cb) => cb(timestamp));
+          }, 33); // 33ms is 30fps
+        }
+
+        callbacks.set(id, cb);
+
+        return id;
+      },
+
+      cancelAnimationFrame(id) {
+        callbacks && delete callbacks[id];
+      }
+    };
+  })());
+
   function Swipe(container, inputOptions) {
 
     'use strict';
@@ -620,12 +654,13 @@
         return;
       }
 
-      var start = Date.now();
+      let start;
 
-      var timer = setInterval(function() {
-        var timeElap = Date.now() - start;
-
-        if (timeElap > speed) {
+      requestAnimationFrame(function step(timestamp) {
+        if (!start) {
+          start = timestamp;
+          requestAnimationFrame(step);
+        } else if (timestamp - start >= speed) {
 
           element.style.left = to + 'px';
 
@@ -633,14 +668,13 @@
 
           runTransitionEnd(getPos(), slides[index]);
 
-          clearInterval(timer);
+        } else {
+          const timeElap = timestamp - start;
+          element.style.left = ((to-from) * (timeElap/speed) + from) + 'px';
 
-          return;
+          requestAnimationFrame(step);
         }
-
-        element.style.left = (( (to - from) * (Math.floor((timeElap / speed) * 100) / 100) ) + from) + 'px';
-      }, 4);
-
+      });
     }
 
     function begin() {
