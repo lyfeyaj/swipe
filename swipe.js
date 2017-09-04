@@ -160,7 +160,10 @@
         isScrolling = undefined;
 
         // reset delta and end measurements
-        delta = {};
+        delta = {
+          x: 0,
+          y: 0
+        };
 
         // attach touchmove and touchend listeners
         if (isMouseEvent(event)) {
