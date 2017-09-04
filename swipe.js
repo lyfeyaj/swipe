@@ -121,6 +121,8 @@
       })(_document.createElement('swipe'))
     };
 
+    options.continuous = options.continuous && browser.transitions;
+
     // quit if no root element
     if (!container) throw new Error('Missing swipe container');
 
