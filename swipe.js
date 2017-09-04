@@ -74,7 +74,7 @@
     };
 
     // quit if no root element
-    if (!container) return;
+    if (!container) throw new Error('Missing swipe container');
 
     var element = container.children[0];
     var slides, slidePos, width, length;
