@@ -135,14 +135,21 @@
       },
 
       start: function(event) {
-        var touches;
+        let touches;
 
         if (isMouseEvent(event)) {
           touches = event;
           event.preventDefault(); // For desktop Safari drag
+        } else if (event.touches.length !== 1) {
+          // cancel swipe tracking
+          detachFollowupEvents(event);
+          moveFrame(index, 0, speed);
+          return;
         } else {
           touches = event.touches[0];
         }
+
+        attachFollowupEvents(event);
 
         // measure start values
         start = {
@@ -164,17 +171,6 @@
           x: 0,
           y: 0
         };
-
-        // attach touchmove and touchend listeners
-        if (isMouseEvent(event)) {
-          element.addEventListener('mousemove', this, false);
-          element.addEventListener('mouseup', this, false);
-          element.addEventListener('mouseleave', this, false);
-        } else {
-          element.addEventListener('touchmove', this, false);
-          element.addEventListener('touchend', this, false);
-        }
-
       },
 
       move: function(event) {
@@ -264,15 +260,7 @@
         }
 
         // kill touchmove and touchend event listeners until touchstart called again
-        if (isMouseEvent(event)) {
-          element.removeEventListener('mousemove', events, false);
-          element.removeEventListener('mouseup', events, false);
-          element.removeEventListener('mouseleave', events, false);
-        } else {
-          element.removeEventListener('touchmove', events, false);
-          element.removeEventListener('touchend', events, false);
-        }
-
+        detachFollowupEvents(event);
       },
 
       transitionEnd: function(event) {
@@ -388,6 +376,28 @@
 
       } else {
         root.onresize = debouncedSetup; // to play nice with old IE
+      }
+    }
+
+    function detachFollowupEvents(event) {
+      if (isMouseEvent(event)) {
+        element.removeEventListener('mousemove', events, false);
+        element.removeEventListener('mouseup', events, false);
+        element.removeEventListener('mouseleave', events, false);
+      } else {
+        element.removeEventListener('touchmove', events, false);
+        element.removeEventListener('touchend', events, false);
+      }
+    }
+
+    function attachFollowupEvents(event) {
+      if (isMouseEvent(event)) {
+        element.addEventListener('mousemove', events, false);
+        element.addEventListener('mouseup', events, false);
+        element.addEventListener('mouseleave', events, false);
+      } else {
+        element.addEventListener('touchmove', events, false);
+        element.addEventListener('touchend', events, false);
       }
     }
 
