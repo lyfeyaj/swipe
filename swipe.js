@@ -152,7 +152,7 @@
           y: touches.pageY,
 
           // store time to determine touch duration
-          time: +new Date()
+          time: Date.now()
 
         };
 
@@ -233,7 +233,7 @@
         if (isScrolling) return;
 
         // measure duration
-        var duration = +new Date() - start.time;
+        var duration = Date.now() - start.time;
 
         // determine if slide attempt triggers next/prev slide
         var isValidSlideGesture =
@@ -603,10 +603,10 @@
         return;
       }
 
-      var start = +new Date();
+      var start = Date.now();
 
       var timer = setInterval(function() {
-        var timeElap = +new Date() - start;
+        var timeElap = Date.now() - start;
 
         if (timeElap > speed) {
 
