@@ -522,21 +522,15 @@
     function prev() {
       if (disabled) return;
 
-      if (options.continuous) {
-        slide(index-1);
-      } else if (index) {
-        slide(index-1);
-      }
+      const prevSlide = slideIndexAt(index-1);
+      prevSlide !== undefined && slide(prevSlide);
     }
 
     function next() {
       if (disabled) return;
 
-      if (options.continuous) {
-        slide(index+1);
-      } else if (index < slides.length - 1) {
-        slide(index+1);
-      }
+      const nextSlide = slideIndexAt(index+1);
+      nextSlide !== undefined && slide(nextSlide);
     }
 
     function runCallback(pos, index, dir) {
