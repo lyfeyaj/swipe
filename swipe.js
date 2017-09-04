@@ -204,117 +204,67 @@
         }
 
         // if user is not trying to scroll vertically
-        if (!isScrolling) {
+        if (isScrolling) return;
+        
+        // prevent native scrolling
+        event.preventDefault();
 
-          // prevent native scrolling
-          event.preventDefault();
+        // stop slideshow
+        stop();
 
-          // stop slideshow
-          stop();
-
-          // increase resistance if first or last slide
-          if (options.continuous) { // we don't add resistance at the end
-
-            translate(circle(index-1), delta.x + slidePos[circle(index-1)], 0);
-            translate(index, delta.x + slidePos[index], 0);
-            translate(circle(index+1), delta.x + slidePos[circle(index+1)], 0);
-
-          } else {
-
-            delta.x =
-              delta.x /
-              ( (!index && delta.x > 0 ||             // if first slide and sliding left
-                 index === slides.length - 1 &&        // or if last slide and sliding right
-                 delta.x < 0                           // and if sliding at all
-                ) ?
-               ( Math.abs(delta.x) / width + 1 )      // determine resistance level
-               : 1 );                                 // no resistance if false
-
-            // translate 1:1
-            translate(index-1, delta.x + slidePos[index-1], 0);
-            translate(index, delta.x + slidePos[index], 0);
-            translate(index+1, delta.x + slidePos[index+1], 0);
-          }
+        // add resistance if at end of the slide list
+        if (!options.continuous) {
+          delta.x =
+            delta.x /
+            ( (!index && delta.x > 0 ||             // if first slide and sliding left
+              index === slides.length - 1 &&        // or if last slide and sliding right
+              delta.x < 0                           // and if sliding at all
+            ) ?
+              ( Math.abs(delta.x) / width + 1 )      // determine resistance level
+              : 1 );                                 // no resistance if false
         }
+
+        [-1, 0, 1]
+          .forEach((offset) => translate(slideIndexAt(index + offset), delta.x + (width*offset), 0));
       },
 
       end: function(event) {
+
+        if (isScrolling) return;
 
         // measure duration
         var duration = +new Date() - start.time;
 
         // determine if slide attempt triggers next/prev slide
-        var isValidSlide =
+        var isValidSlideGesture =
             Number(duration) < 250 &&         // if slide duration is less than 250ms
             Math.abs(delta.x) > 20 ||         // and if slide amt is greater than 20px
             Math.abs(delta.x) > width/2;      // or if slide amt is greater than half the width
 
         // determine if slide attempt is past start and end
-        var isPastBounds =
-            !index && delta.x > 0 ||                      // if first slide and slide amt is greater than 0
-            index === slides.length - 1 && delta.x < 0;   // or if last slide and slide amt is less than 0
-
-        if (options.continuous) {
-          isPastBounds = false;
-        }
+        const isPastBounds = !options.continuous &&
+          index === (delta.x > 0 ? 0 : slides.length - 1);
 
         // OLD determine direction of swipe (true:right, false:left)
-        // determine direction of swipe (1: backward, -1: forward)
-        var direction = Math.abs(delta.x) / delta.x;
+        // determine direction of swipe (-1: backward, 1: forward)
+        const direction = delta.x < 0 ? 1 : -1;
 
-        // if not scrolling vertically
-        if (!isScrolling) {
+        if (isValidSlideGesture && !isPastBounds) {
+          // The new current slide must be between the 2 slides before and after itself
 
-          if (isValidSlide && !isPastBounds) {
+          const nextIndex = slideIndexAt(index + direction);
+          move(index, -width * direction, speed);
+          move(nextIndex, 0, speed);
 
-            // if we're moving right
-            if (direction < 0) {
+          move(slideIndexAt(index + 2*direction), width * direction, 0);
 
-              if (options.continuous) { // we need to get the next in this direction in place
+          index = nextIndex;
 
-                move(circle(index-1), -width, 0);
-                move(circle(index+2), width, 0);
+          runCallback(getPos(), slides[index], direction)
 
-              } else {
-                move(index-1, -width, 0);
-              }
-
-              move(index, slidePos[index]-width, speed);
-              move(circle(index+1), slidePos[circle(index+1)]-width, speed);
-              index = circle(index+1);
-
-            } else {
-              if (options.continuous) { // we need to get the next in this direction in place
-
-                move(circle(index+1), width, 0);
-                move(circle(index-2), -width, 0);
-
-              } else {
-                move(index+1, width, 0);
-              }
-
-              move(index, slidePos[index]+width, speed);
-              move(circle(index-1), slidePos[circle(index-1)]+width, speed);
-              index = circle(index-1);
-            }
-
-            runCallback(getPos(), slides[index], direction);
-
-          } else {
-
-            if (options.continuous) {
-
-              move(circle(index-1), -width, speed);
-              move(index, 0, speed);
-              move(circle(index+1), width, speed);
-
-            } else {
-
-              move(index-1, -width, speed);
-              move(index, 0, speed);
-              move(index+1, width, speed);
-            }
-          }
+        } else {
+          [-1, 0, 1]
+            .forEach((offset) => translate(slideIndexAt(index + offset), width*offset, speed));
         }
 
         // kill touchmove and touchend event listeners until touchstart called again
@@ -495,8 +445,8 @@
 
       // reposition elements before and after index
       if (options.continuous && browser.transitions) {
-        move(circle(index-1), -width, 0);
-        move(circle(index+1), width, 0);
+        move(slideIndexAt(index-1), -width, 0);
+        move(slideIndexAt(index+1), width, 0);
       }
 
       if (!browser.transitions) {
@@ -542,10 +492,17 @@
       }
     }
 
-    function circle(index) {
+    function slideIndexAtCircular(index) {
+      const modulo = slides.length;
+      return (modulo + index % modulo) % modulo;
+    }
 
-      // a simple positive modulo using slides.length
-      return (slides.length + (index % slides.length)) % slides.length;
+    function slideIndexAtNormal(index) {
+      return (index >= 0 && index < length) ? index : undefined;
+    }
+
+    function slideIndexAt(index) {
+      return (options.continuous ? slideIndexAtCircular : slideIndexAtNormal)(index);
     }
 
     function getPos() {
@@ -574,7 +531,7 @@
         // get the actual position of the slide
         if (options.continuous) {
           var natural_direction = direction;
-          direction = -slidePos[circle(to)] / width;
+          direction = -slidePos[slideIndexAt(to)] / width;
 
           // if going forward but to < index, use to = slides.length + to
           // if going backward but to > index, use to = -slides.length + to
@@ -588,21 +545,21 @@
 
         // move all the slides between index and to in the right direction
         while (diff--) {
-          move( circle((to > index ? to : index) - diff - 1), width * direction, 0);
+          move( slideIndexAt((to > index ? to : index) - diff - 1), width * direction, 0);
         }
 
-        to = circle(to);
+        to = slideIndexAt(to);
 
         move(index, width * direction, slideSpeed || speed);
         move(to, 0, slideSpeed || speed);
 
         if (options.continuous) { // we need to get the next in place
-          move(circle(to - direction), -(width * direction), 0);
+          move(slideIndexAt(to - direction), -(width * direction), 0);
         }
 
       } else {
 
-        to = circle(to);
+        to = slideIndexAt(to);
         animate(index * -width, to * -width, slideSpeed || speed);
         // no fallback for a circular continuous if the browser does not accept transitions
       }
