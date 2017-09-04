@@ -224,8 +224,7 @@
               : 1 );                                 // no resistance if false
         }
 
-        [-1, 0, 1]
-          .forEach((offset) => translate(slideIndexAt(index + offset), delta.x + (width*offset), 0));
+        moveFrame(index, delta.x, 0);
       },
 
       end: function(event) {
@@ -263,8 +262,7 @@
           runCallback(getPos(), slides[index], direction)
 
         } else {
-          [-1, 0, 1]
-            .forEach((offset) => translate(slideIndexAt(index + offset), width*offset, speed));
+          moveFrame(index, 0, speed);
         }
 
         // kill touchmove and touchend event listeners until touchstart called again
@@ -339,6 +337,11 @@
       // completely remove swipe
       kill: kill
     };
+
+    function moveFrame(index, dist, speed) {
+      [-1, 0, 1]
+        .forEach((offset) => move(slideIndexAt(index+offset), offset*width + dist, speed));
+    }
 
     // remove all event listeners
     function detachEvents() {
