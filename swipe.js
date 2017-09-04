@@ -36,11 +36,27 @@
 
   var _document = root.document;
 
-  function Swipe(container, options) {
+  const defaultOptions = {
+    auto: 0,
+
+    // auto restart slideshow after user's touch event
+    autoRestart: false,
+
+    continuous: true,
+
+    disableScroll: false,
+
+    draggable: true,
+
+    startSlide: 0,
+    speed: 300,
+  };
+
+  function Swipe(container, inputOptions) {
 
     'use strict';
 
-    options = options || {};
+    let options = Object.assign({}, defaultOptions, inputOptions);
 
     // setup initial vars
     var start = {};
@@ -48,7 +64,7 @@
     var isScrolling;
 
     // setup auto slideshow
-    var delay = options.auto || 0;
+    var delay = options.auto;
     var interval;
 
     var disabled = false;
@@ -79,11 +95,7 @@
     var element = container.children[0];
     var slides, slidePos, width, length;
     var index = parseInt(options.startSlide, 10) || 0;
-    var speed = options.speed || 300;
-    options.continuous = options.continuous !== undefined ? options.continuous : true;
-
-    // AutoRestart option: auto restart slideshow after user's touch event
-    options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : false;
+    var speed = options.speed;
 
     // Returns a function, that, as long as it continues to be invoked, 
     // will not be triggered.
@@ -634,7 +646,7 @@
     }
 
     function begin() {
-      delay = options.auto || 0;
+      delay = options.auto;
       if (delay) interval = setTimeout(next, delay);
     }
 
