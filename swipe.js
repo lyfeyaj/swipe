@@ -56,8 +56,6 @@
     // utilities
     // simple no operation function
     var noop = function() {};
-    // offload a functions execution
-    var offloadFn = function(fn) { setTimeout(fn || noop, 0); };
     // Returns a function, that, as long as it continues to be invoked, will not
     // be triggered.
     var throttle = function (fn, threshhold) {
@@ -616,9 +614,9 @@
       }
 
       index = to;
-      offloadFn(function() {
-        runCallback(getPos(), slides[index], direction);
-      });
+
+      const onNextTick = (cb, ...args) => cb && setTimeout(cb, 0, ...args);
+      onNextTick(() => runCallback(getPos(), slides[index], direction));
     }
 
     function move(index, dist, speed) {
