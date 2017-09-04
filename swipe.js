@@ -121,8 +121,6 @@
       })(_document.createElement('swipe'))
     };
 
-    options.continuous = options.continuous && browser.transitions;
-
     // quit if no root element
     if (!container) throw new Error('Missing swipe container');
 
@@ -292,15 +290,11 @@
 
           const nextIndex = slideIndexAt(index + direction);
 
-          if (browser.transitions) {
-            // The new current slide must be between the 2 slides before and after itself
-            move(index, -width * direction, speed);
-            move(nextIndex, 0, speed);
+          // The new current slide must be between the 2 slides before and after itself
+          move(index, -width * direction, speed);
+          move(nextIndex, 0, speed);
 
-            move(slideIndexAt(index + 2*direction), width * direction, 0);
-          } else {
-            moveFrame(nextIndex, 0, speed);
-          }
+          move(slideIndexAt(index + 2*direction), width * direction, 0);
 
           index = nextIndex;
 
@@ -376,13 +370,8 @@
     };
 
     function moveFrame(index, dist, speed) {
-      if (!browser.transitions) {
-        const from = parseInt(element.style.left, 10), to = dist - width * index;
-        animate(from, to, speed);
-      } else {
-        [-1, 0, 1]
-          .forEach((offset) => move(slideIndexAt(index+offset), offset*width + dist, speed));
-      }
+      [-1, 0, 1]
+        .forEach((offset) => move(slideIndexAt(index+offset), offset*width + dist, speed));
     }
 
     // remove all event listeners
@@ -481,7 +470,7 @@
       }
 
       // special case if two slides
-      if (browser.transitions && options.continuous && slides.length < 3) {
+      if (options.continuous && slides.length < 3) {
         cloneNode(slides[0]);
         cloneNode(slides[1]);
 
@@ -504,10 +493,8 @@
         slide.style.width = width + 'px';
         slide.setAttribute('data-index', pos);
 
-        if (browser.transitions) {
-          slide.style.left = (pos * -width) + 'px';
-          move(pos, index > pos ? -width : (index < pos ? width : 0), 0);
-        }
+        slide.style.left = (pos * -width) + 'px';
+        move(pos, index > pos ? -width : (index < pos ? width : 0), 0);
       }
 
       moveFrame(index, 0, 0);
@@ -577,44 +564,35 @@
       // do nothing if already on requested slide
       if (index === to) return;
 
-      if (browser.transitions) {
-
         var direction = Math.abs(index-to) / (index-to); // 1: backward, -1: forward
 
-        // get the actual position of the slide
-        if (options.continuous) {
-          var natural_direction = direction;
-          direction = -slidePos[slideIndexAt(to)] / width;
+      // get the actual position of the slide
+      if (options.continuous) {
+        var natural_direction = direction;
+        direction = -slidePos[slideIndexAt(to)] / width;
 
-          // if going forward but to < index, use to = slides.length + to
-          // if going backward but to > index, use to = -slides.length + to
-          if (direction !== natural_direction) {
-            to = -direction * slides.length + to;
-          }
-
+        // if going forward but to < index, use to = slides.length + to
+        // if going backward but to > index, use to = -slides.length + to
+        if (direction !== natural_direction) {
+          to = -direction * slides.length + to;
         }
 
-        var diff = Math.abs(index-to) - 1;
+      }
 
-        // move all the slides between index and to in the right direction
-        while (diff--) {
-          move( slideIndexAt((to > index ? to : index) - diff - 1), width * direction, 0);
-        }
+      var diff = Math.abs(index-to) - 1;
 
-        to = slideIndexAt(to);
+      // move all the slides between index and to in the right direction
+      while (diff--) {
+        move( slideIndexAt((to > index ? to : index) - diff - 1), width * direction, 0);
+      }
 
-        move(index, width * direction, slideSpeed || speed);
-        move(to, 0, slideSpeed || speed);
+      to = slideIndexAt(to);
 
-        if (options.continuous) { // we need to get the next in place
-          move(slideIndexAt(to - direction), -(width * direction), 0);
-        }
+      move(index, width * direction, slideSpeed || speed);
+      move(to, 0, slideSpeed || speed);
 
-      } else {
-
-        to = slideIndexAt(to);
-        animate(index * -width, to * -width, slideSpeed || speed);
-        // no fallback for a circular continuous if the browser does not accept transitions
+      if (options.continuous) { // we need to get the next in place
+        move(slideIndexAt(to - direction), -(width * direction), 0);
       }
 
       index = to;
@@ -635,48 +613,40 @@
 
       if (!style) return;
 
-      style.webkitTransitionDuration =
-        style.MozTransitionDuration =
-        style.msTransitionDuration =
-        style.OTransitionDuration =
-        style.transitionDuration = speed + 'ms';
+      if (browser.transitions) {
+        style.webkitTransitionDuration =
+          style.MozTransitionDuration =
+          style.msTransitionDuration =
+          style.OTransitionDuration =
+          style.transitionDuration = speed + 'ms';
 
-      style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
-      style.msTransform =
-        style.MozTransform =
-        style.OTransform = 'translateX(' + dist + 'px)';
+        style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
+        style.msTransform =
+          style.MozTransform =
+          style.OTransform = 'translateX(' + dist + 'px)';
 
-    }
-
-    function animate(from, to, speed) {
-
-      // if not an animation, just reposition
-      if (!speed) {
-        element.style.left = to + 'px';
-        return;
+      } else {
+        const startPosition = parseInt(style.left, 10) || 0;
+        const endPosition = -(width * index) + dist;
+        if (!speed) {
+          style.left = endPosition + 'px';
+        } else {
+          let start;
+          requestAnimationFrame(function step(timestamp) {
+            if (!start) {
+              start = timestamp;
+              requestAnimationFrame(step);
+            } else if (timestamp - start >= speed) {
+              style.left = endPosition + 'px';
+            } else {
+              const elapsedTime = timestamp - start;
+              style.left = Math.floor(startPosition + (endPosition - startPosition) * (elapsedTime/speed)) + 'px';
+              requestAnimationFrame(step);
+            }
+          });
+        }
       }
 
-      let start;
-
-      requestAnimationFrame(function step(timestamp) {
-        if (!start) {
-          start = timestamp;
-          requestAnimationFrame(step);
-        } else if (timestamp - start >= speed) {
-
-          element.style.left = to + 'px';
-
-          if (delay || options.autoRestart) restart();
-
-          runTransitionEnd(getPos(), slides[index]);
-
-        } else {
-          const timeElap = timestamp - start;
-          element.style.left = ((to-from) * (timeElap/speed) + from) + 'px';
-
-          requestAnimationFrame(step);
-        }
-      });
     }
 
     function begin() {
@@ -723,9 +693,7 @@
       var pos = slides.length;
       while (pos--) {
 
-        if (browser.transitions) {
-          translate(pos, 0, 0);
-        }
+        translate(pos, 0, 0);
 
         var slide = slides[pos];
 
