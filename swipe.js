@@ -487,7 +487,6 @@
 
       slides.forEach((slide, slideIndex) => {
         slide.style.width = width + 'px';
-        slide.style.left = (slideIndex * -width) + 'px';
 
         slide.dataset.index = slideIndex;
         translate(slideIndex, -width, 0); // get the slides out of the way
@@ -614,6 +613,8 @@
 
       if (!style) return;
 
+      const endPosition = -(width * slideIndex) + dist;
+
       if (browser.transitions) {
         style.webkitTransitionDuration =
           style.MozTransitionDuration =
@@ -621,14 +622,13 @@
           style.OTransitionDuration =
           style.transitionDuration = speed + 'ms';
 
-        style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
+        style.webkitTransform = 'translate(' + endPosition + 'px,0)' + 'translateZ(0)';
         style.msTransform =
           style.MozTransform =
-          style.OTransform = 'translateX(' + dist + 'px)';
+          style.OTransform = 'translateX(' + endPosition + 'px)';
 
       } else {
         const startPosition = parseInt(style.left, 10) || 0;
-        const endPosition = -(width * slideIndex) + dist;
         if (!speed) {
           style.left = endPosition + 'px';
         } else {
