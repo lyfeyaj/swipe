@@ -44,6 +44,8 @@
 
     continuous: true,
 
+    disabled: false,
+
     disableScroll: false,
 
     draggable: true,
@@ -101,28 +103,22 @@
     var delay = options.auto;
     var interval;
 
-    var disabled = false;
+    var disabled = options.disabled;
 
     // utilities
 
     // check browser capabilities
     var browser = {
-      addEventListener: !!root.addEventListener,
-      // eslint-disable-next-line no-undef
-      touch: ('ontouchstart' in root) || root.DocumentTouch && _document instanceof DocumentTouch,
-      transitions: (function(temp) {
-        var props = ['transitionProperty', 'WebkitTransition', 'MozTransition', 'OTransition', 'msTransition'];
-        for ( var i in props ) {
-          if (temp.style[ props[i] ] !== undefined){
-            return true;
-          }
-        }
-        return false;
-      })(_document.createElement('swipe'))
+      transitions: (({style}) =>
+        ['transitionProperty', 'WebkitTransition', 'MozTransition', 'OTransition', 'msTransition']
+          .some((prop) => prop in style)
+      )(_document.createElement('swipe'))
     };
 
     // quit if no root element
     if (!container) throw new Error('Missing swipe container');
+
+    if (!_document.addEventListener) throw new Error('IE8 and earlier no longer supported');
 
     var element = container.children[0];
     var slides, slidePos, width, length;
@@ -376,48 +372,36 @@
 
     // remove all event listeners
     function detachEvents() {
-      if (browser.addEventListener) {
-        // remove current event listeners
-        element.removeEventListener('touchstart', events, false);
-        element.removeEventListener('mousedown', events, false);
-        element.removeEventListener('webkitTransitionEnd', events, false);
-        element.removeEventListener('msTransitionEnd', events, false);
-        element.removeEventListener('oTransitionEnd', events, false);
-        element.removeEventListener('otransitionend', events, false);
-        element.removeEventListener('transitionend', events, false);
-        root.removeEventListener('resize', events, false);
-      } else {
-        root.onresize = null;
-      }
+      element.removeEventListener('touchstart', events, false);
+      element.removeEventListener('mousedown', events, false);
+      element.removeEventListener('webkitTransitionEnd', events, false);
+      element.removeEventListener('msTransitionEnd', events, false);
+      element.removeEventListener('oTransitionEnd', events, false);
+      element.removeEventListener('otransitionend', events, false);
+      element.removeEventListener('transitionend', events, false);
+      root.removeEventListener('resize', events, false);
     }
 
     // add event listeners
     function attachEvents() {
-      if (browser.addEventListener) {
 
-        // set touchstart event on element
-        if (browser.touch) {
-          element.addEventListener('touchstart', events, false);
-        }
+      element.addEventListener('touchstart', events, false);
 
-        if (options.draggable) {
-          element.addEventListener('mousedown', events, false);
-        }
-
-        if (browser.transitions) {
-          element.addEventListener('webkitTransitionEnd', events, false);
-          element.addEventListener('msTransitionEnd', events, false);
-          element.addEventListener('oTransitionEnd', events, false);
-          element.addEventListener('otransitionend', events, false);
-          element.addEventListener('transitionend', events, false);
-        }
-
-        // set resize event on window
-        root.addEventListener('resize', events, false);
-
-      } else {
-        root.onresize = debouncedSetup; // to play nice with old IE
+      if (options.draggable) {
+        element.addEventListener('mousedown', events, false);
       }
+
+      if (browser.transitions) {
+        element.addEventListener('webkitTransitionEnd', events, false);
+        element.addEventListener('msTransitionEnd', events, false);
+        element.addEventListener('oTransitionEnd', events, false);
+        element.addEventListener('otransitionend', events, false);
+        element.addEventListener('transitionend', events, false);
+      }
+
+      // set resize event on window
+      root.addEventListener('resize', events, false);
+
     }
 
     function detachFollowupEvents(event) {
