@@ -77,6 +77,9 @@
               <div><b>18</b></div>
               <div><b>19</b></div>
               <div><b>20</b></div>
+              <div><b>21</b></div>
+              <div><b>22</b></div>
+              <div><b>23</b></div>
             </div>
           </div>
 
@@ -180,7 +183,11 @@ window.mySwipe = new Swipe(element, {
   disableScroll: true,
   stopPropagation: true,
   callback: function(index, element) {},
-  transitionEnd: function(index, element) {}
+  transitionEnd: function(index, element) {},
+  order: {
+    get: function get(index) { return 7 * (index === 0 ? 1 : get(index-1)) % 23; },
+    len: () => 22
+  }
 });
 
 // using jQuery

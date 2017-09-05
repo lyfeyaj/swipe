@@ -52,6 +52,8 @@
 
     startSlide: 0,
     speed: 300,
+
+    order: null,
   };
 
   const {requestAnimationFrame, cancelAnimationFrame} = root.requestAnimationFrame ? root : ((() => {
@@ -120,10 +122,17 @@
 
     if (!_document.addEventListener) throw new Error('IE8 and earlier no longer supported');
 
-    var element = container.children[0];
-    var slides, slidePos, width, length;
-    var index = parseInt(options.startSlide, 10) || 0;
-    var speed = options.speed;
+    let element = container.children[0];
+    let slides, slidePos, width, length;
+    let index = parseInt(options.startSlide, 10) || 0;
+    let speed = options.speed;
+
+    const defaultOrder = {
+      get: orderIndexAtNormal,
+      len: () => slides.length,
+    };
+
+    let order = options.order || defaultOrder;
 
     // Returns a function, that, as long as it continues to be invoked, 
     // will not be triggered.
@@ -284,13 +293,13 @@
 
         if (isValidSlideGesture && !isPastBounds) {
 
-          const nextIndex = slideIndexAt(index + direction);
+          const nextIndex = orderIndexAt(index + direction);
 
           // The new current slide must be between the 2 slides before and after itself
           move(index, -width * direction, speed);
           move(nextIndex, 0, speed);
 
-          move(slideIndexAt(index + 2*direction), width * direction, 0);
+          move(orderIndexAt(index + 2*direction), width * direction, 0);
 
           index = nextIndex;
 
@@ -324,6 +333,8 @@
     return {
       // initialize
       setup: setup,
+
+      reorder: reorder,
 
       // go to slide
       slide: function(to, speed) {
@@ -365,9 +376,9 @@
       kill: kill
     };
 
-    function moveFrame(index, dist, speed) {
+    function moveFrame(orderIndex, dist, speed) {
       [-1, 0, 1]
-        .forEach((offset) => move(slideIndexAt(index+offset), offset*width + dist, speed));
+        .forEach((offset) => move(orderIndexAt(orderIndex+offset), offset*width + dist, speed));
     }
 
     // remove all event listeners
@@ -426,6 +437,13 @@
       }
     }
 
+    function reorder(newOrder) {
+      move(index, -width, 0);
+      order = newOrder || defaultOrder;
+      index = index % order.len();
+      moveFrame(index, 0, 0);
+    }
+
     // clone nodes when there is only two slides
     function cloneNode(el) {
       var clone = el.cloneNode(true);
@@ -439,13 +457,19 @@
     }
 
     function setup() {
-      // cache slides
-      slides = element.children;
+      slides = Array
+        .from(element.children)
+        .filter((child) => {
+          const cloned = child.dataset.cloned;
+          cloned && element.removeChild(child)
+          return !cloned;
+        });
+
       length = slides.length;
 
-      // slides length correction, minus cloned slides
-      for (var i = 0; i < slides.length; i++) {
-        if (slides[i].getAttribute('data-cloned')) length--;
+      if (options.continuous && slides.length === 2) {
+        slides.forEach(cloneNode);
+        slides = Array.from(element.children);
       }
 
       // set continuous to false if only one slide
@@ -453,33 +477,20 @@
         options.continuous = false;
       }
 
-      // special case if two slides
-      if (options.continuous && slides.length < 3) {
-        cloneNode(slides[0]);
-        cloneNode(slides[1]);
-
-        slides = element.children;
-      }
-
-      // create an array to store current positions of each slide
       slidePos = new Array(slides.length);
 
       // determine width of each slide
       width = container.getBoundingClientRect().width || container.offsetWidth;
 
-      element.style.width = (slides.length * width * 2) + 'px';
+      element.style.width = (slides.length * width * 2) + 'px';;
 
-      // stack elements
-      var pos = slides.length;
-      while(pos--) {
-        var slide = slides[pos];
-
+      slides.forEach((slide, slideIndex) => {
         slide.style.width = width + 'px';
-        slide.setAttribute('data-index', pos);
+        slide.style.left = (slideIndex * -width) + 'px';
 
-        slide.style.left = (pos * -width) + 'px';
-        move(pos, index > pos ? -width : (index < pos ? width : 0), 0);
-      }
+        slide.dataset.index = slideIndex;
+        translate(slideIndex, -width, 0); // get the slides out of the way
+      });
 
       moveFrame(index, 0, 0);
 
@@ -493,14 +504,14 @@
     function prev() {
       if (disabled) return;
 
-      const prevSlide = slideIndexAt(index-1);
+      const prevSlide = orderIndexAt(index-1);
       prevSlide !== undefined && slide(prevSlide);
     }
 
     function next() {
       if (disabled) return;
 
-      const nextSlide = slideIndexAt(index+1);
+      const nextSlide = orderIndexAt(index+1);
       nextSlide !== undefined && slide(nextSlide);
     }
 
@@ -516,17 +527,21 @@
       }
     }
 
-    function slideIndexAtCircular(index) {
-      const modulo = slides.length;
+    function orderIndexAtCircular(index) {
+      const modulo = order.len();
       return (modulo + index % modulo) % modulo;
     }
 
-    function slideIndexAtNormal(index) {
-      return (index >= 0 && index < length) ? index : undefined;
+    function orderIndexAtNormal(index) {
+      return (index >= 0 && index < order.len()) ? index : undefined;
     }
 
-    function slideIndexAt(index) {
-      return (options.continuous ? slideIndexAtCircular : slideIndexAtNormal)(index);
+    function orderIndexAt(index) {
+      return (options.continuous ? orderIndexAtCircular : orderIndexAtNormal)(index);
+    }
+
+    function slideIndexAt(orderIndex) {
+      return order.get(orderIndex);
     }
 
     function getPos() {
@@ -553,7 +568,7 @@
       // get the actual position of the slide
       if (options.continuous) {
         var natural_direction = direction;
-        direction = -slidePos[slideIndexAt(to)] / width;
+        direction = -slidePos[orderIndexAt(to)] / width;
 
         // if going forward but to < index, use to = slides.length + to
         // if going backward but to > index, use to = -slides.length + to
@@ -567,16 +582,16 @@
 
       // move all the slides between index and to in the right direction
       while (diff--) {
-        move( slideIndexAt((to > index ? to : index) - diff - 1), width * direction, 0);
+        move( orderIndexAt((to > index ? to : index) - diff - 1), width * direction, 0);
       }
 
-      to = slideIndexAt(to);
+      to = orderIndexAt(to);
 
       move(index, width * direction, slideSpeed || speed);
       move(to, 0, slideSpeed || speed);
 
       if (options.continuous) { // we need to get the next in place
-        move(slideIndexAt(to - direction), -(width * direction), 0);
+        move(orderIndexAt(to - direction), -(width * direction), 0);
       }
 
       index = to;
@@ -585,14 +600,15 @@
       onNextTick(() => runCallback(getPos(), slides[index], direction));
     }
 
-    function move(index, dist, speed) {
-      translate(index, dist, speed);
-      slidePos[index] = dist;
+    function move(orderIndex, dist, speed) {
+      const slideIndex = slideIndexAt(orderIndex);
+      translate(slideIndex, dist, speed);
+      slidePos[orderIndex] = dist;
     }
 
-    function translate(index, dist, speed) {
+    function translate(slideIndex, dist, speed) {
 
-      var slide = slides[index];
+      var slide = slides[slideIndex];
       var style = slide && slide.style;
 
       if (!style) return;
@@ -611,7 +627,7 @@
 
       } else {
         const startPosition = parseInt(style.left, 10) || 0;
-        const endPosition = -(width * index) + dist;
+        const endPosition = -(width * slideIndex) + dist;
         if (!speed) {
           style.left = endPosition + 'px';
         } else {
