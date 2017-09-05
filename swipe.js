@@ -292,22 +292,22 @@
         // determine direction of swipe (-1: backward, 1: forward)
         const direction = delta.x < 0 ? 1 : -1;
 
+        const nextIndex = orderIndexAt(index + direction);
         if (isValidSlideGesture && !isPastBounds) {
-
-          const nextIndex = orderIndexAt(index + direction);
 
           // The new current slide must be between the 2 slides before and after itself
           move(index, -width * direction, speed);
           move(nextIndex, 0, speed);
-
-          move(orderIndexAt(index + 2*direction), width * direction, 0);
 
           index = nextIndex;
 
           runCallback(getPos(), slides[index], direction);
 
         } else {
-          moveFrame(index, 0, speed);
+          move(index, 0, speed);
+          if(nextIndex !== index) {
+            move(nextIndex, width*direction, speed);
+          }
         }
 
         // kill touchmove and touchend event listeners until touchstart called again
@@ -378,8 +378,14 @@
     };
 
     function moveFrame(orderIndex, dist, speed) {
-      [-1, 0, 1]
-        .forEach((offset) => move(orderIndexAt(orderIndex+offset), offset*width + dist, speed));
+      const direction = dist < 0 ? 1 : -1;
+
+      if (slideIndexAt(orderIndexAt(orderIndex+1)) !== slideIndexAt(orderIndexAt(orderIndex-1))) {
+        move(orderIndexAt(orderIndex-direction), -width, 0);
+      }
+
+      move(orderIndexAt(orderIndex), dist, speed);
+      move(orderIndexAt(orderIndex+direction), dist + width*direction, speed);
     }
 
     // remove all event listeners
@@ -445,33 +451,9 @@
       moveFrame(index, 0, 0);
     }
 
-    // clone nodes when there is only two slides
-    function cloneNode(el) {
-      var clone = el.cloneNode(true);
-      element.appendChild(clone);
-
-      // tag these slides as clones (to remove them on kill)
-      clone.setAttribute('data-cloned', true);
-
-      // Remove id from element
-      clone.removeAttribute('id');
-    }
-
     function setup() {
-      slides = Array
-        .from(element.children)
-        .filter((child) => {
-          const cloned = child.dataset.cloned;
-          cloned && element.removeChild(child);
-          return !cloned;
-        });
-
+      slides = Array.from(element.children);
       length = slides.length;
-
-      if (options.continuous && slides.length === 2) {
-        slides.forEach(cloneNode);
-        slides = Array.from(element.children);
-      }
 
       // set continuous to false if only one slide
       if (slides.length < 2) {
@@ -545,14 +527,7 @@
     }
 
     function getPos() {
-      // Fix for the clone issue in the event of 2 slides
-      var currentIndex = index;
-
-      if (currentIndex >= length) {
-        currentIndex = currentIndex - length;
-      }
-
-      return currentIndex;
+      return index;
     }
 
     function slide(to, slideSpeed) {
@@ -694,11 +669,6 @@
       var pos = slides.length;
       while (pos--) {
         var slide = slides[pos];
-
-        // if the slide is tagged as clone, remove it
-        if (slide.dataset.cloned) {
-          slide.parentElement.removeChild(slide);
-        }
 
         // remove styles
         slide.style.width = '';
