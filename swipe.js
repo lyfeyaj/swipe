@@ -56,6 +56,7 @@
     order: null,
   };
 
+  // eslint-disable-next-line no-unused-vars
   const {requestAnimationFrame, cancelAnimationFrame} = root.requestAnimationFrame ? root : ((() => {
     let lastId = 0;
     let callbacks = undefined;
@@ -142,12 +143,12 @@
       const cancel = () => {
         timeout && clearTimeout(timeout);
         timeout = 0;
-      }
+      };
 
       const debounced = function(...args) {
         cancel();
         timeout = setTimeout(() => fn.apply(this, ...args), threshhold);
-      }
+      };
 
       // allow remove debounced timeout
       debounced.cancel = cancel;
@@ -303,7 +304,7 @@
 
           index = nextIndex;
 
-          runCallback(getPos(), slides[index], direction)
+          runCallback(getPos(), slides[index], direction);
 
         } else {
           moveFrame(index, 0, speed);
@@ -461,7 +462,7 @@
         .from(element.children)
         .filter((child) => {
           const cloned = child.dataset.cloned;
-          cloned && element.removeChild(child)
+          cloned && element.removeChild(child);
           return !cloned;
         });
 
@@ -482,7 +483,7 @@
       // determine width of each slide
       width = container.getBoundingClientRect().width || container.offsetWidth;
 
-      element.style.width = (slides.length * width * 2) + 'px';;
+      element.style.width = (slides.length * width * 2) + 'px';
 
       slides.forEach((slide, slideIndex) => {
         slide.style.width = width + 'px';
@@ -563,7 +564,7 @@
       // do nothing if already on requested slide
       if (index === to) return;
 
-        var direction = Math.abs(index-to) / (index-to); // 1: backward, -1: forward
+      var direction = Math.abs(index-to) / (index-to); // 1: backward, -1: forward
 
       // get the actual position of the slide
       if (options.continuous) {
