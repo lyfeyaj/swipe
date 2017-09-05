@@ -714,15 +714,13 @@
     }
   }
 
-  if ( root.jQuery || root.Zepto ) {
-    (function($) {
-      $.fn.Swipe = function(params) {
-        return this.each(function() {
-          $(this).data('Swipe', new Swipe($(this)[0], params));
-        });
-      };
-    })( root.jQuery || root.Zepto );
-  }
+  [ root.jQuery, root.Zepto ]
+    .filter(($) => $ !== undefined)
+    .forEach(($) => $.fn.Swipe = function(options) {
+      return this.each(function(_, elem) {
+        this.data('Swipe', new Swipe(elem, options));
+      });
+    });
 
   return Swipe;
 }));
