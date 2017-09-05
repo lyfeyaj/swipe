@@ -676,15 +676,11 @@
       // reset slides
       var pos = slides.length;
       while (pos--) {
-
-        translate(pos, 0, 0);
-
         var slide = slides[pos];
 
         // if the slide is tagged as clone, remove it
-        if (slide.getAttribute('data-cloned')) {
-          var _parent = slide.parentElement;
-          _parent.removeChild(slide);
+        if (slide.dataset.cloned) {
+          slide.parentElement.removeChild(slide);
         }
 
         // remove styles
@@ -702,14 +698,11 @@
           slide.style.MozTransform =
           slide.style.OTransform = '';
 
-        // remove custom attributes (?)
-        // slide.removeAttribute('data-index');
+        delete slide.dataset.index;
       }
 
-      // remove all events
       detachEvents();
 
-      // remove throttled function timeout
       debouncedSetup.cancel();
     }
   }
