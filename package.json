@@ -38,5 +38,6 @@
   "license": "MIT",
   "contributors": [
     "Felix Liu <lyfeyaj@gmail.com> (http://lyfyeaj.com/)"
-  ]
+  ],
+  "browser": "build/swipe.js"
 }
