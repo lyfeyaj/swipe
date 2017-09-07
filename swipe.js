@@ -540,19 +540,6 @@
 
       var direction = Math.abs(index-to) / (index-to); // 1: backward, -1: forward
 
-      // get the actual position of the slide
-      if (options.continuous) {
-        var natural_direction = direction;
-        direction = -slidePos[orderIndexAt(to)] / width;
-
-        // if going forward but to < index, use to = slides.length + to
-        // if going backward but to > index, use to = -slides.length + to
-        if (direction !== natural_direction) {
-          to = -direction * slides.length + to;
-        }
-
-      }
-
       var diff = Math.abs(index-to) - 1;
 
       // move all the slides between index and to in the right direction
@@ -562,8 +549,16 @@
 
       to = orderIndexAt(to);
 
-      move(index, width * direction, slideSpeed || speed);
-      move(to, 0, slideSpeed || speed);
+      const currentIndex = index, nextIndex = to;
+      requestAnimationFrame(() => {
+        move(currentIndex, 0, 0);
+        move(nextIndex, -(width*direction), 0);
+
+        requestAnimationFrame(() => {
+          move(currentIndex, width * direction, slideSpeed || speed);
+          move(nextIndex, 0, slideSpeed || speed);
+        })
+      });
 
       if (options.continuous) { // we need to get the next in place
         move(orderIndexAt(to - direction), -(width * direction), 0);
@@ -572,7 +567,7 @@
       index = to;
 
       const onNextTick = (cb, ...args) => cb && setTimeout(cb, 0, ...args);
-      onNextTick(() => runCallback(getPos(), slides[index], direction));
+      onNextTick(runCallback, getPos(), slides[index], direction);
     }
 
     function move(orderIndex, dist, speed) {
