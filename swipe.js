@@ -364,6 +364,9 @@
         slide(to, speed);
       },
 
+      // go to slide which attribute equals to a specific value
+      slideByAttribute: slideByAttribute,
+
       // move to previous
       prev: function() {
         stop();
@@ -620,6 +623,21 @@
         runCallback(getPos(), slides[index], direction);
       });
     }
+
+    function slideByAttribute(attribute, value) {
+      var pos = slides.length;
+      while (pos--) {
+        var slide = slides[pos];
+        var matchingAttribute = slide.getAttribute(attribute, value);
+
+        // Ignore clones and find element by given attribute
+        if (!slide.getAttribute('data-cloned') && matchingAttribute && matchingAttribute === value) {
+          var index = slide.getAttribute('data-index');
+          this.slide(index);
+        }
+      }
+    }
+
 
     function move(index, dist, speed) {
       translate(index, dist, speed);
