@@ -119,7 +119,7 @@ A Swipe instance exposes the following public methods:
 - `slide(index, duration)`: slide to the position matching the `index` (integer) (`duration`: speed of transition in milliseconds).
 - `restart()`: restart the slideshow with autoplay.
 - `stop()`: stop the slideshow and disable autoplay.
-- `setup()`: reinitialize swipe.
+- `setup(options)`: reinitialize swipe with options.
 - `disable()`: disable slideshow.
 - `enable()`: enable slideshow.
 - `kill()`: completely remove the Swipe instance.
