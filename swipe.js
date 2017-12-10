@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.2.10
+ * Swipe 2.2.11
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
@@ -456,7 +456,14 @@
       clone.removeAttribute('id');
     }
 
-    function setup() {
+    function setup(opts) {
+      // Overwrite options if necessary
+      if (opts != null) {
+        for (var prop in opts) {
+          options[prop] = opts[prop];
+        }
+      }
+
       // cache slides
       slides = element.children;
       length = slides.length;

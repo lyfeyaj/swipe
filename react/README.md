@@ -12,16 +12,16 @@ Install swipejs via `npm install swipejs`
 'use strict';
 
 import React from 'react';
-import { Swipe, SwipeItem } from 'swipejs/react';
+import Swipe, { SwipeItem } from 'swipejs/react';
 
 class HomePage extends React.Component {
-  constructor(...args) {
-    super(...args);
+  constructor(props) {
+    super(props);
     this.state = {};
   }
 
   componentDidMount() {
-    let mySwipe = this.refs.swipe.instance;
+    let mySwipe = this.swipe;
     // You can call swipe methods on `mySwipe`
     // mySwipe.prev()
     // mySwipe.next()
@@ -35,44 +35,50 @@ class HomePage extends React.Component {
     // mySwipe.enable()
   }
 
-  onTransactionEnd(index, elem) {
+  onTransactionEnd = (index, elem) => {
     // Your own logic
   }
 
-  handleCallback(index, elem) {
+  handleCallback = (index, elem) => {
     // Your own logic
   }
 
-  handleClick(e) {
+  handleClick = (e) => {
     // Your own logic
   }
 
   render() {
     return (
-      <Swipe className='custom-swipe-container-class'
-             ref='swipe'
-             startSlide={0}
-             speed={300}
-             auto={3000}
-             draggable={false}
-             continuous={true}
-             autoRestart={false}
-             disableScroll={false}
-             stopPropagation={false}
-             callback={this.handleCallback.bind(this)}
-             transitionEnd={this.onTransactionEnd.bind(this)}>
-        <SwipeItem className='custom-swipe-item-class'
-                   onClick={this.handleClick.bind(this)}>
+      <Swipe
+        className='custom-swipe-container-class'
+        ref={o => this.swipe = o}
+        startSlide={0}
+        speed={300}
+        auto={3000}
+        draggable={false}
+        continuous={true}
+        autoRestart={false}
+        disableScroll={false}
+        stopPropagation={false}
+        callback={this.handleCallback}
+        transitionEnd={this.onTransactionEnd}>
+
+        <SwipeItem
+          className='custom-swipe-item-class'
+          onClick={this.handleClick}>
           Slide One
         </SwipeItem>
-        <SwipeItem className='custom-swipe-item-class'
-                   onClick={this.handleClick.bind(this)}>
+        <SwipeItem
+          className='custom-swipe-item-class'
+          onClick={this.handleClick.bind(this)}>
           Slide Two
         </SwipeItem>
-        <SwipeItem className='custom-swipe-item-class'
-                   onClick={this.handleClick.bind(this)}>
+        <SwipeItem
+          className='custom-swipe-item-class'
+          onClick={this.handleClick.bind(this)}>
           Slide Three
         </SwipeItem>
+
       </Swipe>
     );
   }

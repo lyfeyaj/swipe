@@ -1,4 +1,4 @@
-// Type definitions for Swipe v2.2.10
+// Type definitions for Swipe v2.2.11
 // Project: https://github.com/lyfeyaj/swipe
 // Definitions by: Felix Liu <https://github.com/lyfeyaj>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
@@ -25,7 +25,7 @@ declare class Swipe {
     slide(index: number, duration: number): void;
     restart(): void;
     stop(): void;
-    setup(): void;
+    setup(options?: SwipeOptions): void;
     kill(): void;
     disable(): void;
     enable(): void;
