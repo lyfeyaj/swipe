@@ -138,15 +138,39 @@ Please go to [angular swipe plugin](angular-swipe) for source code and usage exa
 
 ## Who's using Swipe
 
-<img src="icons/cnn.png" width="170" height="80">
-<img src="icons/airbnb.png" width="170" height="80">
-<img src="icons/nhl.png" width="170" height="80">
-<img src="icons/htc.png" width="170" height="80">
-<img src="icons/thinkgeek.png" width="170" height="80">
-<img src="icons/snapguide.png" width="170" height="80">
-<img src="icons/everlane.png" width="170" height="80">
-<img src="icons/boqii.png" width="170" height="80">
-<img src="icons/allbeauty.png" width="170" height="80">
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="middle">
+        <img src="icons/airbnb.png" width="170px" height="80px">
+      </td>
+      <td align="center" valign="middle">
+        <img src="icons/nhl.png" width="170px" height="80px">
+      </td>
+      <td align="center" valign="middle">
+        <img src="icons/htc.png" width="170px" height="80px">
+      </td>
+      <td align="center" valign="middle">
+        <img src="icons/thinkgeek.png" width="170px" height="80px">
+      </td>
+    </tr>
+    <tr></tr>
+    <tr>
+      <td align="center" valign="middle">
+        <img src="icons/snapguide.png" width="170px" height="80px">
+      </td>
+      <td align="center" valign="middle">
+        <img src="icons/everlane.png" width="170px" height="80px">
+      </td>
+      <td align="center" valign="middle">
+        <img src="icons/boqii.png" width="170px" height="80px">
+      </td>
+      <td align="center" valign="middle">
+        <img src="icons/allbeauty.png" width="170px" height="80px">
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 Send me a [note](mailto:lyfeyaj@gmail.com) if you want your logo here
 
