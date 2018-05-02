@@ -114,7 +114,7 @@
       if (el.currentStyle) {
         dir = el.currentStyle[prop];
       } else if (root.getComputedStyle) {
-        dir = _document.defaultView.getComputedStyle(el, null).getPropertyValue(prop);
+        dir = root.getComputedStyle(el, null).getPropertyValue(prop);
       }
       return 'rtl' === dir ? 'right' : 'left';
     })(container, 'direction');
@@ -498,8 +498,8 @@
 
       // adjust style on rtl
       if ('right' === slideDir) {
-        for (var i = 0; i < slides.length; i++) {
-          slides[i].style.float = 'right';
+        for (var j = 0; j < slides.length; j++) {
+          slides[j].style.float = 'right';
         }
       }
 
