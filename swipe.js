@@ -220,7 +220,8 @@
             return;
           }
 
-          if (options.disableScroll) {
+          // we can disable scrolling unless it is already in progress
+          if (options.disableScroll && event.cancelable) {
             event.preventDefault();
           }
 
@@ -241,8 +242,11 @@
         // if user is not trying to scroll vertically
         if (!isScrolling) {
 
-          // prevent native scrolling
-          event.preventDefault();
+          // if it is not already scrolling
+          if (event.cancelable) {
+            // prevent native scrolling
+            event.preventDefault();
+          }
 
           // stop slideshow
           stop();
