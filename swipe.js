@@ -87,6 +87,23 @@
     // check browser capabilities
     var browser = {
       addEventListener: !!root.addEventListener,
+      passiveEvents: (function () {
+        // Test via a getter in the options object to see if the passive property is accessed
+        var supportsPassive = false;
+        try {
+          var opts = Object.defineProperty({}, 'passive', {
+            get: function () {
+              supportsPassive = true;
+            }
+          });
+          root.addEventListener('testEvent', null, opts);
+          root.removeEventListener('testEvent', null, opts);
+        }
+        catch (e) {
+          supportsPassive = false;
+        }
+        return supportsPassive;
+      })(),
       // eslint-disable-next-line no-undef
       touch: ('ontouchstart' in root) || root.DocumentTouch && _document instanceof DocumentTouch,
       transitions: (function(temp) {
@@ -186,7 +203,7 @@
           element.addEventListener('mouseup', this, false);
           element.addEventListener('mouseleave', this, false);
         } else {
-          element.addEventListener('touchmove', this, false);
+          element.addEventListener('touchmove', this, browser.passiveEvents ? { passive: false } : false);
           element.addEventListener('touchend', this, false);
         }
 
@@ -341,7 +358,7 @@
           element.removeEventListener('mouseup', events, false);
           element.removeEventListener('mouseleave', events, false);
         } else {
-          element.removeEventListener('touchmove', events, false);
+          element.removeEventListener('touchmove', events, browser.passiveEvents ? { passive: false } : false);
           element.removeEventListener('touchend', events, false);
         }
 
@@ -412,7 +429,7 @@
     function detachEvents() {
       if (browser.addEventListener) {
         // remove current event listeners
-        element.removeEventListener('touchstart', events, false);
+        element.removeEventListener('touchstart', events, browser.passiveEvents ? { passive: true } : false);
         element.removeEventListener('mousedown', events, false);
         element.removeEventListener('webkitTransitionEnd', events, false);
         element.removeEventListener('msTransitionEnd', events, false);
@@ -431,7 +448,7 @@
 
         // set touchstart event on element
         if (browser.touch) {
-          element.addEventListener('touchstart', events, false);
+          element.addEventListener('touchstart', events, browser.passiveEvents ? { passive: true } : false);
         }
 
         if (options.draggable) {
