@@ -109,6 +109,16 @@
     var speed = options.speed || 300;
     options.continuous = options.continuous !== undefined ? options.continuous : true;
 
+    // check text direction
+    var slideDir = (function(el, prop, dir) {
+      if (el.currentStyle) {
+        dir = el.currentStyle[prop];
+      } else if (root.getComputedStyle) {
+        dir = root.getComputedStyle(el, null).getPropertyValue(prop);
+      }
+      return 'rtl' === dir ? 'right' : 'left';
+    })(container, 'direction');
+
     // AutoRestart option: auto restart slideshow after user's touch event
     options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : false;
 
@@ -486,6 +496,13 @@
         slides = element.children;
       }
 
+      // adjust style on rtl
+      if ('right' === slideDir) {
+        for (var j = 0; j < slides.length; j++) {
+          slides[j].style.float = 'right';
+        }
+      }
+
       // create an array to store current positions of each slide
       slidePos = new Array(slides.length);
 
@@ -503,7 +520,7 @@
         slide.setAttribute('data-index', pos);
 
         if (browser.transitions) {
-          slide.style.left = (pos * -width) + 'px';
+          slide.style[slideDir] = (pos * -width) + 'px';
           move(pos, index > pos ? -width : (index < pos ? width : 0), 0);
         }
       }
@@ -515,7 +532,7 @@
       }
 
       if (!browser.transitions) {
-        element.style.left = (index * -width) + 'px';
+        element.style[slideDir] = (index * -width) + 'px';
       }
 
       container.style.visibility = 'visible';
@@ -657,7 +674,7 @@
 
       // if not an animation, just reposition
       if (!speed) {
-        element.style.left = to + 'px';
+        element.style[slideDir] = to + 'px';
         return;
       }
 
@@ -668,7 +685,7 @@
 
         if (timeElap > speed) {
 
-          element.style.left = to + 'px';
+          element.style[slideDir] = to + 'px';
 
           if (delay || options.autoRestart) restart();
 
@@ -679,7 +696,7 @@
           return;
         }
 
-        element.style.left = (( (to - from) * (Math.floor((timeElap / speed) * 100) / 100) ) + from) + 'px';
+        element.style[slideDir] = (( (to - from) * (Math.floor((timeElap / speed) * 100) / 100) ) + from) + 'px';
       }, 4);
 
     }
@@ -722,7 +739,7 @@
 
       // reset element
       element.style.width = '';
-      element.style.left = '';
+      element.style[slideDir] = '';
 
       // reset slides
       var pos = slides.length;
@@ -742,7 +759,7 @@
 
         // remove styles
         slide.style.width = '';
-        slide.style.left = '';
+        slide.style[slideDir] = '';
 
         slide.style.webkitTransitionDuration =
           slide.style.MozTransitionDuration =
