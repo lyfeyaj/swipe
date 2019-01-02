@@ -646,11 +646,11 @@
         style.OTransitionDuration =
         style.transitionDuration = speed + 'ms';
 
-      style.webkitTransform = 'translate(' + dist + 'px,0)' + 'translateZ(0)';
-      style.msTransform =
+      style.webkitTransform =
+        style.msTransform =
         style.MozTransform =
-        style.OTransform = 'translateX(' + dist + 'px)';
-
+        style.OTransform =
+        style.transform = 'translateX(' + dist + 'px)';
     }
 
     function animate(from, to, speed) {

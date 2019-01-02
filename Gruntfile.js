@@ -1,13 +1,13 @@
-/*global module */
-module.exports = function( grunt ) {
+var sass = require('node-sass');
+
+module.exports = function (grunt) {
   'use strict';
 
   grunt.initConfig({
-
     uglify: {
       options: {
         mangle: {
-          except: ['Swipe']
+          reserved: ['Swipe']
         },
         preserveComments: 'some'
       },
@@ -21,6 +21,7 @@ module.exports = function( grunt ) {
 
     sass: {
       options: {
+        implementation: sass,
         style: 'expanded'
       },
       demo: {
@@ -52,10 +53,9 @@ module.exports = function( grunt ) {
   });
 
   // build
+  require('load-grunt-tasks')(grunt);
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-sass');
-  grunt.loadNpmTasks('grunt-babel');
   grunt.registerTask('build', ['babel', 'sass', 'uglify']);
   grunt.registerTask('default', 'build');
 };
