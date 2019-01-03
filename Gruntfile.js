@@ -26,7 +26,7 @@ module.exports = function (grunt) {
       },
       demo: {
         files: {
-          './dist/style.css': './sass/style.scss'
+          './doc/style.css': './doc/sass/style.scss'
         }
       }
     },
