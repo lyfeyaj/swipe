@@ -60,8 +60,8 @@ ReactDOM.render(<Slider />, document.getElementById('app'));
 
 | Options             | Type     | Default | Description                                                                                                                                                                                                      |
 |---------------------|----------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **className**       | String   | ''      | custom class name for swipe container element                                                                                                                                                                    |
-| **style**           | Object   | {}      | custom styles for swipe                                                                                                                                                                                          |
+| **className**       | String   | ''      | custom class name for swipe item element                                                                                                                                                                    |
+| **style**           | Object   | {}      | custom styles for swipe item                                                                                                                                                                                          |
 | **onClick**         | Function | null    | onClick event handler                                                                                                                                                                                            |
 
 ### API
