@@ -19,7 +19,7 @@ This repo is a continuation of the dead [Swipe](https://github.com/thebird/Swipe
 
 ### Preview
 
-[![Preview Image](docs/images/preview.png)](http://lyfeyaj.github.io/swipe/)
+[![Preview Image](docs/images/preview.png)](https://swipe.js.org)
 
 Thanks to [@loup-brun](https://github.com/loup-brun)
 
@@ -27,7 +27,7 @@ Thanks to [@loup-brun](https://github.com/loup-brun)
 
 You can install this package directly via Bower `bower install swipe-js` or NPM `npm install swipejs`.
 
-See the [online example](http://lyfeyaj.github.io/swipe/) for a simple demo.
+See the [online example](https://swipe.js.org) for a simple demo.
 
 ### Markup
 
@@ -130,11 +130,11 @@ Swipe is now compatible with all browsers, including IE7+. Swipe works best on d
 
 ## React Support
 
-Please go to [react swipe plugin](react), or check the [example](examples/react)
+Please go to [react swipe plugin](react), or check the [example](docs/examples/react)
 
-## Angular Support
+## Angular(V1) Support
 
-Please go to [angular swipe plugin](angular-swipe) for source code and usage example.
+Please go to [angular swipe plugin](https://swipe.js.org/examples/angular-v1) for source code and usage example.
 
 ## Who's using Swipe
 
