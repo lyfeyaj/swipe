@@ -24,13 +24,11 @@ const Slider = () => {
 
   return (
     <div>
-      <Swipe
-        className='swipe-container'
-        ref={o => swipeEl = o}
+      <Swipe ref={o => swipeEl = o}
       >
-        <SwipeItem className='swipe-item'>Slide One</SwipeItem>
-        <SwipeItem className='swipe-item'>Slide Two</SwipeItem>
-        <SwipeItem className='swipe-item'>Slide Three</SwipeItem>
+        <SwipeItem>Slide One</SwipeItem>
+        <SwipeItem>Slide Two</SwipeItem>
+        <SwipeItem>Slide Three</SwipeItem>
       </Swipe>
       <button onClick={() => swipeEl.next()}>Next</button>
       <button onClick={() => swipeEl.prev()}>Previous</button>
