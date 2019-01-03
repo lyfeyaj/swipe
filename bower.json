@@ -1,6 +1,6 @@
 {
   "name": "swipe-js",
-  "version": "2.2.11",
+  "version": "2.2.13",
   "main": [
     "./swipe.js"
   ],
