@@ -9,7 +9,7 @@ Swipe
 
 > Swipe is the most accurate touch slider. It is extremely lightweight (only 6kb minified) and works across all browsers, including IE7+.
 
-> Support both Angular.js(v1) and React.js
+> Support both React.js and Angular.js(v1)
 
 ## Note
 
@@ -25,7 +25,9 @@ Thanks to [@loup-brun](https://github.com/loup-brun)
 
 ### Installation
 
-You can install this package directly via Bower `bower install swipe-js` or NPM `npm install swipejs`.
+```bash
+npm i swipejs
+```
 
 See the [online example](https://swipe.js.org) for a simple demo.
 
