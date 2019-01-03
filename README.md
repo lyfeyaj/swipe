@@ -9,7 +9,7 @@ Swipe
 
 > Swipe is the most accurate touch slider. It is extremely lightweight (only 6kb minified) and works across all browsers, including IE7+.
 
-> Support both Angular.js and React.js
+> Support both Angular.js(v1) and React.js
 
 ## Note
 
@@ -19,7 +19,7 @@ This repo is a continuation of the dead [Swipe](https://github.com/thebird/Swipe
 
 ### Preview
 
-[![Preview Image](images/preview.png)](http://lyfeyaj.github.io/swipe/)
+[![Preview Image](doc/images/preview.png)](http://lyfeyaj.github.io/swipe/)
 
 Thanks to [@loup-brun](https://github.com/loup-brun)
 
@@ -142,31 +142,31 @@ Please go to [angular swipe plugin](angular-swipe) for source code and usage exa
   <tbody>
     <tr>
       <td align="center" valign="middle">
-        <img src="icons/airbnb.png" width="170px" height="80px">
+        <img src="doc/icons/airbnb.png" width="170px" height="80px">
       </td>
       <td align="center" valign="middle">
-        <img src="icons/nhl.png" width="170px" height="80px">
+        <img src="doc/icons/nhl.png" width="170px" height="80px">
       </td>
       <td align="center" valign="middle">
-        <img src="icons/htc.png" width="170px" height="80px">
+        <img src="doc/icons/htc.png" width="170px" height="80px">
       </td>
       <td align="center" valign="middle">
-        <img src="icons/thinkgeek.png" width="170px" height="80px">
+        <img src="doc/icons/thinkgeek.png" width="170px" height="80px">
       </td>
     </tr>
     <tr></tr>
     <tr>
       <td align="center" valign="middle">
-        <img src="icons/snapguide.png" width="170px" height="80px">
+        <img src="doc/icons/snapguide.png" width="170px" height="80px">
       </td>
       <td align="center" valign="middle">
-        <img src="icons/everlane.png" width="170px" height="80px">
+        <img src="doc/icons/everlane.png" width="170px" height="80px">
       </td>
       <td align="center" valign="middle">
-        <img src="icons/boqii.png" width="170px" height="80px">
+        <img src="doc/icons/boqii.png" width="170px" height="80px">
       </td>
       <td align="center" valign="middle">
-        <img src="icons/allbeauty.png" width="170px" height="80px">
+        <img src="doc/icons/allbeauty.png" width="170px" height="80px">
       </td>
     </tr>
   </tbody>

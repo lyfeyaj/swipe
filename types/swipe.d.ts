@@ -1,4 +1,4 @@
-// Type definitions for Swipe v2.2.11
+// Type definitions for Swipe v2.2.13
 // Project: https://github.com/lyfeyaj/swipe
 // Definitions by: Felix Liu <https://github.com/lyfeyaj>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
