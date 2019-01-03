@@ -19,7 +19,7 @@ This repo is a continuation of the dead [Swipe](https://github.com/thebird/Swipe
 
 ### Preview
 
-[![Preview Image](doc/images/preview.png)](http://lyfeyaj.github.io/swipe/)
+[![Preview Image](docs/images/preview.png)](http://lyfeyaj.github.io/swipe/)
 
 Thanks to [@loup-brun](https://github.com/loup-brun)
 
@@ -142,31 +142,31 @@ Please go to [angular swipe plugin](angular-swipe) for source code and usage exa
   <tbody>
     <tr>
       <td align="center" valign="middle">
-        <img src="doc/icons/airbnb.png" width="170px" height="80px">
+        <img src="docs/icons/airbnb.png" width="170px" height="80px">
       </td>
       <td align="center" valign="middle">
-        <img src="doc/icons/nhl.png" width="170px" height="80px">
+        <img src="docs/icons/nhl.png" width="170px" height="80px">
       </td>
       <td align="center" valign="middle">
-        <img src="doc/icons/htc.png" width="170px" height="80px">
+        <img src="docs/icons/htc.png" width="170px" height="80px">
       </td>
       <td align="center" valign="middle">
-        <img src="doc/icons/thinkgeek.png" width="170px" height="80px">
+        <img src="docs/icons/thinkgeek.png" width="170px" height="80px">
       </td>
     </tr>
     <tr></tr>
     <tr>
       <td align="center" valign="middle">
-        <img src="doc/icons/snapguide.png" width="170px" height="80px">
+        <img src="docs/icons/snapguide.png" width="170px" height="80px">
       </td>
       <td align="center" valign="middle">
-        <img src="doc/icons/everlane.png" width="170px" height="80px">
+        <img src="docs/icons/everlane.png" width="170px" height="80px">
       </td>
       <td align="center" valign="middle">
-        <img src="doc/icons/boqii.png" width="170px" height="80px">
+        <img src="docs/icons/boqii.png" width="170px" height="80px">
       </td>
       <td align="center" valign="middle">
-        <img src="doc/icons/allbeauty.png" width="170px" height="80px">
+        <img src="docs/icons/allbeauty.png" width="170px" height="80px">
       </td>
     </tr>
   </tbody>
