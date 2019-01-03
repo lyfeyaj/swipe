@@ -79,9 +79,9 @@ window.mySwipe = new Swipe(document.getElementById('slider'));
 
 I always place this at the bottom of the page, externally, to verify the page is ready.
 
-## Config Options
+## Options
 
-Swipe can take an optional second parameter– an object of key/value settings:
+Swipe can take an optional second parameter – an object of key/value settings:
 
 | Options             | Type     | Default | Description                                                                                                                                                                                                      |
 |---------------------|----------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -129,15 +129,17 @@ A Swipe instance exposes the following public methods:
 | `enable()`               | enable slideshow.                                                                                       |
 | `kill()`                 | completely remove the Swipe instance.                                                                   |
 
-## Browser Support
+## Supports
+
+### Browser Support
 
 Swipe is now compatible with all browsers, including IE7+. Swipe works best on devices that support CSS transforms and touch events, but can be used without these as well. A few helper methods determine touch and CSS transition support and choose the proper animation methods accordingly.
 
-## React Support
+### React Support
 
 Please go to [react swipe plugin](react), or check the [example](docs/examples/react)
 
-## Angular(V1) Support
+### Angular(V1) Support
 
 Please go to [angular swipe plugin](https://swipe.js.org/examples/angular-v1) for source code and usage example.
 
