@@ -81,16 +81,17 @@ I always place this at the bottom of the page, externally, to verify the page is
 
 Swipe can take an optional second parameter– an object of key/value settings:
 
-- **startSlide** Integer *(default: `0`)*: index position at which Swipe should start.
-- **speed** Integer *(default: `300`)*: speed of prev and next transitions in milliseconds.
-- **auto** Integer: when specified, start an auto-playing slideshow (time in milliseconds between slide change).
-- **draggable** Boolean *(default: `false`)*: enable mouse drag support in desktop browsers.
-- **continuous** Boolean *(default: `true`)*: create an infinite feel with no endpoints.
-- **autoRestart** Boolean *(default: `false`)*: auto restart slideshow after user's touch event or next/prev calls.
-- **disableScroll** Boolean *(default: `false`)*: prevent any touch events on this container from scrolling the page.
-- **stopPropagation** Boolean *(default: `false`)*: stop event propagation.
-- **callback** Function *(default: `function() {}`)*: runs at slide change. Three parameters are passed to the function: `index` (the current slide index), `elem` (the current slide element) and `dir` (direction: `1` for left or backward, `-1` for right or forward).
-- **transitionEnd** Function *(default: `function() {}`)*: runs at the end of a slide transition. Two parameters are passed to the function: `index` (the current slide index) and `elem` (the current slide element).
+| Options             | Type     | Default | Description                                                                                                                                                                                                      |
+|---------------------|----------|---------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **startSlide**      | Integer  | 0       | index position at which Swipe should start.                                                                                                                                                                      |
+| **speed**           | Integer  | 300     | speed of prev and next transitions in milliseconds.                                                                                                                                                              |
+| **auto**            | Integer  | 0       | when specified, start an auto-playing slideshow (time in milliseconds between slide change).                                                                                                                     |
+| **continuous**      | Boolean  | true    | create an infinite feel with no endpoints.                                                                                                                                                                       |
+| **autoRestart**     | Boolean  | false   | auto restart slideshow after user's touch event or next/prev calls.                                                                                                                                              |
+| **disableScroll**   | Boolean  | false   | prevent any touch events on this container from scrolling the page.                                                                                                                                              |
+| **stopPropagation** | Boolean  | false   | stop event propagation.                                                                                                                                                                                          |
+| **callback**        | Function | null    | runs at slide change. Three parameters are passed to the function: `index` (the current slide index)`elem` (the current slide element) and `dir` (direction: `1` for left or backward`-1` for right or forward). |
+| **transitionEnd**   | Function | null    | runs at the end of a slide transition. Two parameters are passed to the function: `index` (the current slide index) and `elem` (the current slide element).                                                      |
 
 ### Example
 
@@ -112,17 +113,19 @@ window.mySwipe = new Swipe(document.getElementById('slider'), {
 
 A Swipe instance exposes the following public methods:
 
-- `prev()` slide to the previous slide.
-- `next()` slide to the next slide.
-- `getPos()`: return the current slide index position.
-- `getNumSlides()`: return the number of slides.
-- `slide(index, duration)`: slide to the position matching the `index` (integer) (`duration`: speed of transition in milliseconds).
-- `restart()`: restart the slideshow with autoplay.
-- `stop()`: stop the slideshow and disable autoplay.
-- `setup(options)`: reinitialize swipe with options.
-- `disable()`: disable slideshow.
-- `enable()`: enable slideshow.
-- `kill()`: completely remove the Swipe instance.
+| Methods                  | Description                                                                                             |
+|--------------------------|---------------------------------------------------------------------------------------------------------|
+| `prev()`                 | slide to the previous slide.                                                                            |
+| `next()`                 | slide to the next slide.                                                                                |
+| `getPos()`               | return the current slide index position.                                                                |
+| `getNumSlides()`         | return the number of slides.                                                                            |
+| `slide(index, duration)` | slide to the position matching the `index` (integer) (`duration`: speed of transition in milliseconds). |
+| `restart()`              | restart the slideshow with autoplay.                                                                    |
+| `stop()`                 | stop the slideshow and disable autoplay.                                                                |
+| `setup(options)`         | reinitialize swipe with options.                                                                        |
+| `disable()`              | disable slideshow.                                                                                      |
+| `enable()`               | enable slideshow.                                                                                       |
+| `kill()`                 | completely remove the Swipe instance.                                                                   |
 
 ## Browser Support
 
