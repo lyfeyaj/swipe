@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.2.13
+ * Swipe 2.2.14
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
@@ -82,6 +82,12 @@
       throttledFn.cancel = cancel;
 
       return throttledFn;
+    };
+
+    // check whether event is cancelable
+    var isCancelable = function (event) {
+      if (!event) return false;
+      return typeof event.cancelable !== 'boolean' || event.cancelable;
     };
 
     // check browser capabilities
@@ -222,7 +228,7 @@
           }
 
           // we can disable scrolling unless it is already in progress
-          if (options.disableScroll && event.cancelable) {
+          if (options.disableScroll && isCancelable(event)) {
             event.preventDefault();
           }
 
@@ -244,7 +250,7 @@
         if (!isScrolling) {
 
           // if it is not already scrolling
-          if (event.cancelable) {
+          if (isCancelable(event)) {
             // prevent native scrolling
             event.preventDefault();
           }
