@@ -608,9 +608,9 @@
       }
     }
 
-    function runDragEnd(pos, index, dir) {
+    function runDragEnd(pos, index) {
       if (options.dragEnd) {
-        options.dragEnd(pos, index, dir);
+        options.dragEnd(pos, index);
       }
     }
 
