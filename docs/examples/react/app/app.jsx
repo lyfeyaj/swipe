@@ -1,9 +1,9 @@
-import React from 'react';
-import ReactDom from 'react-dom';
-import { Swipe, SwipeItem } from 'swipejs/react';
+import React from "react";
+import ReactDom from "react-dom";
+import { Swipe, SwipeItem } from "swipejs/react";
 
-import 'swipejs/style.css';
-import './style.css';
+import "swipejs/style.css";
+import "./style.css";
 
 class ReactSwipeExampleApp extends React.Component {
   constructor(props) {
@@ -13,6 +13,8 @@ class ReactSwipeExampleApp extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleCallback = this.handleCallback.bind(this);
     this.onTransactionEnd = this.onTransactionEnd.bind(this);
+    this.handleDragStart = this.handleDragStart.bind(this);
+    this.handleDragEnd = this.handleDragEnd.bind(this);
   }
 
   onTransactionEnd(index, elem) {
@@ -23,36 +25,54 @@ class ReactSwipeExampleApp extends React.Component {
     // Your own logic
   }
 
+  handleDragStart(index, elem) {
+    // Your own logic
+  }
+
+  handleDragEnd(index, elem) {
+    // Your own logic
+  }
+
   handleClick(e) {
     // Your own logic
   }
 
   render() {
     return (
-      <div className='react-swipe-example'>
+      <div className="react-swipe-example">
         <h2>React Swipe Example</h2>
-        <Swipe className='custom-swipe-container-class'
-               ref='swipe'
-               startSlide={0}
-               speed={300}
-               auto={3000}
-               draggable={false}
-               continuous={true}
-               autoRestart={false}
-               disableScroll={false}
-               stopPropagation={false}
-               callback={this.handleCallback}
-               transitionEnd={this.onTransactionEnd}>
-          <SwipeItem className='custom-swipe-item-class'
-                     onClick={this.handleClick}>
+        <Swipe
+          className="custom-swipe-container-class"
+          ref="swipe"
+          startSlide={0}
+          speed={300}
+          auto={0}
+          draggable={true}
+          continuous={true}
+          autoRestart={false}
+          disableScroll={false}
+          stopPropagation={false}
+          callback={this.handleCallback}
+          transitionEnd={this.onTransactionEnd}
+          dragStart={this.handleDragStart}
+          dragEnd={this.handleDragEnd}
+        >
+          <SwipeItem
+            className="custom-swipe-item-class"
+            onClick={this.handleClick}
+          >
             Slide One
           </SwipeItem>
-          <SwipeItem className='custom-swipe-item-class'
-                     onClick={this.handleClick}>
+          <SwipeItem
+            className="custom-swipe-item-class"
+            onClick={this.handleClick}
+          >
             Slide Two
           </SwipeItem>
-          <SwipeItem className='custom-swipe-item-class'
-                     onClick={this.handleClick}>
+          <SwipeItem
+            className="custom-swipe-item-class"
+            onClick={this.handleClick}
+          >
             Slide Three
           </SwipeItem>
         </Swipe>
@@ -61,4 +81,7 @@ class ReactSwipeExampleApp extends React.Component {
   }
 }
 
-ReactDom.render(<ReactSwipeExampleApp />, document.getElementById('react-swipe-example-app'));
+ReactDom.render(
+  <ReactSwipeExampleApp />,
+  document.getElementById("react-swipe-example-app")
+);

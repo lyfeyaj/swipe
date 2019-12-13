@@ -62,7 +62,9 @@ class Swipe extends React.Component {
       disableScroll,
       stopPropagation,
       callback,
-      transitionEnd
+      transitionEnd,
+      dragStart,
+      dragEnd
     } = this.props;
 
     return {
@@ -75,7 +77,9 @@ class Swipe extends React.Component {
       disableScroll,
       stopPropagation,
       callback,
-      transitionEnd
+      transitionEnd,
+      dragStart,
+      dragEnd
     };
   }
 
@@ -198,7 +202,9 @@ Swipe.defaultProps = {
   disableScroll: false,
   stopPropagation: false,
   callback: noop,
-  transitionEnd: noop
+  transitionEnd: noop,
+  dragStart: noop,
+  dragEnd: noop
 };
 
 Swipe.propTypes = {
@@ -213,7 +219,9 @@ Swipe.propTypes = {
   disableScroll: PropTypes.bool,
   stopPropagation: PropTypes.bool,
   callback: PropTypes.func,
-  transitionEnd: PropTypes.func
+  transitionEnd: PropTypes.func,
+  dragStart: PropTypes.func,
+  dragEnd: PropTypes.func
 };
 
 function proxyMethods(...methods) {
