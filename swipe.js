@@ -213,7 +213,7 @@
           element.addEventListener('touchmove', this, browser.passiveEvents ? { passive: false } : false);
           element.addEventListener('touchend', this, false);
         }
-
+        runDragStart(getPos(), slides[index]);
       },
 
       move: function(event) {
@@ -372,7 +372,7 @@
           element.removeEventListener('touchmove', events, browser.passiveEvents ? { passive: false } : false);
           element.removeEventListener('touchend', events, false);
         }
-
+        runDragEnd(getPos(), slides[index])
       },
 
       transitionEnd: function(event) {
@@ -599,6 +599,18 @@
     function runTransitionEnd(pos, index) {
       if (options.transitionEnd) {
         options.transitionEnd(pos, index);
+      }
+    }
+
+    function runDragStart(pos, index) {
+      if (options.dragStart) {
+        options.dragStart(pos, index);
+      }
+    }
+
+    function runDragEnd(pos, index, dir) {
+      if (options.dragEnd) {
+        options.dragEnd(pos, index, dir);
       }
     }
 
