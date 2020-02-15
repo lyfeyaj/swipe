@@ -40,6 +40,18 @@
         $scope.$apply();
         userCallback(index, elem);
       };
+
+      var dragStartCallback = SwipeCtrl.options.callback || function(){};
+      SwipeCtrl.options.dragStart = function(index, elem) {
+        $scope.$apply();
+        dragStartCallback(index, elem);
+      }
+
+      var dragEndCallback = SwipeCtrl.options.callback || function(){};
+      SwipeCtrl.options.dragEnd = function(index, elem) {
+        $scope.$apply();
+        dragEndCallback(index, elem);
+      }
       // Create a new Swipe instance and store the returned api
       var api = new Swipe(SwipeCtrl.element, SwipeCtrl.options);
 

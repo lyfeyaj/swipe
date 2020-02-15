@@ -13,6 +13,8 @@ class ReactSwipeExampleApp extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.handleCallback = this.handleCallback.bind(this);
     this.onTransactionEnd = this.onTransactionEnd.bind(this);
+    this.handleDragStart = this.handleDragStart.bind(this);
+    this.handleDragEnd = this.handleDragEnd.bind(this);
   }
 
   onTransactionEnd(index, elem) {
@@ -20,6 +22,14 @@ class ReactSwipeExampleApp extends React.Component {
   }
 
   handleCallback(index, elem) {
+    // Your own logic
+  }
+
+  handleDragStart(index, elem) {
+    // Your own logic
+  }
+
+  handleDragEnd(index, elem) {
     // Your own logic
   }
 
@@ -42,7 +52,9 @@ class ReactSwipeExampleApp extends React.Component {
                disableScroll={false}
                stopPropagation={false}
                callback={this.handleCallback}
-               transitionEnd={this.onTransactionEnd}>
+               transitionEnd={this.onTransactionEnd}
+               dragStart={this.handleDragStart}
+               dragEnd={this.handleDragEnd}>
           <SwipeItem className='custom-swipe-item-class'
                      onClick={this.handleClick}>
             Slide One
