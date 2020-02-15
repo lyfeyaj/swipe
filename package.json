@@ -16,13 +16,13 @@
     "babel-preset-react": "^6.16.0",
     "eslint": "^5.11.1",
     "eslint-plugin-react": "^7.12.1",
-    "grunt": "~1.0.3",
+    "grunt": "^1.0.4",
     "grunt-babel": "^7.0.0",
     "grunt-contrib-uglify": "~4.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-sass": "^3.0.2",
     "load-grunt-tasks": "^4.0.0",
-    "node-sass": "^4.11.0"
+    "node-sass": "^4.13.1"
   },
   "repository": "lyfeyaj/swipe",
   "keywords": [
