@@ -41,11 +41,15 @@ See the [online example](https://swipe.js.org) for a simple demo.
 
 #### ES5
 
-```const Swipe = require('swipejs');```
+``` js
+const Swipe = require('swipejs');
+```
 
 #### ES6 and newer
 
-```import Swipe from 'swipejs';```
+``` js
+import Swipe from 'swipejs';
+```
 
 ### Markup
 
