@@ -25,11 +25,27 @@ Thanks to [@loup-brun](https://github.com/loup-brun)
 
 ### Installation
 
+#### NPM
 ```bash
 npm i swipejs
 ```
 
+#### Yarn
+```bash
+yarn add swipejs
+```
+
 See the [online example](https://swipe.js.org) for a simple demo.
+
+### Import in your project 
+
+#### ES5
+
+```const Swipe = require('swipejs');```
+
+#### ES6 and newer
+
+```import Swipe from 'swipejs';```
 
 ### Markup
 
