@@ -16,7 +16,7 @@ interface SwipeOptions {
     transitionEnd?: (index: number, elem: HTMLElement) => void;
 }
 
-declare class Swipe {
+export default class Swipe {
     constructor(container: HTMLElement, options?: SwipeOptions);
     prev(): void;
     next(): void;
