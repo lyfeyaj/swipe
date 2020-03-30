@@ -12,6 +12,7 @@ interface SwipeOptions {
     autoRestart?: boolean;
     disableScroll?: boolean;
     stopPropagation?: boolean;
+    ignore?: string;
     callback?: (index: number, elem: HTMLElement, dir: number) => void;
     transitionEnd?: (index: number, elem: HTMLElement) => void;
 }

@@ -90,6 +90,23 @@
       return typeof event.cancelable !== 'boolean' || event.cancelable;
     };
 
+    // polyfill for browsers that do not support Element.matches()
+    if (!Element.prototype.matches) {
+      Element.prototype.matches =
+        Element.prototype.matchesSelector ||
+        Element.prototype.mozMatchesSelector ||
+        Element.prototype.msMatchesSelector ||
+        Element.prototype.oMatchesSelector ||
+        Element.prototype.webkitMatchesSelector ||
+        function (s) {
+          var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+            i = matches.length;
+          while (--i >= 0 && matches.item(i) !== this)
+            ;
+          return i > -1;
+        };
+    }
+
     // check browser capabilities
     var browser = {
       addEventListener: !!root.addEventListener,
@@ -184,6 +201,11 @@
           event.preventDefault(); // For desktop Safari drag
         } else {
           touches = event.touches[0];
+        }
+
+        // check if the user is swiping on an element that the options say to ignore (for example, a scrolling area)
+        if (options.ignore && touches.target.matches(options.ignore)) {
+          return;
         }
 
         // measure start values

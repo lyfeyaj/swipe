@@ -53,6 +53,7 @@ ReactDOM.render(<Slider />, document.getElementById('app'));
 | **autoRestart**     | Boolean  | false   | auto restart slideshow after user's touch event or next/prev calls.                                                                                                                                              |
 | **disableScroll**   | Boolean  | false   | prevent any touch events on this container from scrolling the page.                                                                                                                                              |
 | **stopPropagation** | Boolean  | false   | stop event propagation.                                                                                                                                                                                          |
+| **ignore**          | String   | null    | ignore touch events on any element matching this selector |
 | **callback**        | Function | null    | runs at slide change. Three parameters are passed to the function: `index` (the current slide index)`elem` (the current slide element) and `dir` (direction: `1` for left or backward`-1` for right or forward). |
 | **transitionEnd**   | Function | null    | runs at the end of a slide transition. Two parameters are passed to the function: `index` (the current slide index) and `elem` (the current slide element).                                                      |
 
