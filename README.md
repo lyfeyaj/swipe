@@ -7,7 +7,7 @@ Swipe
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/lyfeyaj/swipe/master/LICENSE.md)
 
 
-> Swipe is the most accurate touch slider. It is extremely lightweight (only 6kb minified) and works across all browsers, including IE7+.
+> Swipe is the most accurate touch slider. It is extremely lightweight (only 6kb minified) and works across all browsers, including IE8+.
 
 > Support both React.js and Angular.js(v1)
 
@@ -37,7 +37,7 @@ yarn add swipejs
 
 See the [online example](https://swipe.js.org) for a simple demo.
 
-### Import in your project 
+### Import in your project
 
 #### ES5
 

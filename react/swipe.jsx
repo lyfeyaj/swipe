@@ -1,5 +1,5 @@
 /*!
- * React Swipe 2.2.15
+ * React Swipe 2.2.16
  *
  * Felix Liu
  * Copyright 2016 - 2018, MIT License

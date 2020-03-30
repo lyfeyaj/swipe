@@ -1,5 +1,5 @@
 /*!
- * Swipe 2.2.15
+ * Swipe 2.2.16
  *
  * Brad Birdsall
  * Copyright 2013, MIT License
