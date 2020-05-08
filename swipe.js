@@ -9,6 +9,7 @@
 // if the module has no dependencies, the above pattern can be simplified to
 // eslint-disable-next-line no-extra-semi
 ;(function (root, factory) {
+  root = root || {};
   // eslint-disable-next-line no-undef
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
