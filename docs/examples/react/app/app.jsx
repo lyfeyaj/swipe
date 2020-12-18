@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { Swipe, SwipeItem } from 'swipejs/react';
+import { Swipe, SwipeItem } from 'swipejs/react/swipe';
 
 import 'swipejs/style.css';
 import './style.css';
@@ -8,7 +8,13 @@ import './style.css';
 class ReactSwipeExampleApp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      slides: [
+        'Slide One',
+        'Slide Two',
+        'Slide Three'
+      ]
+    };
 
     this.handleClick = this.handleClick.bind(this);
     this.handleCallback = this.handleCallback.bind(this);
@@ -38,6 +44,7 @@ class ReactSwipeExampleApp extends React.Component {
   }
 
   render() {
+    const { slides } = this.state || {};
     return (
       <div className='react-swipe-example'>
         <h2>React Swipe Example</h2>
@@ -55,18 +62,15 @@ class ReactSwipeExampleApp extends React.Component {
                transitionEnd={this.onTransactionEnd}
                dragStart={this.handleDragStart}
                dragEnd={this.handleDragEnd}>
-          <SwipeItem className='custom-swipe-item-class'
-                     onClick={this.handleClick}>
-            Slide One
-          </SwipeItem>
-          <SwipeItem className='custom-swipe-item-class'
-                     onClick={this.handleClick}>
-            Slide Two
-          </SwipeItem>
-          <SwipeItem className='custom-swipe-item-class'
-                     onClick={this.handleClick}>
-            Slide Three
-          </SwipeItem>
+          {
+            slides.map(slide => {
+              return (
+                <SwipeItem className='custom-swipe-item-class' onClick={this.handleClick}>
+                  {slide}
+                </SwipeItem>
+              )
+            })
+          }
         </Swipe>
       </div>
     );
