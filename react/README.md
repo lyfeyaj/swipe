@@ -24,8 +24,7 @@ const Slider = () => {
 
   return (
     <div>
-      <Swipe ref={o => swipeEl = o}
-      >
+      <Swipe ref={o => swipeEl = o}>
         <SwipeItem>Slide One</SwipeItem>
         <SwipeItem>Slide Two</SwipeItem>
         <SwipeItem>Slide Three</SwipeItem>
