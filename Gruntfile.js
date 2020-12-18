@@ -41,7 +41,7 @@ module.exports = function (grunt) {
     babel: {
       options: {
         sourceMap: false,
-        presets: ['babel-preset-es2015', 'babel-preset-react']
+        presets: ['@babel/preset-env', '@babel/preset-react']
       },
       dist: {
         files: {
