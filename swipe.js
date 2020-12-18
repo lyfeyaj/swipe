@@ -171,7 +171,8 @@
     var events = {
 
       handleEvent: function(event) {
-        if (disabled) return;
+        // allow bypass 'resize' event
+        if (disabled && event.type !== 'resize') return;
 
         switch (event.type) {
           case 'mousedown':
