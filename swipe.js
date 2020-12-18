@@ -200,7 +200,6 @@
 
         if (isMouseEvent(event)) {
           touches = event;
-          event.preventDefault(); // For desktop Safari drag
         } else {
           touches = event.touches[0];
         }
@@ -209,6 +208,10 @@
         if (options.ignore && touches.target.matches(options.ignore)) {
           return;
         }
+
+        // For desktop Safari drag
+        // Fix #146
+        if (isMouseEvent(event)) event.preventDefault();
 
         // measure start values
         start = {
