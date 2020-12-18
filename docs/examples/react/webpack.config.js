@@ -15,7 +15,13 @@ var plugins = [
 ];
 
 var publicPath = 'http://127.0.0.1:2992/';
-var babelLoader = 'babel?cacheDirectory=true&presets[]=es2015&presets[]=react';
+var babelLoader = {
+  loader: 'babel-loader',
+  options: {
+    cacheDirectory: true,
+    presets: ['@babel/preset-env', '@babel/preset-react']
+  }
+};
 
 module.exports = {
   devtool: 'eval',
@@ -29,40 +35,45 @@ module.exports = {
     filename: '[name].bundle.js'
   },
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.js|jsx$/,
-        loaders: ['react-hot-loader', babelLoader],
-        exclude: /(node_modules|bower_components)/
+        test: /\.(js|jsx)$/,
+        use: [babelLoader]
       },
-      { test: /\.css$/,    loader: 'style-loader!css-loader!resolve-url' },
-      { test: /\.png$/,    loader: 'url-loader?prefix=img/&limit=5000' },
-      { test: /\.jpg$/,    loader: 'url-loader?prefix=img/&limit=5000' },
-      { test: /\.gif$/,    loader: 'url-loader?prefix=img/&limit=5000' },
-      { test: /\.(woff|svg|ttf|eot)([\?]?.*)$/, loader: 'file-loader?name=[name].[ext]' }
-    ],
-    preLoaders: [
       {
-        test: /\.js|jsx$/,
-        include: pathToRegExp(path.join(__dirname, 'app')),
-        loaders: [
-          'eslint-loader',
-          babelLoader
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'resolve-url-loader'
+        ]
+      },
+      {
+        test: /\.(png|jpg|gif|jpeg)$/,
+        use: [
+          { loader: 'url-loader', options: { prefix: 'img/&limit=5000' } }
+        ]
+      },
+      {
+        test: /\.(woff|svg|ttf|eot)([\?]?.*)$/,
+        use: [
+          { loader: 'file-loader', options: { name: '[name].[ext]' }  }
         ]
       }
     ]
   },
-  resolveLoader: {
-    root: path.join(__dirname, 'node_modules')
-  },
   resolve: {
-    root: [path.join(__dirname, 'app')],
-    modulesDirectories: ['node_modules'],
-    extensions: ['', '.js', '.jsx', '.html', '.css']
+    modules: [
+      path.join(__dirname, 'app'),
+      'node_modules'
+    ],
+    extensions: ['.js', '.jsx', '.html', '.css']
   },
-  plugins: plugins,
-  fakeUpdateVersion: 0,
+  plugins,
   devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    port: 2992,
+    host: '0.0.0.0',
     publicPath: publicPath,
     hot: true,
     inline: true,

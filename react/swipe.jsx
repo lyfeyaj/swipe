@@ -1,8 +1,8 @@
 /*!
- * React Swipe 2.2.18
+ * React Swipe 2.3.0
  *
  * Felix Liu
- * Copyright 2016 - 2018, MIT License
+ * Copyright 2016 - 2020, MIT License
  *
 */
 
@@ -21,27 +21,33 @@ const noop = function noop() {};
 class Swipe extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
-
-    this.needsReSetup = false;
+    this.state = {
+      needsReSetup: false,
+      prevChildrenLength: 0
+    };
     this._isMount = false;
     this.instance = null;
   }
 
   // Check children length change and prepare for re-setup
-  componentWillReceiveProps(nextProps) {
-    let nextChildrenLength = (nextProps.children || []).length;
-    let prevChildrenLength = (this.props.children || []).length;
-    if (nextChildrenLength !== prevChildrenLength) {
-      this.needsReSetup = true;
+  static getDerivedStateFromProps(props, state) {
+    const childrenLength = (props.children || []).length;
+    const prevChildrenLength = state.prevChildrenLength || 0;
+    if (childrenLength !== prevChildrenLength) {
+      return {
+        prevChildrenLength: childrenLength,
+        needsReSetup: true
+      };
     }
+    return null;
   }
 
   // Perform re-setup when necessary
   componentDidUpdate() {
-    if (this._isMount && this.needsReSetup) {
+    const { needsReSetup = false } = this.state || {};
+    if (this._isMount && needsReSetup) {
       this.setupSwipe();
-      this.needsReSetup = false;
+      this.setState({ needsReSetup: false });
     }
   }
 
