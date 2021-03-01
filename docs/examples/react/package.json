@@ -14,7 +14,7 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "swipejs": "^2.3.0"
+    "swipejs": "^2.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.13.8",
