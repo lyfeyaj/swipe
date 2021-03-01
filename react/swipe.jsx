@@ -46,7 +46,8 @@ class Swipe extends React.Component {
   componentDidUpdate() {
     const { needsReSetup = false } = this.state || {};
     if (this._isMount && needsReSetup) {
-      this.setupSwipe();
+      // delay resetup
+      setTimeout(() => this.setupSwipe(), 10);
       this.setState({ needsReSetup: false });
     }
   }
@@ -54,7 +55,8 @@ class Swipe extends React.Component {
   // Initialize swipe
   componentDidMount() {
     this._isMount = true;
-    this.setupSwipe();
+    // delay resetup
+    setTimeout(() => this.setupSwipe(), 10);
   }
 
   swipeOptions() {
