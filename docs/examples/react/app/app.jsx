@@ -8,6 +8,7 @@ import './style.css';
 class ReactSwipeExampleApp extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       slides: [
         'Slide One',
@@ -15,12 +16,6 @@ class ReactSwipeExampleApp extends React.Component {
         'Slide Three'
       ]
     };
-
-    this.handleClick = this.handleClick.bind(this);
-    this.handleCallback = this.handleCallback.bind(this);
-    this.onTransactionEnd = this.onTransactionEnd.bind(this);
-    this.handleDragStart = this.handleDragStart.bind(this);
-    this.handleDragEnd = this.handleDragEnd.bind(this);
   }
 
   onTransactionEnd(index, elem) {
@@ -49,26 +44,26 @@ class ReactSwipeExampleApp extends React.Component {
       <div className='react-swipe-example'>
         <h2>React Swipe Example</h2>
         <Swipe className='custom-swipe-container-class'
-               ref='swipe'
-               startSlide={0}
-               speed={300}
-               auto={3000}
-               draggable={false}
-               continuous={true}
-               autoRestart={false}
-               disableScroll={false}
-               stopPropagation={false}
-               callback={this.handleCallback}
-               transitionEnd={this.onTransactionEnd}
-               dragStart={this.handleDragStart}
-               dragEnd={this.handleDragEnd}>
+          ref={el => this.swipeEl = el}
+          startSlide={0}
+          speed={300}
+          auto={3000}
+          draggable={false}
+          continuous={true}
+          autoRestart={false}
+          disableScroll={false}
+          stopPropagation={false}
+          callback={this.handleCallback.bind(this)}
+          transitionEnd={this.onTransactionEnd.bind(this)}
+          dragStart={this.handleDragStart.bind(this)}
+          dragEnd={this.handleDragEnd.bind(this)}>
           {
-            slides.map(slide => {
+            slides.map((slide, i) => {
               return (
-                <SwipeItem className='custom-swipe-item-class' onClick={this.handleClick}>
+                <SwipeItem key={slide + i} className='custom-swipe-item-class' onClick={this.handleClick.bind(this)}>
                   {slide}
                 </SwipeItem>
-              )
+              );
             })
           }
         </Swipe>

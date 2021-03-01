@@ -24,6 +24,7 @@ var babelLoader = {
 };
 
 module.exports = {
+  mode: 'development',
   devtool: 'eval',
   context: __dirname,
   entry: {
