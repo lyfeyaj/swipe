@@ -1,10 +1,10 @@
 'use strict';
 
-var webpack = require('webpack');
-var path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-var plugins = [
+const plugins = [
   new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 50 }),
   new webpack.HotModuleReplacementPlugin(),
   new HtmlWebpackPlugin({
@@ -14,8 +14,10 @@ var plugins = [
   }),
 ];
 
-var publicPath = 'http://127.0.0.1:2992/';
-var babelLoader = {
+const host = '127.0.0.1';
+const port = 2992;
+const publicPath = `http://${host}:${port}/`;
+const babelLoader = {
   loader: 'babel-loader',
   options: {
     cacheDirectory: true,
@@ -32,7 +34,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, 'dist/assets'),
-    publicPath: publicPath,
+    publicPath,
     filename: '[name].bundle.js'
   },
   module: {
@@ -56,7 +58,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(woff|svg|ttf|eot)([\?]?.*)$/,
+        test: /\.(woff|svg|ttf|eot)([?]?.*)$/,
         use: [
           { loader: 'file-loader', options: { name: '[name].[ext]' }  }
         ]
@@ -73,9 +75,9 @@ module.exports = {
   plugins,
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
-    port: 2992,
-    host: '0.0.0.0',
-    publicPath: publicPath,
+    port,
+    host,
+    publicPath,
     hot: true,
     inline: true,
     historyApiFallback: true,
@@ -84,6 +86,3 @@ module.exports = {
     }
   }
 };
-
-function escapeRegExpString(str) { return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&'); }
-function pathToRegExp(p) { return new RegExp('^' + escapeRegExpString(p)); }
