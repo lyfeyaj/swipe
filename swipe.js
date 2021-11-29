@@ -631,11 +631,13 @@
 
       if (options.partial) {
         move(circle(index-2), length > 4 ? -partialPos.hidden : partialPos.hidden, 0);
-        if(options.continuous){
+        if(index > 0 || options.continuous){
           move(circle(index-1), partialPos.prev, 0);
         }
         move(index, partialPos.middle, 0);
-        move(circle(index+1), partialPos.next, 0);
+        if(index < length-1 || options.continuous){
+          move(circle(index+1), partialPos.next, 0);
+        }
       }
 
       if (!browser.transitions) {
