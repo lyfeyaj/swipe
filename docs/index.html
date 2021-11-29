@@ -163,7 +163,7 @@ window.mySwipe = new Swipe(element, {
     </footer>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="//cdn.jsdelivr.net/gh/lyfeyaj/swipe/swipe.js"></script>
+    <script src="../swipe.js"></script>
     <script>
 
       // pure JS
@@ -176,7 +176,8 @@ window.mySwipe = new Swipe(element, {
         auto: 3000,
         draggable: true,
         autoRestart: false,
-        continuous: true,
+        continuous: false,
+        partial: true,
         disableScroll: true,
         stopPropagation: true,
         callback: function(index, element) {},
