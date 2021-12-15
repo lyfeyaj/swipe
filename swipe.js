@@ -165,8 +165,8 @@
     options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : false;
     
     // Partial option: show partially prev and next slides
-    options.partial = options.partial !== undefined ? options.partial : false;
-
+    options.partial = options.partial !== undefined || options.partial > 0 ? options.partial : false;
+    
     // throttled setup
     var throttledSetup = throttle(setup);
 
@@ -352,14 +352,15 @@
                 move(circle(index+2), width, 0);
 
               } else {
-                move(index-1, -width, 0);
+                move(circle(index-1), -width, 0);
               }
 
               if (options.partial) {
                 move(circle(index-1), slides.length > 4 ? -partialPos.hidden : partialPos.hidden, 0);
-                move(circle(index-2), partialPos.hidden, 0);
-                move(circle(index+2), slides.length > 3 ? partialPos.hidden : -partialPos.hidden, 0);
-
+                if(length>3) {
+                  move(circle(index-2), partialPos.hidden, 0);
+                  move(circle(index+2), partialPos.hidden, 0);
+                }
                 move(index, partialPos.prev, speed);
                 move(circle(index+1), partialPos.middle, speed);
                 if(index < length - 2 || options.continuous){
@@ -432,6 +433,7 @@
           element.removeEventListener('touchend', events, false);
         }
         runDragEnd(getPos(), slides[index]);
+        console.log('slidePos', slidePos)
       },
 
       transitionEnd: function(event) {
@@ -552,7 +554,29 @@
       // Remove id from element
       clone.removeAttribute('id');
     }
-
+    function setUpPartials(containerWidth){
+      const { partial } = options
+      let partialWidthPercetage;
+      
+      /** 
+       * Setting up defaul partial Width if partial defined but erither its boolean
+       * of the partial does not seems to be in range of .01 to .20
+       */
+      if(partial && (typeof partial === 'boolean' || partial >= .20 || partial <= 0) ){
+        partialWidthPercetage = .10 
+      }else{
+        partialWidthPercetage = partial
+      }
+      let containerWidhtPercentage = 1-partialWidthPercetage;
+      width = partial ? containerWidth*containerWidhtPercentage : containerWidth;
+      partialPos = {
+        hidden: containerWidth,
+        prev: -width*containerWidhtPercentage,
+        middle: width*partialWidthPercetage/2,
+        next: width
+      };
+      return width
+    }
     function setup(opts) {
       // Overwrite options if necessary
       if (opts != null) {
@@ -596,15 +620,9 @@
 
       // determine width of each slide
       containerWidth = container.getBoundingClientRect().width || container.offsetWidth;
-      width = options.partial ? containerWidth*0.9 : containerWidth;
-
+      width = setUpPartials(containerWidth);
       element.style.width = (slides.length * width * 2) + 'px';
-      partialPos = {
-        hidden: containerWidth,
-        prev: -width*0.9,
-        middle: width*0.05,
-        next: width
-      };
+     
       // stack elements
       var pos = slides.length;
       while(pos--) {
@@ -645,7 +663,7 @@
       }
 
       container.style.visibility = 'visible';
-
+      console.log('slidePos', slidePos)
       // reinitialize events
       detachEvents();
       attachEvents();
@@ -796,6 +814,7 @@
     }
 
     function move(index, dist, speed) {
+      console.log({index, dist, speed})
       translate(index, dist, speed);
       slidePos[index] = dist;
     }
