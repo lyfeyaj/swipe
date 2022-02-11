@@ -433,7 +433,6 @@
           element.removeEventListener('touchend', events, false);
         }
         runDragEnd(getPos(), slides[index]);
-        console.log('slidePos', slidePos)
       },
 
       transitionEnd: function(event) {
@@ -556,23 +555,24 @@
     }
     function setUpPartials(containerWidth){
       const { partial } = options
-      let partialWidthPercetage;
+      let partialWidthPercentage;
       
       /** 
-       * Setting up defaul partial Width if partial defined but erither its boolean
-       * of the partial does not seems to be in range of .01 to .20
+       * Setting up default `partialWidthPercentage` width to .10 
+       * if `partial` property is defined but either its boolean or
+       * if the `partial`seems to be out of range (partial >= .20 || partial <= 0 )
        */
       if(partial && (typeof partial === 'boolean' || partial >= .20 || partial <= 0) ){
-        partialWidthPercetage = .10 
+        partialWidthPercentage = .10 
       }else{
-        partialWidthPercetage = partial
+        partialWidthPercentage = partial
       }
-      let containerWidhtPercentage = 1-partialWidthPercetage;
+      let containerWidhtPercentage = 1-partialWidthPercentage;
       width = partial ? containerWidth*containerWidhtPercentage : containerWidth;
       partialPos = {
         hidden: containerWidth,
         prev: -width*containerWidhtPercentage,
-        middle: width*partialWidthPercetage/2,
+        middle: width*partialWidthPercentage/2,
         next: width
       };
       return width
@@ -814,7 +814,6 @@
     }
 
     function move(index, dist, speed) {
-      console.log({index, dist, speed})
       translate(index, dist, speed);
       slidePos[index] = dist;
     }
