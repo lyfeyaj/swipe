@@ -146,7 +146,7 @@
     if (!container) return;
 
     var element = container.children[0];
-    var slides, slidePos, width, length;
+    var slides, slidePos, width, length, partialPos, containerWidth;
     var index = parseInt(options.startSlide, 10) || 0;
     var speed = options.speed || 300;
     options.continuous = options.continuous !== undefined ? options.continuous : true;
@@ -163,7 +163,10 @@
 
     // AutoRestart option: auto restart slideshow after user's touch event
     options.autoRestart = options.autoRestart !== undefined ? options.autoRestart : false;
-
+    
+    // Partial option: show partially prev and next slides
+    options.partial = options.partial !== undefined || options.partial > 0 ? options.partial : false;
+    
     // throttled setup
     var throttledSetup = throttle(setup);
 
@@ -349,11 +352,25 @@
                 move(circle(index+2), width, 0);
 
               } else {
-                move(index-1, -width, 0);
+                move(circle(index-1), -width, 0);
               }
 
-              move(index, slidePos[index]-width, speed);
-              move(circle(index+1), slidePos[circle(index+1)]-width, speed);
+              if (options.partial) {
+                move(circle(index-1), slides.length > 4 ? -partialPos.hidden : partialPos.hidden, 0);
+                if(length>3) {
+                  move(circle(index-2), partialPos.hidden, 0);
+                  move(circle(index+2), partialPos.hidden, 0);
+                }
+                move(index, partialPos.prev, speed);
+                move(circle(index+1), partialPos.middle, speed);
+                if(index < length - 2 || options.continuous){
+                  move(circle(index+2), partialPos.next, slides.length > 3 ? speed : 0);
+                }
+              } else {
+                move(index, slidePos[index]-width, speed);
+                move(circle(index+1), slidePos[circle(index+1)]-width, speed);
+              }
+              
               index = circle(index+1);
 
             } else {
@@ -366,8 +383,19 @@
                 move(index+1, width, 0);
               }
 
-              move(index, slidePos[index]+width, speed);
-              move(circle(index-1), slidePos[circle(index-1)]+width, speed);
+              if (options.partial) {
+                move(circle(index+1), slides.length > 4 ? partialPos.hidden : -partialPos.hidden, 0);
+                move(circle(index-2), slides.length > 3 ? -partialPos.hidden : partialPos.hidden, 0);
+                move(circle(index-3), -partialPos.hidden, 0);
+                move(index, partialPos.next, speed);
+                if(index > 1 || options.continuous){
+                  move(circle(index-2),  partialPos.prev, slides.length > 3 ? speed : 0 );
+                }
+                move(circle(index-1), partialPos.middle, speed);
+              } else {
+                move(index, slidePos[index]+width, speed);
+                move(circle(index-1), slidePos[circle(index-1)]+width, speed);
+              }
               index = circle(index-1);
             }
 
@@ -375,14 +403,19 @@
 
           } else {
 
-            if (options.continuous) {
-
+            if (options.continuous && !options.partial) {
               move(circle(index-1), -width, speed);
               move(index, 0, speed);
               move(circle(index+1), width, speed);
-
+            } else if (options.partial) {
+              if(index > 0 || options.continuous){
+                move(circle(index-1), partialPos.prev, speed);
+              }
+              move(index, partialPos.middle, speed);
+              if(index < length - 1 || options.continuous){
+                move(circle(index+1), partialPos.next, speed);
+              }
             } else {
-
               move(index-1, -width, speed);
               move(index, 0, speed);
               move(index+1, width, speed);
@@ -520,7 +553,30 @@
       // Remove id from element
       clone.removeAttribute('id');
     }
-
+    function setUpPartials(containerWidth){
+      const { partial } = options
+      let partialWidthPercentage;
+      
+      /** 
+       * Setting up default `partialWidthPercentage` width to .10 
+       * if `partial` property is defined but either its boolean or
+       * if the `partial`seems to be out of range (partial >= .20 || partial <= 0 )
+       */
+      if(partial && (typeof partial === 'boolean' || partial >= .20 || partial <= 0) ){
+        partialWidthPercentage = .10 
+      }else{
+        partialWidthPercentage = partial
+      }
+      let containerWidhtPercentage = 1-partialWidthPercentage;
+      width = partial ? containerWidth*containerWidhtPercentage : containerWidth;
+      partialPos = {
+        hidden: containerWidth,
+        prev: -width*containerWidhtPercentage,
+        middle: width*partialWidthPercentage/2,
+        next: width
+      };
+      return width
+    }
     function setup(opts) {
       // Overwrite options if necessary
       if (opts != null) {
@@ -541,6 +597,7 @@
       // set continuous to false if only one slide
       if (slides.length < 2) {
         options.continuous = false;
+        options.partial = false;
       }
 
       // special case if two slides
@@ -562,10 +619,10 @@
       slidePos = new Array(slides.length);
 
       // determine width of each slide
-      width = container.getBoundingClientRect().width || container.offsetWidth;
-
+      containerWidth = container.getBoundingClientRect().width || container.offsetWidth;
+      width = setUpPartials(containerWidth);
       element.style.width = (slides.length * width * 2) + 'px';
-
+     
       // stack elements
       var pos = slides.length;
       while(pos--) {
@@ -576,7 +633,11 @@
 
         if (browser.transitions) {
           slide.style[slideDir] = (pos * -width) + 'px';
-          move(pos, index > pos ? -width : (index < pos ? width : 0), 0);
+          if (options.partial) {
+            move(pos, partialPos.hidden, 0);
+          } else {
+            move(pos, index > pos ? -width : (index < pos ? width : 0), 0);
+          }
         }
       }
 
@@ -586,12 +647,23 @@
         move(circle(index+1), width, 0);
       }
 
+      if (options.partial) {
+        move(circle(index-2), length > 4 ? -partialPos.hidden : partialPos.hidden, 0);
+        if(index > 0 || options.continuous){
+          move(circle(index-1), partialPos.prev, 0);
+        }
+        move(index, partialPos.middle, 0);
+        if(index < length-1 || options.continuous){
+          move(circle(index+1), partialPos.next, 0);
+        }
+      }
+
       if (!browser.transitions) {
         element.style[slideDir] = (index * -width) + 'px';
       }
 
       container.style.visibility = 'visible';
-
+      console.log('slidePos', slidePos)
       // reinitialize events
       detachEvents();
       attachEvents();
@@ -669,7 +741,7 @@
       if (browser.transitions) {
 
         var direction = Math.abs(index-to) / (index-to); // 1: backward, -1: forward
-
+        
         // get the actual position of the slide
         if (options.continuous) {
           var natural_direction = direction;
@@ -677,26 +749,55 @@
 
           // if going forward but to < index, use to = slides.length + to
           // if going backward but to > index, use to = -slides.length + to
-          if (direction !== natural_direction) {
+          if (direction !== natural_direction && !options.partial) {
             to = -direction * slides.length + to;
           }
 
         }
 
-        var diff = Math.abs(index-to) - 1;
+        if(!options.partial) {
+          var diff = Math.abs(index-to) - 1;
 
-        // move all the slides between index and to in the right direction
-        while (diff--) {
-          move( circle((to > index ? to : index) - diff - 1), width * direction, 0);
+          // move all the slides between index and to in the right direction
+          while (diff--) {
+            move( circle((to > index ? to : index) - diff - 1), width * direction, 0);
+          }
         }
 
         to = circle(to);
 
-        move(index, width * direction, slideSpeed || speed);
-        move(to, 0, slideSpeed || speed);
-
-        if (options.continuous) { // we need to get the next in place
-          move(circle(to - direction), -(width * direction), 0);
+        if (options.partial) {
+          if (direction === -1) {
+            move(circle(index-1), slides.length > 4 ? -partialPos.hidden : partialPos.hidden, 0);
+            if(length>3) {
+              move(circle(index-2), partialPos.hidden, 0);
+              move(circle(index+2), partialPos.hidden, 0);
+            }
+            move(index, partialPos.prev, slideSpeed || speed);
+            move(to, partialPos.middle, slideSpeed || speed);
+            if(to < length - 1 || options.continuous ){
+              move(circle(index+2), partialPos.next, length > 4 ? slideSpeed || speed : 0);
+            }
+          } else {
+            move(circle(index+1), slides.length > 4 ? partialPos.hidden : -partialPos.hidden, 0);
+            if(length>3) {
+              move(circle(index-2), -partialPos.hidden, 0);
+              move(circle(index-3), -partialPos.hidden, 0);
+            }
+            move(index, partialPos.next, slideSpeed || speed);
+            move(to, partialPos.middle, slideSpeed || speed);
+            if(to > 0 || options.continuous){
+              move(circle(to-1), partialPos.prev, length > 4 ? slideSpeed || speed : 0);
+            }
+          }
+        } else {
+          move(index, width * direction, slideSpeed || speed);
+          move(to, 0, slideSpeed || speed);
+          if (options.continuous) { // we need to get the next in place
+            move(circle(to - direction), -(width * direction), 0);
+          }
+          move(index, width * direction, slideSpeed || speed);
+          move(to, 0, slideSpeed || speed);
         }
 
       } else {
