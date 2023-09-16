@@ -146,6 +146,22 @@
     if (!container) return;
 
     var element = container.children[0];
+
+    if (options.navButtons) {
+      var nextButton = _document.createElement('button');
+      nextButton.className = 'swipe-next';
+      nextButton.textContent = options.navNextText ||'next';
+      nextButton.addEventListener('click', next);
+
+      var prevButton = _document.createElement('button');
+      prevButton.className = 'swipe-prev';
+      prevButton.textContent = options.navPrevText || 'previous';
+      prevButton.addEventListener('click', prev);
+
+      element.insertAdjacentElement('afterend', nextButton);
+      element.insertAdjacentElement('afterend', prevButton);
+    }
+
     var slides, slidePos, width, length;
     var index = parseInt(options.startSlide, 10) || 0;
     var speed = options.speed || 300;
