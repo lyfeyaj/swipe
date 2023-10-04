@@ -150,6 +150,7 @@
     var index = parseInt(options.startSlide, 10) || 0;
     var speed = options.speed || 300;
     options.continuous = options.continuous !== undefined ? options.continuous : true;
+    options.freeMode = options.freeMode !== undefined ? options.freeMode : true;
 
     // check text direction
     var slideDir = (function(el, prop, dir) {
@@ -288,9 +289,19 @@
           // increase resistance if first or last slide
           if (options.continuous) { // we don't add resistance at the end
 
-            translate(circle(index-1), delta.x + slidePos[circle(index-1)], 0);
-            translate(index, delta.x + slidePos[index], 0);
-            translate(circle(index+1), delta.x + slidePos[circle(index+1)], 0);
+            var previousSlideDist = delta.x + slidePos[circle(index-1)];
+            var currentSlideDist = delta.x + slidePos[index];
+            var nextSlideDist = delta.x + slidePos[circle(index+1)];
+
+            if (!options.freeMode) {
+              previousSlideDist = Math.min(previousSlideDist, 0);
+              currentSlideDist = Math.max(Math.min(currentSlideDist, width), -width);
+              nextSlideDist = Math.max(nextSlideDist, 0);
+            }
+
+            translate(circle(index-1), previousSlideDist, 0);
+            translate(index, currentSlideDist, 0);
+            translate(circle(index+1), nextSlideDist, 0);
 
           } else {
 
@@ -302,6 +313,16 @@
               ) ?
                 ( Math.abs(delta.x) / width + 1 )      // determine resistance level
                 : 1 );                                 // no resistance if false
+
+            previousSlideDist = delta.x + slidePos[index-1];
+            currentSlideDist = delta.x + slidePos[index];
+            nextSlideDist = delta.x + slidePos[index+1];
+
+            if (!options.freeMode) {
+              previousSlideDist = Math.min(previousSlideDist, 0);
+              currentSlideDist = Math.max(Math.min(currentSlideDist, width), -width);
+              nextSlideDist = Math.max(nextSlideDist, 0);
+            }
 
             // translate 1:1
             translate(index-1, delta.x + slidePos[index-1], 0);

@@ -114,6 +114,7 @@ Swipe can take an optional second parameter – an object of key/value settings:
 | **stopPropagation** | Boolean  | false   | stop event propagation.                                                                                                                                                                                          |
 | **draggable**       | Boolean  | false   | listen to mouse events in addition to the touch events |
 | **ignore**          | String   | null    | ignore touch events on any element matching this selector |
+| **freeMode**        | Boolean  | true    | let slide through multiple slides |
 | **callback**        | Function | null    | runs at slide change. Three parameters are passed to the function: `index` (the current slide index)`elem` (the current slide element) and `dir` (direction: `1` for left or backward`-1` for right or forward). |
 | **transitionEnd**   | Function | null    | runs at the end of a slide transition. Two parameters are passed to the function: `index` (the current slide index) and `elem` (the current slide element).                                                      |
 
